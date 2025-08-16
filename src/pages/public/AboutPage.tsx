@@ -1,0 +1,452 @@
+import React from 'react';
+import { Shield, Eye, Target, Users, Handshake, Leaf, Building, GraduationCap, Database, Award } from 'lucide-react';
+
+const AboutPage: React.FC = () => {
+  const coreValues = [
+    {
+      icon: Handshake,
+      title: 'Integrity',
+      description: 'Upholding honesty and ethical standards in all our actions and decisions',
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-100'
+    },
+    {
+      icon: Users,
+      title: 'Community Partnership',
+      description: 'Working collaboratively with stakeholders for collective disaster resilience',
+      color: 'text-green-600',
+      bgColor: 'bg-green-100'
+    },
+    {
+      icon: Shield,
+      title: 'Resilience',
+      description: 'Building strong, adaptive communities capable of withstanding disasters',
+      color: 'text-yellow-600',
+      bgColor: 'bg-yellow-100'
+    },
+    {
+      icon: Leaf,
+      title: 'Sustainability',
+      description: 'Promoting environmentally conscious and long-term disaster management',
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-100'
+    }
+  ];
+
+  const programs = [
+    {
+      icon: GraduationCap,
+      title: 'Community Education Workshops',
+      description: 'Regular training sessions to educate residents on disaster preparedness and response techniques.',
+      features: ['Quarterly community assemblies', 'Focus group discussions with vulnerable sectors', 'Feedback mechanisms for continuous improvement']
+    },
+    {
+      icon: Shield,
+      title: 'Early Warning Systems',
+      description: 'Advanced monitoring and alert systems to provide timely information during potential disasters.',
+      features: ['Real-time weather monitoring', 'Multi-channel alert systems', 'Community-based warning networks']
+    },
+    {
+      icon: Users,
+      title: 'Emergency Response Drills',
+      description: 'Regular simulation exercises to test and improve community response capabilities.',
+      features: ['Evacuation drills', 'Search and rescue exercises', 'Inter-agency coordination drills']
+    },
+    {
+      icon: Database,
+      title: 'Risk Assessment Projects',
+      description: 'Comprehensive studies to identify and evaluate potential hazards and vulnerabilities.',
+      features: ['Hazard mapping', 'Vulnerability assessments', 'Climate change impact studies']
+    }
+  ];
+
+  const keyPersonnel = [
+    {
+      name: 'Engr. Maria Santos',
+      position: 'MDRRMO Director',
+      description: '15+ years experience in disaster management and civil engineering. Leads strategic planning and policy development.',
+      icon: 'fas fa-user-tie'
+    },
+    {
+      name: 'Dr. Juan Dela Cruz',
+      position: 'Deputy Director',
+      description: 'Expert in emergency response coordination and community engagement. Oversees field operations and training programs.',
+      icon: 'fas fa-user'
+    },
+    {
+      name: 'Ana Reyes',
+      position: 'Training Coordinator',
+      description: 'Specializes in capacity building and educational programs. Coordinates all training and workshop activities.',
+      icon: 'fas fa-user-graduate'
+    }
+  ];
+
+  const achievements = [
+    { value: '95%', label: 'Community Preparedness', description: 'Households with emergency plans and disaster kits' },
+    { value: '40+', label: 'Training Programs', description: 'Conducted annually for community members and officials' },
+    { value: '0', label: 'Disaster Fatalities', description: 'In the past 3 years due to effective preparedness' }
+  ];
+
+  const partnerships = [
+    { name: 'Provincial DRRM Office', description: 'Coordination on regional disaster management strategies', icon: 'fas fa-landmark', color: 'text-red-600', bgColor: 'bg-red-100' },
+    { name: 'Red Cross', description: 'Joint emergency response and relief operations', icon: 'fas fa-hands-helping', color: 'text-green-600', bgColor: 'bg-green-100' },
+    { name: 'Local Schools', description: 'Educational programs and student training initiatives', icon: 'fas fa-school', color: 'text-blue-600', bgColor: 'bg-blue-100' },
+    { name: 'Barangay Councils', description: 'Grassroots implementation and community mobilization', icon: 'fas fa-building', color: 'text-purple-600', bgColor: 'bg-purple-100' }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <section className="bg-blue-950 text-white py-20">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">About DRRM Pio Duran</h1>
+            <div className="w-24 h-1 bg-yellow-500 mx-auto mb-8"></div>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-2xl font-bold mb-4">Municipal Disaster Risk Reduction and Management Office</h2>
+              <p className="text-gray-300 mb-6 leading-relaxed">
+                Established to strengthen the municipality's capacity to manage disaster risks, the MDRRMO Pio Duran plays a crucial role in protecting lives and properties. Since its inception, the office has been instrumental in developing comprehensive disaster management strategies and building community resilience against various hazards.
+              </p>
+              <p className="text-gray-300 mb-8 leading-relaxed">
+                Located in the heart of Pio Duran, our office serves as the central hub for all disaster risk reduction and management activities, ensuring coordinated responses and sustainable preparedness measures.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="bg-gray-800 rounded-lg p-8 inline-block">
+                <Shield className="h-24 w-24 text-yellow-500 mb-4 mx-auto" />
+                <h3 className="text-xl font-bold mb-2">Our Commitment</h3>
+                <p className="text-gray-300">Protecting our community through proactive disaster management</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 mt-16">
+            <div className="bg-gray-800 rounded-lg p-8">
+              <h3 className="text-xl font-bold mb-4 text-yellow-500">Mission Statement</h3>
+              <p className="text-gray-300 leading-relaxed">
+                To reduce disaster risks and enhance community resilience through effective preparedness, response, recovery, and mitigation strategies, ensuring the safety and well-being of all residents in Pio Duran.
+              </p>
+            </div>
+            <div className="bg-gray-800 rounded-lg p-8">
+              <h3 className="text-xl font-bold mb-4 text-yellow-500">Vision Statement</h3>
+              <p className="text-gray-300 leading-relaxed">
+                A disaster-resilient community of Pio Duran where every individual is empowered, prepared, and protected against all forms of disasters through collaborative efforts and sustainable development.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Core Values Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Core Values</h2>
+            <div className="w-24 h-1 bg-red-500 mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              The fundamental principles that guide our operations and decision-making processes
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {coreValues.map((value, index) => (
+              <div key={index} className="text-center bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow">
+                <div className={`w-16 h-16 ${value.bgColor} rounded-full flex items-center justify-center mx-auto mb-4`}>
+                  <value.icon className={`${value.color} text-2xl`} size={32} />
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 mb-3">{value.title}</h3>
+                <p className="text-gray-600">{value.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Operational Structure Section */}
+      <section className="bg-blue-950 text-white py-16">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Operational Structure</h2>
+            <div className="w-24 h-1 bg-yellow-500 mx-auto mb-6"></div>
+            <p className="text-gray-300 max-w-3xl mx-auto">
+              Our organizational framework ensures efficient coordination and effective implementation of disaster risk reduction and management activities
+            </p>
+          </div>
+
+          <div className="bg-gray-800 rounded-lg p-8 mb-12">
+            <h3 className="text-2xl font-bold mb-6 text-center">Organizational Hierarchy</h3>
+            <div className="flex flex-col items-center space-y-4">
+              <div className="bg-yellow-500 text-gray-900 px-8 py-4 rounded-lg font-bold text-lg">
+                MDRRMO Director
+              </div>
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="bg-blue-600 px-6 py-3 rounded-lg text-center">
+                  Deputy Director
+                </div>
+                <div className="bg-blue-600 px-6 py-3 rounded-lg text-center">
+                  Administrative Officer
+                </div>
+              </div>
+              <div className="grid md:grid-cols-3 gap-4 w-full max-w-4xl">
+                <div className="bg-gray-700 px-4 py-3 rounded-lg text-center">
+                  Preparedness & Response Team
+                </div>
+                <div className="bg-gray-700 px-4 py-3 rounded-lg text-center">
+                  Training & Capacity Building Unit
+                </div>
+                <div className="bg-gray-700 px-4 py-3 rounded-lg text-center">
+                  Data Management & Analysis Unit
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-gray-800 rounded-lg p-6">
+              <div className="flex items-center mb-4">
+                <Shield className="text-yellow-500 text-2xl mr-3" size={32} />
+                <h3 className="text-xl font-bold">Disaster Preparedness and Response Team</h3>
+              </div>
+              <p className="text-gray-300">
+                Coordinates disaster responses, conducts preparedness activities, and manages emergency operations during crisis situations.
+              </p>
+            </div>
+            
+            <div className="bg-gray-800 rounded-lg p-6">
+              <div className="flex items-center mb-4">
+                <GraduationCap className="text-yellow-500 text-2xl mr-3" size={32} />
+                <h3 className="text-xl font-bold">Training and Capacity Building Unit</h3>
+              </div>
+              <p className="text-gray-300">
+                Responsible for training community members, local officials, and staff on disaster risk management and emergency response protocols.
+              </p>
+            </div>
+            
+            <div className="bg-gray-800 rounded-lg p-6">
+              <div className="flex items-center mb-4">
+                <Database className="text-yellow-500 text-2xl mr-3" size={32} />
+                <h3 className="text-xl font-bold">Data Management and Analysis Unit</h3>
+              </div>
+              <p className="text-gray-300">
+                Collects, analyzes, and maintains disaster-related data to inform decision-making and improve risk assessment strategies.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Programs and Initiatives Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Programs and Initiatives</h2>
+            <div className="w-24 h-1 bg-red-500 mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-3xl mx-auto">
+              Our comprehensive programs aim to build community resilience and enhance disaster preparedness
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {programs.map((program, index) => (
+              <div key={index} className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                  <program.icon className="text-blue-600" size={24} />
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 mb-3">{program.title}</h3>
+                <p className="text-gray-600 mb-4">{program.description}</p>
+                <div className="space-y-2">
+                  {program.features.map((feature, featureIndex) => (
+                    <div key={featureIndex} className="flex items-start">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      <span className="text-gray-700 text-sm">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Key Personnel Section */}
+      <section className="bg-blue-950 text-white py-16">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Key Personnel</h2>
+            <div className="w-24 h-1 bg-yellow-500 mx-auto mb-6"></div>
+            <p className="text-gray-300 max-w-3xl mx-auto">
+              Meet the dedicated professionals leading our disaster risk reduction and management efforts
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {keyPersonnel.map((person, index) => (
+              <div key={index} className="bg-gray-800 rounded-lg p-6 text-center">
+                <div className="w-24 h-24 bg-gray-700 rounded-full mx-auto mb-4 flex items-center justify-center">
+                  <Users className="text-yellow-500 text-3xl" size={48} />
+                </div>
+                <h3 className="text-xl font-bold mb-2">{person.name}</h3>
+                <p className="text-yellow-500 mb-3">{person.position}</p>
+                <p className="text-gray-300 text-sm">{person.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Achievements and Impact Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Achievements and Impact</h2>
+            <div className="w-24 h-1 bg-red-500 mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-3xl mx-auto">
+              Our commitment to disaster risk reduction has yielded significant results for the community
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            {achievements.map((achievement, index) => (
+              <div key={index} className="text-center">
+                <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-blue-600">{achievement.value}</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">{achievement.label}</h3>
+                <p className="text-gray-600">{achievement.description}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-white rounded-lg p-8 shadow-lg">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">Case Study: Flood Early Warning System</h3>
+            <p className="text-gray-600 mb-4">
+              Our innovative flood monitoring system has successfully provided early warnings to 15 barangays, 
+              enabling timely evacuations and preventing significant property damage during the 2023 rainy season.
+            </p>
+            <div className="flex items-center text-blue-600 font-semibold">
+              <Award className="mr-2" size={20} />
+              <span>Impact: 3,000+ residents safely evacuated, zero casualties</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Collaborations and Partnerships Section */}
+      <section className="bg-blue-950 text-white py-16">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Collaborations and Partnerships</h2>
+            <div className="w-24 h-1 bg-yellow-500 mx-auto mb-6"></div>
+            <p className="text-gray-300 max-w-3xl mx-auto">
+              Strengthening our disaster management capabilities through strategic partnerships
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {partnerships.map((partnership, index) => (
+              <div key={index} className="bg-gray-800 rounded-lg p-6 text-center">
+                <div className={`w-16 h-16 ${partnership.bgColor} rounded-full flex items-center justify-center mx-auto mb-4`}>
+                  <Building className={`${partnership.color} text-2xl`} size={32} />
+                </div>
+                <h3 className="text-lg font-bold mb-2">{partnership.name}</h3>
+                <p className="text-gray-300 text-sm">{partnership.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Future Plans Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Future Plans and Goals</h2>
+            <div className="w-24 h-1 bg-red-500 mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-3xl mx-auto">
+              Our strategic roadmap for enhancing disaster risk reduction efforts in Pio Duran
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12">
+            <div>
+              <h3 className="text-2xl font-bold mb-6 text-gray-800">Strategic Initiatives</h3>
+              <div className="space-y-6">
+                <div className="flex">
+                  <div className="mr-4">
+                    <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+                      <span className="text-gray-900 font-bold">1</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold mb-2 text-gray-800">Climate Change Adaptation</h4>
+                    <p className="text-gray-600">
+                      Developing long-term strategies to address climate-related risks and vulnerabilities
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex">
+                  <div className="mr-4">
+                    <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+                      <span className="text-gray-900 font-bold">2</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold mb-2 text-gray-800">Technology Integration</h4>
+                    <p className="text-gray-600">
+                      Implementing advanced GIS mapping and real-time monitoring systems
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex">
+                  <div className="mr-4">
+                    <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+                      <span className="text-gray-900 font-bold">3</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold mb-2 text-gray-800">Youth Empowerment</h4>
+                    <p className="text-gray-600">
+                      Establishing disaster risk reduction clubs in all schools and universities
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h3 className="text-2xl font-bold mb-6 text-gray-800">Upcoming Programs</h3>
+              <div className="bg-white rounded-lg p-6 mb-6 shadow-lg">
+                <div className="flex items-center mb-3">
+                  <Target className="text-yellow-500 mr-3" size={24} />
+                  <h4 className="text-lg font-bold text-gray-800">Multi-Hazard Risk Assessment</h4>
+                </div>
+                <p className="text-gray-600 mb-3">
+                  Comprehensive evaluation of all potential hazards affecting Pio Duran
+                </p>
+                <span className="text-sm text-yellow-600 font-medium">Target Completion: 2024 Q3</span>
+              </div>
+              
+              <div className="bg-white rounded-lg p-6 shadow-lg">
+                <div className="flex items-center mb-3">
+                  <Building className="text-yellow-500 mr-3" size={24} />
+                  <h4 className="text-lg font-bold text-gray-800">Mobile Emergency App</h4>
+                </div>
+                <p className="text-gray-600 mb-3">
+                  Development of a community-based emergency reporting and response application
+                </p>
+                <span className="text-sm text-yellow-600 font-medium">Target Launch: 2025 Q1</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default AboutPage;
