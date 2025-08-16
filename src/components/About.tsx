@@ -65,7 +65,7 @@ const About: React.FC = () => {
     <section id="about" className="py-20 bg-blue-950">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-extrabold text-gray-100 mb-4 relative inline-block">
+          <h2 className="text-4xl font-extrabold text-yellow-500 mb-4 relative inline-block">
             <span className="relative z-10 px-4">About DRRM Pio Duran</span>
             <span className="absolute bottom-0 left-0 right-0 h-2 bg-yellow-400 z-0"></span>
           </h2>
