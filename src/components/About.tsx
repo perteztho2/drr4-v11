@@ -67,7 +67,7 @@ const About: React.FC = () => {
         <div className="text-center mb-12">
           <h2 className="text-4xl font-extrabold text-yellow-500 mb-4 relative inline-block">
             <span className="relative z-10 px-4">About DRRM Pio Duran</span>
-            <span className="absolute bottom-0 left-0 right-0 h-2 bg-yellow-400 z-0"></span>
+            <span className="absolute bottom-0 left-0 right-0 h-2 bg-gray-400 z-0"></span>
           </h2>
           <p className="text-xl text-gray-500 max-w-3xl mx-auto">MDRRMO Pio Duran is the central hub for all disaster risk reduction and management activities, ensuring coordinated responses and sustainable preparedness measures.
           </p>
