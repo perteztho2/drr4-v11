@@ -45,26 +45,7 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
       {/* Header */}
       <div className="relative z-40">
         <Navigation />
-        <div className="bg-gradient-to-r from-blue-900/90 to-blue-800/90 backdrop-blur-sm border-b border-blue-700/50">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center justify-center space-x-4">
-              <button
-                onClick={onEmergencyClick}
-                className="inline-flex items-center px-6 py-3 bg-yellow-500 text-blue-900 font-semibold rounded-lg hover:bg-yellow-400 transition-colors duration-200"
-              >
-                <Phone className="mr-2" size={16} />
-                Emergency Hotline
-              </button>
-              <button
-                onClick={onIncidentClick}
-                className="inline-flex items-center px-6 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors duration-200"
-              >
-                <AlertTriangle className="mr-2" size={16} />
-                Report Incident
-              </button>
-            </div>
-          </div>
-        </div>
+        {/* The button container that was here has been removed */}
       </div>
 
       {/* Hero Content Container */}
