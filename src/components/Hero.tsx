@@ -4,7 +4,7 @@ import Navigation from './Navigation';
 
 interface HeroProps {
 //  onEmergencyClick: () => void;
-  onIncidentClick: () => void;
+//  onIncidentClick: () => void;
 }
 
 const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
