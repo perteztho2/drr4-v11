@@ -3,7 +3,7 @@ import { Phone, AlertTriangle, ChevronDown } from 'lucide-react';
 import Navigation from './Navigation';
 
 interface HeroProps {
-  onEmergencyClick: () => void;
+//  onEmergencyClick: () => void;
   onIncidentClick: () => void;
 }
 
