@@ -188,12 +188,20 @@ export const PagesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const incrementPageView = async (id: string) => {
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('pages')
-        .update({ view_count: supabase.sql`view_count + 1` })
-        .eq('id', id);
+        .select('view_count')
+        .eq('id', id)
+        .single();
 
       if (error) throw error;
+      
+      const { error: updateError } = await supabase
+        .from('pages')
+        .update({ view_count: (data.view_count || 0) + 1 })
+        .eq('id', id);
+
+      if (updateError) throw updateError;
     } catch (err) {
       console.error('Error incrementing page view:', err);
     }
@@ -323,18 +331,13 @@ export const PagesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const incrementDownload = async (id: string) => {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('resources')
-        .select('download_count')
-        .eq('id', id)
-        .single();
+        .update({ download_count: supabase.sql`download_count + 1` })
+        .eq('id', id);
 
       if (error) throw error;
       
-      const { error: updateError } = await supabase
-        .from('resources')
-        .update({ download_count: (data.download_count || 0) + 1 })
-        .eq('id', id);
       // Update local state
       setResources(prev => prev.map(resource => 
         resource.id === id 
@@ -346,8 +349,6 @@ export const PagesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
-      if (updateError) throw updateError;
-      
   return (
     <PagesContext.Provider value={{
       pages, addPage, updatePage, deletePage, getPageBySlug, incrementPageView,
