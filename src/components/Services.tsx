@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Services: React.FC = () => {
   const { services } = useData();
- // const activeServices = services.filter(service => service.status === 'active');
+  const activeServices = services.filter(service => service.status === 'active');
 
   const defaultServices = [
     {
