@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { supabse, 
-  Plus, 
+import { Plus, 
   Calendar, 
   Send, 
   Eye, 
