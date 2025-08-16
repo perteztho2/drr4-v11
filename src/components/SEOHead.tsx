@@ -18,7 +18,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   url,
   type = 'website'
 }) => {
-  const fullTitle = title.includes('MDRRMO') ? title : `${title} | MDRRMO Pio Duran`;
+  const fullTitle = title.includes('MDRRMO') ? title : `${title} | MDRRMO Pio Duran, Albay | Official Disaster Management & Response`;
   const currentUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
 
   return (
