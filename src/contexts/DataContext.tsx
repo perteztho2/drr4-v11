@@ -195,6 +195,29 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const referenceNumber = (incident as any).reference_number || 
         `RD-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0')}`;
       
+      // Handle image upload if provided
+      let imageUrl = null;
+      if ((incident as any).imageFile) {
+        try {
+          const file = (incident as any).imageFile;
+          const fileExt = file.name.split('.').pop();
+          const fileName = `incident_${referenceNumber}_${Date.now()}.${fileExt}`;
+          
+          const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('incidents')
+            .upload(fileName, file);
+
+          if (!uploadError) {
+            const { data: { publicUrl } } = supabase.storage
+              .from('incidents')
+              .getPublicUrl(fileName);
+            imageUrl = publicUrl;
+          }
+        } catch (uploadError) {
+          console.error('Error uploading incident image:', uploadError);
+        }
+      }
+
       const { data, error } = await supabase
         .from('incident_reports')
         .insert([{
@@ -205,7 +228,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
           incident_type: (incident as any).incident_type || (incident as any).incidentType,
           description: incident.description,
           urgency: incident.urgency,
-          status: 'pending'
+          status: 'pending',
+          image_url: imageUrl || (incident as any).image_url
         }])
         .select()
         .single();

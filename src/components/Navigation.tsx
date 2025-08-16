@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, Search, FileText } from 'lucide-react';
+import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, Search, FileText, ChevronDown, ChevronRight } from 'lucide-react';
 import { useDatabase } from '../contexts/DatabaseContext';
 import { usePages } from '../contexts/PagesContext';
 import { supabase } from '../lib/supabase';
@@ -14,6 +14,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [dynamicNavItems, setDynamicNavItems] = useState<any[]>([]);
+  const [openSubmenus, setOpenSubmenus] = useState<Set<string>>(new Set());
   const location = useLocation();
   const { isConnected } = useDatabase();
   const { pages } = usePages();
@@ -40,6 +41,39 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
     }
   };
 
+  const toggleSubmenu = (itemId: string) => {
+    const newOpenSubmenus = new Set(openSubmenus);
+    if (newOpenSubmenus.has(itemId)) {
+      newOpenSubmenus.delete(itemId);
+    } else {
+      newOpenSubmenus.add(itemId);
+    }
+    setOpenSubmenus(newOpenSubmenus);
+  };
+
+  const buildNavigationTree = (items: any[]) => {
+    const tree: any[] = [];
+    const itemMap = new Map();
+    
+    // Create a map of all items
+    items.forEach(item => {
+      itemMap.set(item.id, { ...item, children: [] });
+    });
+    
+    // Build the tree structure
+    items.forEach(item => {
+      if (item.parent_id) {
+        const parent = itemMap.get(item.parent_id);
+        if (parent) {
+          parent.children.push(itemMap.get(item.id));
+        }
+      } else {
+        tree.push(itemMap.get(item.id));
+      }
+    });
+    
+    return tree;
+  };
   const publicNavItems = [
     { path: '/', label: 'Home', icon: Home },
     { path: '/about', label: 'About', icon: Info },
@@ -52,13 +86,12 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
   ];
 
   // Use dynamic navigation items if available, otherwise use default
-  const navigationItems = dynamicNavItems.length > 0 
-    ? dynamicNavItems.map(item => ({
-        path: item.path,
-        label: item.label,
+  const navigationTree = dynamicNavItems.length > 0 
+    ? buildNavigationTree(dynamicNavItems.map(item => ({
+        ...item,
         icon: getIconComponent(item.icon)
-      }))
-    : publicNavItems;
+      })))
+    : publicNavItems.map(item => ({ ...item, children: [] }));
 
   function getIconComponent(iconName: string) {
     const icons: Record<string, any> = {
@@ -73,6 +106,74 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
     return false;
   };
 
+  const renderNavigationItem = (item: any, isMobile: boolean = false) => {
+    const hasChildren = item.children && item.children.length > 0;
+    const isSubmenuOpen = openSubmenus.has(item.id);
+    
+    if (hasChildren) {
+      return (
+        <div key={item.id || item.path} className="relative">
+          <button
+            onClick={() => toggleSubmenu(item.id)}
+            className={`flex items-center justify-between w-full px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+              isActive(item.path)
+                ? 'bg-yellow-500 text-blue-950'
+                : 'text-yellow-500 hover:bg-blue-800 hover:text-yellow-400'
+            }`}
+          >
+            <div className="flex items-center">
+              <item.icon size={16} className="mr-2" />
+              {item.label}
+            </div>
+            {isMobile ? (
+              isSubmenuOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />
+            ) : (
+              <ChevronDown size={16} className={`transform transition-transform ${isSubmenuOpen ? 'rotate-180' : ''}`} />
+            )}
+          </button>
+          
+          {/* Submenu */}
+          {isSubmenuOpen && (
+            <div className={`${isMobile ? 'ml-4 mt-2 space-y-1' : 'absolute top-full left-0 mt-1 w-48 bg-blue-900 rounded-lg shadow-lg py-2 z-50'}`}>
+              {item.children.map((child: any) => (
+                <Link
+                  key={child.id || child.path}
+                  to={child.path}
+                  onClick={() => isMobile && setIsOpen(false)}
+                  className={`flex items-center px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                    isMobile ? 'rounded-lg' : ''
+                  } ${
+                    isActive(child.path)
+                      ? 'bg-yellow-500 text-blue-950'
+                      : 'text-yellow-400 hover:bg-blue-800 hover:text-yellow-300'
+                  }`}
+                >
+                  <child.icon size={14} className="mr-2" />
+                  {child.label}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+    
+    return (
+      <Link
+        key={item.id || item.path}
+        to={item.path}
+        onClick={() => isMobile && setIsOpen(false)}
+        className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+          isActive(item.path)
+            ? 'bg-yellow-500 text-blue-950'
+            : 'text-yellow-500 hover:bg-blue-800 hover:text-yellow-400'
+        }`}
+      >
+        <item.icon size={16} className="mr-2" />
+        {item.label}
+      </Link>
+    );
+  };
   return (
     <nav className="bg-blue-950 border-b-4 border-yellow-500 sticky top-0 z-50 shadow-lg">
       <div className="container mx-auto px-4">
@@ -95,20 +196,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isActive(item.path)
-                    ? 'bg-yellow-500 text-blue-950'
-                    : 'text-yellow-500 hover:bg-blue-800 hover:text-yellow-400'
-                }`}
-              >
-                <item.icon size={16} className="mr-2" />
-                {item.label}
-              </Link>
-            ))}
+            {navigationTree.map((item) => renderNavigationItem(item, false))}
             <button
               onClick={() => setIsSearchOpen(true)}
               className="flex items-center px-4 py-2 rounded-lg text-sm font-medium text-yellow-500 hover:bg-blue-800 hover:text-yellow-400 transition-all duration-200"
@@ -138,21 +226,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
         {isOpen && (
           <div className="lg:hidden py-4 border-t border-blue-800">
             <div className="space-y-2">
-              {navigationItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    isActive(item.path)
-                      ? 'bg-yellow-500 text-blue-950'
-                      : 'text-yellow-500 hover:bg-blue-800'
-                  }`}
-                >
-                  <item.icon size={16} className="mr-3" />
-                  {item.label}
-                </Link>
-              ))}
+              {navigationTree.map((item) => renderNavigationItem(item, true))}
               <button
                 onClick={() => {
                   setIsSearchOpen(true);

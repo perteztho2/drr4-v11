@@ -26,6 +26,7 @@ const IncidentModal: React.FC<IncidentModalProps> = ({ isOpen, onClose, onSubmit
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -139,6 +140,8 @@ const IncidentModal: React.FC<IncidentModalProps> = ({ isOpen, onClose, onSubmit
       return;
     }
 
+    setIsUploading(true);
+
     // Generate reference number
     const referenceNumber = `RD-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0')}`;
     
@@ -152,10 +155,12 @@ const IncidentModal: React.FC<IncidentModalProps> = ({ isOpen, onClose, onSubmit
       description: formData.description,
       urgency: formData.urgency,
       status: 'pending' as const,
+      image_url: imagePreview,
       imageFile
     };
 
     onSubmit(incidentData);
+    setIsUploading(false);
     // Reset form
     setFormData({
       reporterName: '',
@@ -352,6 +357,7 @@ const IncidentModal: React.FC<IncidentModalProps> = ({ isOpen, onClose, onSubmit
                       className="sr-only"
                       accept="image/*"
                       onChange={handleImageChange}
+                      disabled={isUploading}
                     />
                   </label>
                   <p className="pl-1">or drag and drop</p>
@@ -368,7 +374,7 @@ const IncidentModal: React.FC<IncidentModalProps> = ({ isOpen, onClose, onSubmit
                     <img
                       src={imagePreview}
                       alt="Preview"
-                      className="h-16 w-16 object-cover rounded-md"
+                      className="h-20 w-20 object-cover rounded-md"
                     />
                     <div className="ml-3">
                       <p className="text-sm font-medium text-gray-900">
@@ -377,12 +383,16 @@ const IncidentModal: React.FC<IncidentModalProps> = ({ isOpen, onClose, onSubmit
                       <p className="text-xs text-gray-500">
                         {imageFile && (imageFile.size / 1024 / 1024).toFixed(2)} MB
                       </p>
+                      <p className="text-xs text-green-600">
+                        ✓ Ready to upload
+                      </p>
                     </div>
                   </div>
                   <button
                     type="button"
                     onClick={removeImage}
                     className="text-red-600 hover:text-red-800"
+                    disabled={isUploading}
                   >
                     <X size={20} />
                   </button>
@@ -426,9 +436,10 @@ const IncidentModal: React.FC<IncidentModalProps> = ({ isOpen, onClose, onSubmit
           <div className="pb-4">
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white font-bold py-3 px-6 rounded-md hover:from-red-700 hover:to-red-800 transition duration-300"
+              className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white font-bold py-3 px-6 rounded-md hover:from-red-700 hover:to-red-800 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isUploading}
             >
-              Submit Report
+              {isUploading ? 'Submitting Report...' : 'Submit Report'}
             </button>
           </div>
         </form>

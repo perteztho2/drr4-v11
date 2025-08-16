@@ -87,6 +87,33 @@ body {
 
 /* Rain animation */
 @keyframes rainDrop {
+  0% {
+    transform: translateY(-100vh);
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+@keyframes lightningFlash {
+  0% { opacity: 0; }
+  5% { opacity: 0.8; }
+  10% { opacity: 0; }
+  15% { opacity: 0.6; }
+  20% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.lightning-flash {
+  animation: lightningFlash 0.5s ease-in-out;
+}
+
+@keyframes rainDropOld {
   to {
     transform: translateY(100vh);
   }

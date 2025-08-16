@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
-import { Save, Eye, Code, Type, Image, Layout, Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
+import { Save, Eye, Code, Type, Image, Layout, Plus, Trash2, ArrowUp, ArrowDown, Palette, Terminal, Globe } from 'lucide-react';
 
 interface PageSection {
   id: string;
-  type: 'text' | 'image' | 'heading' | 'list' | 'quote' | 'code';
+  type: 'text' | 'image' | 'heading' | 'list' | 'quote' | 'code' | 'html' | 'css' | 'javascript';
   content: string;
   styles?: Record<string, string>;
   order: number;
@@ -31,8 +31,11 @@ const PageEditor: React.FC<PageEditorProps> = ({ initialContent = '', onSave, on
     }
   ]);
   const [activeSection, setActiveSection] = useState<string>('1');
-  const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit');
+  const [viewMode, setViewMode] = useState<'edit' | 'preview' | 'live'>('edit');
+  const [customCSS, setCustomCSS] = useState('');
+  const [customJS, setCustomJS] = useState('');
   const editorRef = useRef<HTMLTextAreaElement>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
 
   const sectionTypes = [
     { type: 'heading', label: 'Heading', icon: Type },
@@ -40,7 +43,10 @@ const PageEditor: React.FC<PageEditorProps> = ({ initialContent = '', onSave, on
     { type: 'image', label: 'Image', icon: Image },
     { type: 'list', label: 'List', icon: Layout },
     { type: 'quote', label: 'Quote', icon: Code },
-    { type: 'code', label: 'Code', icon: Code }
+    { type: 'code', label: 'Code', icon: Code },
+    { type: 'html', label: 'Raw HTML', icon: Globe },
+    { type: 'css', label: 'CSS Styles', icon: Palette },
+    { type: 'javascript', label: 'JavaScript', icon: Terminal }
   ];
 
   const addSection = (type: PageSection['type']) => {
@@ -62,6 +68,9 @@ const PageEditor: React.FC<PageEditorProps> = ({ initialContent = '', onSave, on
       case 'list': return '• List item 1\n• List item 2\n• List item 3';
       case 'quote': return 'This is a quote or callout text.';
       case 'code': return '// Code example\nfunction example() {\n  return "Hello World";\n}';
+      case 'html': return '<div class="custom-section">\n  <h3>Custom HTML Section</h3>\n  <p>Add your custom HTML here</p>\n</div>';
+      case 'css': return '.custom-section {\n  background: #f0f9ff;\n  padding: 20px;\n  border-radius: 8px;\n  border-left: 4px solid #3b82f6;\n}';
+      case 'javascript': return '// Custom JavaScript\nconsole.log("Page loaded");\n\n// Example: Add click handler\ndocument.addEventListener("DOMContentLoaded", function() {\n  // Your code here\n});';
       default: return '';
     }
   };
@@ -102,28 +111,58 @@ const PageEditor: React.FC<PageEditorProps> = ({ initialContent = '', onSave, on
   };
 
   const generateHtml = (): string => {
-    return sections
-      .sort((a, b) => a.order - b.order)
-      .map(section => {
-        switch (section.type) {
-          case 'heading':
-            return `<h2 class="text-2xl font-bold text-gray-900 mb-4">${section.content}</h2>`;
-          case 'text':
-            return `<p class="text-gray-700 mb-4">${section.content.replace(/\n/g, '<br>')}</p>`;
-          case 'image':
-            return `<img src="${section.content}" alt="Content image" class="w-full h-64 object-cover rounded-lg mb-4">`;
-          case 'list':
-            const listItems = section.content.split('\n').filter(item => item.trim());
-            return `<ul class="list-disc list-inside text-gray-700 mb-4">${listItems.map(item => `<li>${item.replace(/^[•\-\*]\s*/, '')}</li>`).join('')}</ul>`;
-          case 'quote':
-            return `<blockquote class="border-l-4 border-blue-500 pl-4 italic text-gray-700 mb-4">${section.content}</blockquote>`;
-          case 'code':
-            return `<pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto mb-4"><code>${section.content}</code></pre>`;
-          default:
-            return `<div class="mb-4">${section.content}</div>`;
-        }
-      })
-      .join('\n');
+    const sortedSections = sections.sort((a, b) => a.order - b.order);
+    let htmlContent = '';
+    let cssContent = '';
+    let jsContent = '';
+
+    sortedSections.forEach(section => {
+      switch (section.type) {
+        case 'heading':
+          htmlContent += `<h2 class="text-2xl font-bold text-gray-900 mb-4">${section.content}</h2>\n`;
+          break;
+        case 'text':
+          htmlContent += `<p class="text-gray-700 mb-4">${section.content.replace(/\n/g, '<br>')}</p>\n`;
+          break;
+        case 'image':
+          htmlContent += `<img src="${section.content}" alt="Content image" class="w-full h-64 object-cover rounded-lg mb-4">\n`;
+          break;
+        case 'list':
+          const listItems = section.content.split('\n').filter(item => item.trim());
+          htmlContent += `<ul class="list-disc list-inside text-gray-700 mb-4">${listItems.map(item => `<li>${item.replace(/^[•\-\*]\s*/, '')}</li>`).join('')}</ul>\n`;
+          break;
+        case 'quote':
+          htmlContent += `<blockquote class="border-l-4 border-blue-500 pl-4 italic text-gray-700 mb-4">${section.content}</blockquote>\n`;
+          break;
+        case 'code':
+          htmlContent += `<pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto mb-4"><code>${section.content}</code></pre>\n`;
+          break;
+        case 'html':
+          htmlContent += section.content + '\n';
+          break;
+        case 'css':
+          cssContent += section.content + '\n';
+          break;
+        case 'javascript':
+          jsContent += section.content + '\n';
+          break;
+        default:
+          htmlContent += `<div class="mb-4">${section.content}</div>\n`;
+      }
+    });
+
+    // Combine HTML with CSS and JS
+    let finalHtml = htmlContent;
+    
+    if (cssContent.trim()) {
+      finalHtml = `<style>\n${cssContent}\n</style>\n${finalHtml}`;
+    }
+    
+    if (jsContent.trim()) {
+      finalHtml = `${finalHtml}\n<script>\n${jsContent}\n</script>`;
+    }
+
+    return finalHtml;
   };
 
   const handleSave = () => {
@@ -152,9 +191,27 @@ const PageEditor: React.FC<PageEditorProps> = ({ initialContent = '', onSave, on
         return <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-700">{section.content}</blockquote>;
       case 'code':
         return <pre className="bg-gray-100 p-2 rounded text-sm overflow-x-auto"><code>{section.content}</code></pre>;
+      case 'html':
+        return <div className="border border-orange-200 bg-orange-50 p-2 rounded text-sm">Raw HTML: {section.content.substring(0, 50)}...</div>;
+      case 'css':
+        return <div className="border border-purple-200 bg-purple-50 p-2 rounded text-sm">CSS Styles: {section.content.substring(0, 50)}...</div>;
+      case 'javascript':
+        return <div className="border border-green-200 bg-green-50 p-2 rounded text-sm">JavaScript: {section.content.substring(0, 50)}...</div>;
       default:
         return <div>{section.content}</div>;
     }
+  };
+
+  const renderLivePreview = () => {
+    const htmlContent = generateHtml();
+    
+    return (
+      <div 
+        ref={previewRef}
+        className="prose max-w-none"
+        dangerouslySetInnerHTML={{ __html: htmlContent }}
+      />
+    );
   };
 
   const activeSecData = sections.find(s => s.id === activeSection);
@@ -181,6 +238,15 @@ const PageEditor: React.FC<PageEditorProps> = ({ initialContent = '', onSave, on
           >
             <Eye size={16} className="mr-2 inline" />
             Preview
+          </button>
+          <button
+            onClick={() => setViewMode('live')}
+            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              viewMode === 'live' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            <Globe size={16} className="mr-2 inline" />
+            Live Preview
           </button>
         </div>
 
@@ -237,7 +303,14 @@ const PageEditor: React.FC<PageEditorProps> = ({ initialContent = '', onSave, on
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm font-medium capitalize">{section.type}</span>
+                    <span className={`text-sm font-medium capitalize ${
+                      section.type === 'html' ? 'text-orange-600' :
+                      section.type === 'css' ? 'text-purple-600' :
+                      section.type === 'javascript' ? 'text-green-600' :
+                      'text-gray-700'
+                    }`}>
+                      {section.type}
+                    </span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <button
@@ -286,12 +359,18 @@ const PageEditor: React.FC<PageEditorProps> = ({ initialContent = '', onSave, on
               {activeSecData && (
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-medium text-gray-900 capitalize">
+                    <h3 className={`text-lg font-medium capitalize ${
+                      activeSecData.type === 'html' ? 'text-orange-600' :
+                      activeSecData.type === 'css' ? 'text-purple-600' :
+                      activeSecData.type === 'javascript' ? 'text-green-600' :
+                      'text-gray-900'
+                    }`}>
                       Edit {activeSecData.type} Section
                     </h3>
                     <span className="text-sm text-gray-500">Order: {activeSecData.order}</span>
                   </div>
                   
+                  {/* Special handling for different section types */}
                   {activeSecData.type === 'image' ? (
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -312,6 +391,60 @@ const PageEditor: React.FC<PageEditorProps> = ({ initialContent = '', onSave, on
                         />
                       )}
                     </div>
+                  ) : activeSecData.type === 'html' ? (
+                    <div>
+                      <label className="block text-sm font-medium text-orange-700 mb-2">
+                        Raw HTML Content
+                      </label>
+                      <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 mb-3">
+                        <p className="text-sm text-orange-800">
+                          <strong>Warning:</strong> Raw HTML will be rendered directly. Ensure content is safe and trusted.
+                        </p>
+                      </div>
+                      <textarea
+                        ref={editorRef}
+                        value={activeSecData.content}
+                        onChange={(e) => updateSection(activeSecData.id, e.target.value)}
+                        className="w-full h-96 px-3 py-2 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 font-mono text-sm"
+                        placeholder="<div>Your HTML content here...</div>"
+                      />
+                    </div>
+                  ) : activeSecData.type === 'css' ? (
+                    <div>
+                      <label className="block text-sm font-medium text-purple-700 mb-2">
+                        CSS Styles
+                      </label>
+                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-3">
+                        <p className="text-sm text-purple-800">
+                          CSS will be injected into the page head. Use classes that don't conflict with existing styles.
+                        </p>
+                      </div>
+                      <textarea
+                        ref={editorRef}
+                        value={activeSecData.content}
+                        onChange={(e) => updateSection(activeSecData.id, e.target.value)}
+                        className="w-full h-96 px-3 py-2 border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 font-mono text-sm"
+                        placeholder=".my-class { color: blue; }"
+                      />
+                    </div>
+                  ) : activeSecData.type === 'javascript' ? (
+                    <div>
+                      <label className="block text-sm font-medium text-green-700 mb-2">
+                        JavaScript Code
+                      </label>
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-3">
+                        <p className="text-sm text-green-800">
+                          <strong>Caution:</strong> JavaScript will be executed. Only use trusted code to prevent security issues.
+                        </p>
+                      </div>
+                      <textarea
+                        ref={editorRef}
+                        value={activeSecData.content}
+                        onChange={(e) => updateSection(activeSecData.id, e.target.value)}
+                        className="w-full h-96 px-3 py-2 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 font-mono text-sm"
+                        placeholder="// Your JavaScript code here"
+                      />
+                    </div>
                   ) : (
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -329,7 +462,7 @@ const PageEditor: React.FC<PageEditorProps> = ({ initialContent = '', onSave, on
                 </div>
               )}
             </div>
-          ) : (
+          ) : viewMode === 'preview' ? (
             <div className="flex-1 p-6 bg-white overflow-y-auto">
               <div className="max-w-4xl mx-auto prose prose-lg">
                 {sections
@@ -339,6 +472,17 @@ const PageEditor: React.FC<PageEditorProps> = ({ initialContent = '', onSave, on
                     {renderSectionPreview(section)}
                   </div>
                 ))}
+              </div>
+            </div>
+          ) : (
+            <div className="flex-1 p-6 bg-white overflow-y-auto">
+              <div className="max-w-4xl mx-auto">
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                  <p className="text-sm text-yellow-800">
+                    <strong>Live Preview:</strong> This shows how your content will appear with HTML, CSS, and JavaScript rendered.
+                  </p>
+                </div>
+                {renderLivePreview()}
               </div>
             </div>
           )}

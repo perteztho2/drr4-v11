@@ -362,6 +362,23 @@ const IncidentReports: React.FC = () => {
                   {selectedIncident.description || 'No description provided'}
                 </p>
               </div>
+
+              {selectedIncident.image_url && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Uploaded Image</label>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <img
+                      src={selectedIncident.image_url}
+                      alt="Incident evidence"
+                      className="w-full max-w-md h-auto rounded-lg shadow-sm"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

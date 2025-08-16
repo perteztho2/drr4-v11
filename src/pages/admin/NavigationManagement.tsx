@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Save, X, Menu, Eye, EyeOff, ArrowUp, ArrowDown } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, Menu, Eye, EyeOff, ArrowUp, ArrowDown, ChevronRight, ChevronDown } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 
 interface NavigationItem {
@@ -24,10 +24,10 @@ const NavigationManagement: React.FC = () => {
     label: '',
     path: '',
     icon: 'Home',
+    parent_id: '',
     order_index: 1,
     is_active: true,
     is_featured: false,
-    parent_id: ''
   });
 
   const iconOptions = [
@@ -107,10 +107,10 @@ const NavigationManagement: React.FC = () => {
       label: '',
       path: '',
       icon: 'Home',
+      parent_id: '',
       order_index: 1,
       is_active: true,
       is_featured: false,
-      parent_id: ''
     });
     setEditingItem(null);
     setIsModalOpen(false);
@@ -121,10 +121,10 @@ const NavigationManagement: React.FC = () => {
       label: item.label,
       path: item.path,
       icon: item.icon,
+      parent_id: item.parent_id || '',
       order_index: item.order_index,
       is_active: item.is_active,
       is_featured: item.is_featured,
-      parent_id: item.parent_id || ''
     });
     setEditingItem(item.id);
     setIsModalOpen(true);
@@ -204,6 +204,125 @@ const NavigationManagement: React.FC = () => {
     }
   };
 
+  const buildNavigationTree = (items: NavigationItem[]) => {
+    const tree: any[] = [];
+    const itemMap = new Map();
+    
+    // Create a map of all items
+    items.forEach(item => {
+      itemMap.set(item.id, { ...item, children: [] });
+    });
+    
+    // Build the tree structure
+    items.forEach(item => {
+      if (item.parent_id) {
+        const parent = itemMap.get(item.parent_id);
+        if (parent) {
+          parent.children.push(itemMap.get(item.id));
+        }
+      } else {
+        tree.push(itemMap.get(item.id));
+      }
+    });
+    
+    return tree;
+  };
+
+  const renderNavigationTree = (items: any[], level: number = 0) => {
+    return items.map((item) => (
+      <div key={item.id} className={`${level > 0 ? 'ml-8 border-l-2 border-gray-200 pl-4' : ''}`}>
+        <div className="p-6 hover:bg-gray-50">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="flex flex-col space-y-1">
+                <button
+                  onClick={() => moveItem(item.id, 'up')}
+                  className="text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <ArrowUp size={16} />
+                </button>
+                <button
+                  onClick={() => moveItem(item.id, 'down')}
+                  className="text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <ArrowDown size={16} />
+                </button>
+              </div>
+              
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                <Menu className="text-blue-600" size={20} />
+              </div>
+              
+              <div>
+                <div className="flex items-center space-x-2">
+                  <h3 className="font-medium text-gray-900">{item.label}</h3>
+                  {item.children.length > 0 && (
+                    <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                      {item.children.length} submenu{item.children.length !== 1 ? 's' : ''}
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-gray-600">{item.path}</p>
+                <div className="flex items-center space-x-2 mt-1">
+                  <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                    Order: {item.order_index}
+                  </span>
+                  {item.is_featured && (
+                    <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+                      Featured
+                    </span>
+                  )}
+                  {level > 0 && (
+                    <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
+                      Submenu
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => toggleActive(item.id)}
+                className={`p-2 rounded-lg transition-colors ${
+                  item.is_active
+                    ? 'text-green-600 hover:bg-green-100'
+                    : 'text-gray-400 hover:bg-gray-100'
+                }`}
+                title={item.is_active ? 'Hide from navigation' : 'Show in navigation'}
+              >
+                {item.is_active ? <Eye size={16} /> : <EyeOff size={16} />}
+              </button>
+              <button
+                onClick={() => handleEdit(item)}
+                className="text-blue-600 hover:text-blue-800"
+                title="Edit"
+              >
+                <Edit size={16} />
+              </button>
+              <button
+                onClick={() => handleDelete(item.id)}
+                className="text-red-600 hover:text-red-800"
+                title="Delete"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        {/* Render children */}
+        {item.children.length > 0 && (
+          <div className="border-l-2 border-gray-100">
+            {renderNavigationTree(item.children, level + 1)}
+          </div>
+        )}
+      </div>
+    ));
+  };
+
+  const navigationTree = buildNavigationTree(navItems);
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -242,83 +361,11 @@ const NavigationManagement: React.FC = () => {
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
         <div className="p-6 border-b border-gray-200">
           <h3 className="text-lg font-semibold text-gray-900">Navigation Items</h3>
-          <p className="text-sm text-gray-600">Drag to reorder or use arrow buttons</p>
+          <p className="text-sm text-gray-600">Manage navigation structure with submenus</p>
         </div>
         
-        <div className="divide-y divide-gray-200">
-          {navItems
-            .sort((a, b) => a.order_index - b.order_index)
-            .map((item, index) => (
-            <div key={item.id} className="p-6 hover:bg-gray-50">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="flex flex-col space-y-1">
-                    <button
-                      onClick={() => moveItem(item.id, 'up')}
-                      disabled={index === 0}
-                      className="text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <ArrowUp size={16} />
-                    </button>
-                    <button
-                      onClick={() => moveItem(item.id, 'down')}
-                      disabled={index === navItems.length - 1}
-                      className="text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <ArrowDown size={16} />
-                    </button>
-                  </div>
-                  
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Menu className="text-blue-600" size={20} />
-                  </div>
-                  
-                  <div>
-                    <h3 className="font-medium text-gray-900">{item.label}</h3>
-                    <p className="text-sm text-gray-600">{item.path}</p>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                        Order: {item.order_index}
-                      </span>
-                      {item.is_featured && (
-                        <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
-                          Featured
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => toggleActive(item.id)}
-                    className={`p-2 rounded-lg transition-colors ${
-                      item.is_active
-                        ? 'text-green-600 hover:bg-green-100'
-                        : 'text-gray-400 hover:bg-gray-100'
-                    }`}
-                    title={item.is_active ? 'Hide from navigation' : 'Show in navigation'}
-                  >
-                    {item.is_active ? <Eye size={16} /> : <EyeOff size={16} />}
-                  </button>
-                  <button
-                    onClick={() => handleEdit(item)}
-                    className="text-blue-600 hover:text-blue-800"
-                    title="Edit"
-                  >
-                    <Edit size={16} />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item.id)}
-                    className="text-red-600 hover:text-red-800"
-                    title="Delete"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div>
+          {renderNavigationTree(navigationTree)}
         </div>
       </div>
 
@@ -381,6 +428,27 @@ const NavigationManagement: React.FC = () => {
                     <option key={icon} value={icon}>{icon}</option>
                   ))}
                 </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Parent Menu (Optional)
+                </label>
+                <select
+                  value={formData.parent_id}
+                  onChange={(e) => setFormData({ ...formData, parent_id: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">No Parent (Top Level)</option>
+                  {navItems
+                    .filter(item => item.id !== editingItem && !item.parent_id)
+                    .map((item) => (
+                    <option key={item.id} value={item.id}>{item.label}</option>
+                  ))}
+                </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  Select a parent menu to create a submenu item
+                </p>
               </div>
 
               <div>

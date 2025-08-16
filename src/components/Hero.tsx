@@ -16,28 +16,57 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
       const rainContainer = rainContainerRef.current;
       if (!rainContainer) return;
 
-      const rainCount = 100;
+      const rainCount = 50;
       rainContainer.innerHTML = '';
 
       for (let i = 0; i < rainCount; i++) {
         const drop = document.createElement('div');
-        drop.className = 'absolute w-px bg-gradient-to-b from-white/50 to-white/30 animate-pulse';
+        drop.className = 'absolute w-px bg-gradient-to-b from-white/30 to-transparent';
         
         const left = Math.random() * 100;
-        const height = 10 + Math.random() * 20;
-        const duration = 0.5 + Math.random() * 0.5;
+        const height = 20 + Math.random() * 40;
+        const duration = 1 + Math.random() * 2;
         const delay = Math.random() * 2;
 
         drop.style.left = `${left}%`;
         drop.style.height = `${height}px`;
-        drop.style.animationDuration = `${duration}s`;
+        drop.style.animation = `rainDrop ${duration}s linear infinite`;
         drop.style.animationDelay = `${delay}s`;
 
         rainContainer.appendChild(drop);
       }
     };
 
+    // Create lightning effect
+    const createLightning = () => {
+      const lightningFlash = document.createElement('div');
+      lightningFlash.className = 'fixed inset-0 bg-white pointer-events-none z-20';
+      lightningFlash.style.opacity = '0';
+      document.body.appendChild(lightningFlash);
+
+      // Flash effect
+      lightningFlash.style.transition = 'opacity 0.1s';
+      lightningFlash.style.opacity = '0.3';
+      
+      setTimeout(() => {
+        lightningFlash.style.opacity = '0';
+        setTimeout(() => {
+          document.body.removeChild(lightningFlash);
+        }, 200);
+      }, 100);
+    };
     createRain();
+    
+    // Random lightning every 8-15 seconds
+    const lightningInterval = setInterval(() => {
+      if (Math.random() > 0.7) { // 30% chance
+        createLightning();
+      }
+    }, 8000 + Math.random() * 7000);
+
+    return () => {
+      clearInterval(lightningInterval);
+    };
   }, []);
 
   return (
@@ -61,9 +90,6 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
 
         {/* Rain Effect */}
         <div ref={rainContainerRef} className="absolute inset-0 z-10"></div>
-
-        {/* Lightning Effect */}
-        <div className="absolute inset-0 z-20 opacity-0 animate-pulse bg-white/20"></div>
 
         {/* Hero Content */}
         <div className="container mx-auto px-4 z-30 text-center">

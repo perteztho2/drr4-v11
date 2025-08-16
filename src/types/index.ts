@@ -33,6 +33,7 @@ export interface IncidentReport {
   urgency: 'LOW' | 'MEDIUM' | 'HIGH';
   status: 'pending' | 'in-progress' | 'resolved';
   date_reported: string;
+  image_url?: string | null;
   updated_at: string;
 }
 

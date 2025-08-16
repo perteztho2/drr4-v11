@@ -98,6 +98,7 @@ export interface Database {
           urgency: 'LOW' | 'MEDIUM' | 'HIGH'
           status: 'pending' | 'in-progress' | 'resolved'
           date_reported: string
+          image_url: string | null
           updated_at: string
         }
         Insert: {
@@ -111,6 +112,7 @@ export interface Database {
           urgency?: 'LOW' | 'MEDIUM' | 'HIGH'
           status?: 'pending' | 'in-progress' | 'resolved'
           date_reported?: string
+          image_url?: string | null
           updated_at?: string
         }
         Update: {
@@ -124,6 +126,7 @@ export interface Database {
           urgency?: 'LOW' | 'MEDIUM' | 'HIGH'
           status?: 'pending' | 'in-progress' | 'resolved'
           date_reported?: string
+          image_url?: string | null
           updated_at?: string
         }
       }

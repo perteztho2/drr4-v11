@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Edit, Trash2, Eye, Globe, FileText, Layout, Settings, X, Save } from 'lucide-react';
 import { usePages } from '../../contexts/PagesContext';
 import PageEditor from '../../components/PageEditor';
+import PageSectionManager from '../../components/PageSectionManager';
 import type { Page, PageSection } from '../../types';
 
 const PagesManagement: React.FC = () => {
@@ -271,7 +272,7 @@ const PagesManagement: React.FC = () => {
                         className="text-purple-600 hover:text-purple-800"
                         title="Open Editor"
                       >
-                        <Edit size={16} />
+                        <Code size={16} />
                       </button>
                       <button
                         onClick={() => handleEdit(page)}
@@ -531,37 +532,10 @@ const PagesManagement: React.FC = () => {
 
       {/* Sections Management Modal */}
       {selectedPageForSections && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold text-gray-900">
-                  Manage Page Sections
-                </h2>
-                <button
-                  onClick={() => setSelectedPageForSections(null)}
-                  className="text-gray-400 hover:text-gray-600"
-                >
-                  <X size={24} />
-                </button>
-              </div>
-            </div>
-            
-            <div className="p-6">
-              <div className="text-center py-12">
-                <Layout className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Page Sections</h3>
-                <p className="text-gray-500">Section management will be available in the next update.</p>
-                <button
-                  onClick={() => setSelectedPageForSections(null)}
-                  className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <PageSectionManager
+          pageId={selectedPageForSections}
+          onClose={() => setSelectedPageForSections(null)}
+        />
       )}
     </div>
   );
