@@ -20,7 +20,8 @@ import {
   Share2,
   Siren,
   FolderOpen,
-  Phone
+  Phone,
+  Cloud
 } from 'lucide-react';
 
 const AdminLayout: React.FC = () => {
@@ -38,6 +39,7 @@ const AdminLayout: React.FC = () => {
   const menuItems = [
     { path: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/admin/emergency', icon: Siren, label: 'Emergency Alerts' },
+    { path: '/admin/weather', icon: Cloud, label: 'Weather Management' },
     { path: '/admin/news', icon: Newspaper, label: 'News Management' },
     { path: '/admin/services', icon: Shield, label: 'Services' },
     { path: '/admin/about', icon: Info, label: 'About Page' },

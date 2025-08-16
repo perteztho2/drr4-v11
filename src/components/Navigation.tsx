@@ -204,13 +204,6 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
               <Search size={16} className="mr-2" />
               Search
             </button>
-            <Link
-              to="/admin"
-              className="ml-4 bg-yellow-500 text-blue-950 px-4 py-2 rounded-lg hover:bg-yellow-400 transition-colors text-sm font-medium flex items-center"
-            >
-              <Shield size={16} className="mr-2" />
-              Admin
-            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -237,14 +230,6 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
                 <Search size={16} className="mr-3" />
                 Search
               </button>
-              <Link
-                to="/admin"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center px-4 py-3 bg-yellow-500 text-blue-950 rounded-lg hover:bg-yellow-400 transition-colors text-sm font-medium"
-              >
-                <Shield size={16} className="mr-3" />
-                Admin Panel
-              </Link>
             </div>
           </div>
         )}

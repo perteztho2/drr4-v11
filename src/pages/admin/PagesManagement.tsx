@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Edit, Trash2, Eye, Globe, FileText, Layout, Settings, X, Save } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, Globe, FileText, Layout, Settings, X, Save, Code } from 'lucide-react';
 import { usePages } from '../../contexts/PagesContext';
 import PageEditor from '../../components/PageEditor';
 import PageSectionManager from '../../components/PageSectionManager';

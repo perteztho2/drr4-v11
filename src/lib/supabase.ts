@@ -376,6 +376,53 @@ export interface Database {
           updated_at?: string
         }
       }
+      weather_data: {
+        Row: {
+          id: string
+          temperature: number
+          humidity: number
+          wind_speed: number
+          visibility: number
+          condition: 'sunny' | 'cloudy' | 'rainy' | 'stormy'
+          description: string
+          location: string
+          alerts: string[]
+          last_updated: string
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          temperature: number
+          humidity: number
+          wind_speed: number
+          visibility: number
+          condition: 'sunny' | 'cloudy' | 'rainy' | 'stormy'
+          description: string
+          location?: string
+          alerts?: string[]
+          last_updated?: string
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          temperature?: number
+          humidity?: number
+          wind_speed?: number
+          visibility?: number
+          condition?: 'sunny' | 'cloudy' | 'rainy' | 'stormy'
+          description?: string
+          location?: string
+          alerts?: string[]
+          last_updated?: string
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
       navigation_items: {
         Row: {
           id: string

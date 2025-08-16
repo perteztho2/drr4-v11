@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Activity, Cloud, Sun, CloudRain, Wind, Thermometer, Droplets, Eye, AlertTriangle } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 interface WeatherData {
   temperature: number;
@@ -25,13 +26,40 @@ const WeatherWidget: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate weather data loading
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
+    fetchWeatherData();
   }, []);
+
+  const fetchWeatherData = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('weather_data')
+        .select('*')
+        .eq('is_active', true)
+        .order('last_updated', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error && !error.message.includes('relation "weather_data" does not exist')) {
+        throw error;
+      }
+      
+      if (data) {
+        setWeather({
+          temperature: data.temperature,
+          humidity: data.humidity,
+          windSpeed: data.wind_speed,
+          visibility: data.visibility,
+          condition: data.condition,
+          description: data.description,
+          alerts: data.alerts || []
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const getWeatherIcon = (condition: string) => {
     switch (condition) {
