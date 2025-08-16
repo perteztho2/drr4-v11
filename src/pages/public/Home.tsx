@@ -14,6 +14,7 @@ import IncidentModal from '../../components/modals/IncidentModal';
 import HotlineModal from '../../components/modals/HotlineModal';
 import SuccessModal from '../../components/modals/SuccessModal';
 import { useData } from '../../contexts/DataContext';
+import { validateIncidentForm } from '../../utils/validation';
 
 const Home: React.FC = () => {
   const [isIncidentModalOpen, setIsIncidentModalOpen] = useState(false);

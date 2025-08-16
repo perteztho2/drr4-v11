@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Edit, Trash2, Eye, Globe, FileText, Layout, Settings, X, Save } from 'lucide-react';
 import { usePages } from '../../contexts/PagesContext';
+import PageEditor from '../../components/PageEditor';
 import type { Page, PageSection } from '../../types';
 
 const PagesManagement: React.FC = () => {
@@ -9,6 +10,7 @@ const PagesManagement: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSectionModalOpen, setIsSectionModalOpen] = useState(false);
   const [editingPage, setEditingPage] = useState<string | null>(null);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [selectedPageForSections, setSelectedPageForSections] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: '',
@@ -118,6 +120,49 @@ const PagesManagement: React.FC = () => {
     }));
   };
 
+  const handleOpenEditor = (page?: Page) => {
+    if (page) {
+      setFormData({
+        title: page.title,
+        slug: page.slug,
+        content: page.content,
+        meta_description: page.meta_description || '',
+        meta_keywords: page.meta_keywords || '',
+        hero_title: page.hero_title || '',
+        hero_subtitle: page.hero_subtitle || '',
+        hero_image: page.hero_image || '',
+        status: page.status,
+        template: page.template,
+        featured: page.featured || false
+      });
+      setEditingPage(page.id);
+    }
+    setIsEditorOpen(true);
+  };
+
+  const handleEditorSave = async (content: string, sections: any[]) => {
+    try {
+      const pageData = {
+        ...formData,
+        content,
+        slug: formData.slug || generateSlug(formData.title)
+      };
+
+      if (editingPage) {
+        await updatePage(editingPage, pageData);
+        alert('Page updated successfully!');
+      } else {
+        await addPage(pageData);
+        alert('Page created successfully!');
+      }
+      
+      setIsEditorOpen(false);
+      resetForm();
+    } catch (error) {
+      console.error('Error saving page:', error);
+      alert('Error saving page. Please try again.');
+    }
+  };
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -220,6 +265,13 @@ const PagesManagement: React.FC = () => {
                         title="Manage Sections"
                       >
                         <Layout size={16} />
+                      </button>
+                      <button
+                        onClick={() => handleOpenEditor(page)}
+                        className="text-purple-600 hover:text-purple-800"
+                        title="Open Editor"
+                      >
+                        <Edit size={16} />
                       </button>
                       <button
                         onClick={() => handleEdit(page)}
@@ -434,6 +486,45 @@ const PagesManagement: React.FC = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Page Editor Modal */}
+      {isEditorOpen && (
+        <div className="fixed inset-0 z-50 bg-white">
+          <div className="h-full flex flex-col">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gray-50">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900">
+                  {editingPage ? 'Edit Page' : 'Create New Page'}
+                </h2>
+                <p className="text-sm text-gray-600">{formData.title || 'Untitled Page'}</p>
+              </div>
+              <div className="flex items-center space-x-3">
+                <input
+                  type="text"
+                  placeholder="Page title..."
+                  value={formData.title}
+                  onChange={(e) => handleTitleChange(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <button
+                  onClick={() => setIsEditorOpen(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+            </div>
+            
+            <div className="flex-1">
+              <PageEditor
+                initialContent={formData.content}
+                onSave={handleEditorSave}
+                onPreview={() => window.open(`/${formData.slug}`, '_blank')}
+              />
+            </div>
           </div>
         </div>
       )}

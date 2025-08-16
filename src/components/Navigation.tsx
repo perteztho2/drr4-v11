@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone } from 'lucide-react';
+import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, Search, FileText } from 'lucide-react';
 import { useDatabase } from '../contexts/DatabaseContext';
+import { usePages } from '../contexts/PagesContext';
+import { supabase } from '../lib/supabase';
+import SearchModal from './SearchModal';
 
 interface NavigationProps {
   variant?: 'public' | 'admin';
@@ -9,8 +12,33 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [dynamicNavItems, setDynamicNavItems] = useState<any[]>([]);
   const location = useLocation();
   const { isConnected } = useDatabase();
+  const { pages } = usePages();
+
+  React.useEffect(() => {
+    fetchNavigationItems();
+  }, []);
+
+  const fetchNavigationItems = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('navigation_items')
+        .select('*')
+        .eq('is_active', true)
+        .order('order_index', { ascending: true });
+
+      if (error && !error.message.includes('relation "navigation_items" does not exist')) {
+        throw error;
+      }
+      
+      setDynamicNavItems(data || []);
+    } catch (error) {
+      console.error('Error fetching navigation items:', error);
+    }
+  };
 
   const publicNavItems = [
     { path: '/', label: 'Home', icon: Home },
@@ -22,6 +50,22 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
     { path: '/gallery', label: 'Gallery', icon: Camera },
     { path: '/contact', label: 'Contact', icon: Phone }
   ];
+
+  // Use dynamic navigation items if available, otherwise use default
+  const navigationItems = dynamicNavItems.length > 0 
+    ? dynamicNavItems.map(item => ({
+        path: item.path,
+        label: item.label,
+        icon: getIconComponent(item.icon)
+      }))
+    : publicNavItems;
+
+  function getIconComponent(iconName: string) {
+    const icons: Record<string, any> = {
+      Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, FileText, Shield
+    };
+    return icons[iconName] || Home;
+  }
 
   const isActive = (path: string) => {
     if (path === '/' && location.pathname === '/') return true;
@@ -51,7 +95,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
-            {publicNavItems.map((item) => (
+            {navigationItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
@@ -65,6 +109,13 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
                 {item.label}
               </Link>
             ))}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="flex items-center px-4 py-2 rounded-lg text-sm font-medium text-yellow-500 hover:bg-blue-800 hover:text-yellow-400 transition-all duration-200"
+            >
+              <Search size={16} className="mr-2" />
+              Search
+            </button>
             <Link
               to="/admin"
               className="ml-4 bg-yellow-500 text-blue-950 px-4 py-2 rounded-lg hover:bg-yellow-400 transition-colors text-sm font-medium flex items-center"
@@ -87,7 +138,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
         {isOpen && (
           <div className="lg:hidden py-4 border-t border-blue-800">
             <div className="space-y-2">
-              {publicNavItems.map((item) => (
+              {navigationItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
@@ -102,6 +153,16 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
                   {item.label}
                 </Link>
               ))}
+              <button
+                onClick={() => {
+                  setIsSearchOpen(true);
+                  setIsOpen(false);
+                }}
+                className="flex items-center px-4 py-3 rounded-lg text-sm font-medium text-yellow-500 hover:bg-blue-800 w-full"
+              >
+                <Search size={16} className="mr-3" />
+                Search
+              </button>
               <Link
                 to="/admin"
                 onClick={() => setIsOpen(false)}
@@ -114,6 +175,8 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
           </div>
         )}
       </div>
+      
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </nav>
   );
 };

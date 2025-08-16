@@ -45,6 +45,7 @@ const AdminLayout: React.FC = () => {
     { path: '/admin/social', icon: Share2, label: 'Social Media' },
     { path: '/admin/pages', icon: FileText, label: 'Pages' },
     { path: '/admin/resources', icon: FolderOpen, label: 'Resources' },
+    { path: '/admin/navigation', icon: Menu, label: 'Navigation' },
     { path: '/admin/incidents', icon: AlertTriangle, label: 'Incident Reports' },
     { path: '/admin/users', icon: Users, label: 'Users' },
     { path: '/admin/settings', icon: Settings, label: 'Settings' },

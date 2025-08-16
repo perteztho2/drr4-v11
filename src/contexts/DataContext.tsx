@@ -160,7 +160,13 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Services functions
   const addService = async (service: Omit<Service, 'id' | 'created_at' | 'updated_at'>) => {
     try {
-      const data = await databaseManager.createService(service);
+      const { data, error } = await supabase
+        .from('services')
+        .insert([service])
+        .select()
+        .single();
+
+      if (error) throw error;
       setServices(prev => [data, ...prev]);
     } catch (err) {
       console.error('Error adding service:', err);
@@ -170,7 +176,14 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const updateService = async (id: string, updates: Partial<Service>) => {
     try {
-      const data = await databaseManager.updateService(id, updates);
+      const { data, error } = await supabase
+        .from('services')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
       setServices(prev => prev.map(item => item.id === id ? data : item));
     } catch (err) {
       console.error('Error updating service:', err);
@@ -180,7 +193,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const deleteService = async (id: string) => {
     try {
-      await databaseManager.deleteService(id);
+      const { error } = await supabase
+        .from('services')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
       setServices(prev => prev.filter(item => item.id !== id));
     } catch (err) {
       console.error('Error deleting service:', err);
@@ -191,14 +209,27 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Incidents functions
   const addIncident = async (incident: Omit<IncidentReport, 'id' | 'date_reported' | 'updated_at' | 'reference_number'>) => {
     try {
-      const processedIncident = {
-        ...incident,
-        reporter_name: (incident as any).reporterName || incident.reporter_name,
-        contact_number: (incident as any).contactNumber || incident.contact_number,
-        incident_type: (incident as any).incidentType || incident.incident_type
-      };
+      // Generate reference number if not provided
+      const referenceNumber = (incident as any).reference_number || 
+        `RD-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0')}`;
       
-      const data = await databaseManager.createIncident(processedIncident);
+      const { data, error } = await supabase
+        .from('incident_reports')
+        .insert([{
+          reference_number: referenceNumber,
+          reporter_name: (incident as any).reporter_name || (incident as any).reporterName,
+          contact_number: (incident as any).contact_number || (incident as any).contactNumber,
+          location: incident.location,
+          incident_type: (incident as any).incident_type || (incident as any).incidentType,
+          description: incident.description,
+          urgency: incident.urgency,
+          status: 'pending'
+        }])
+        .select()
+        .single();
+
+      if (error) throw error;
+      
       setIncidents(prev => [data, ...prev]);
       return data.reference_number;
     } catch (err) {

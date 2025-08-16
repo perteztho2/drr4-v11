@@ -3,6 +3,7 @@ import { X, MapPin, Camera, AlertTriangle } from 'lucide-react';
 import { BARANGAYS, INCIDENT_TYPES } from '../../utils/constants';
 import { validateRequired, validatePhone, sanitizeInput } from '../../utils/validation';
 import { validateFileUpload, rateLimit } from '../../utils/security';
+import { supabase } from '../../lib/supabase';
 
 interface IncidentModalProps {
   isOpen: boolean;
@@ -138,15 +139,23 @@ const IncidentModal: React.FC<IncidentModalProps> = ({ isOpen, onClose, onSubmit
       return;
     }
 
-    onSubmit({
-      ...formData,
-      reporterName: formData.reporterName,
-      contactNumber: formData.contactNumber,
-      incidentType: formData.incidentType,
-      imageFile,
-      timestamp: new Date().toISOString()
-    });
+    // Generate reference number
+    const referenceNumber = `RD-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0')}`;
+    
+    const incidentData = {
+      reference_number: referenceNumber,
+      reporter_name: formData.reporterName,
+      contact_number: formData.contactNumber,
+      location: formData.location,
+      landmark: formData.landmark,
+      incident_type: formData.incidentType,
+      description: formData.description,
+      urgency: formData.urgency,
+      status: 'pending' as const,
+      imageFile
+    };
 
+    onSubmit(incidentData);
     // Reset form
     setFormData({
       reporterName: '',

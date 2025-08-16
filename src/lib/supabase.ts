@@ -373,6 +373,44 @@ export interface Database {
           updated_at?: string
         }
       }
+      navigation_items: {
+        Row: {
+          id: string
+          label: string
+          path: string
+          icon: string
+          order_index: number
+          is_active: boolean
+          is_featured: boolean
+          parent_id: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          label: string
+          path: string
+          icon?: string
+          order_index?: number
+          is_active?: boolean
+          is_featured?: boolean
+          parent_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          label?: string
+          path?: string
+          icon?: string
+          order_index?: number
+          is_active?: boolean
+          is_featured?: boolean
+          parent_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
   }
 }

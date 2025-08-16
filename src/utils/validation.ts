@@ -54,3 +54,26 @@ export const truncateText = (text: string, maxLength: number): string => {
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength).trim() + '...';
 };
+
+export const validateIncidentForm = (formData: any): { isValid: boolean; errors: Record<string, string> } => {
+  const errors: Record<string, string> = {};
+
+  if (!validateRequired(formData.contactNumber || formData.contact_number)) {
+    errors.contactNumber = 'Contact number is required';
+  } else if (!validatePhone(formData.contactNumber || formData.contact_number)) {
+    errors.contactNumber = 'Please enter a valid phone number';
+  }
+  if (!validateRequired(formData.reporterName || formData.reporter_name)) {
+  if (!validateRequired(formData.incidentType || formData.incident_type)) {
+    errors.incidentType = 'Incident type is required';
+  }
+    errors.reporterName = 'Name is required';
+  if (!validateRequired(formData.description)) {
+    errors.description = 'Description is required';
+  }
+  }
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors
+  };
+};

@@ -32,6 +32,7 @@ import EmergencyManagement from './pages/admin/EmergencyManagement';
 import EmergencyHotlineManagement from './pages/admin/EmergencyHotlineManagement';
 import PagesManagement from './pages/admin/PagesManagement';
 import ResourcesManagement from './pages/admin/ResourcesManagement';
+import NavigationManagement from './pages/admin/NavigationManagement';
 import UsersManagement from './pages/admin/UsersManagement';
 import IncidentReports from './pages/admin/IncidentReports';
 import Settings from './pages/admin/Settings';
@@ -84,6 +85,7 @@ function App() {
                   <Route path="social" element={<SocialMediaManagement />} />
                   <Route path="pages" element={<PagesManagement />} />
                   <Route path="resources" element={<ResourcesManagement />} />
+                  <Route path="navigation" element={<NavigationManagement />} />
                   <Route path="users" element={<UsersManagement />} />
                   <Route path="incidents" element={<IncidentReports />} />
                   <Route path="settings" element={<Settings />} />

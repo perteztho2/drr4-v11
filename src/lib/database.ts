@@ -133,11 +133,18 @@ export class DatabaseManager {
   }
 
   async createIncident(incident: Omit<IncidentRow, 'id' | 'date_reported' | 'updated_at' | 'reference_number'>): Promise<IncidentRow> {
-    const referenceNumber = `RD-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0')}`;
+    const referenceNumber = (incident as any).reference_number || 
+      `RD-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0')}`;
     
     const { data, error } = await supabase
       .from('incident_reports')
-      .insert([{ ...incident, reference_number: referenceNumber }])
+      .insert([{ 
+        ...incident, 
+        reference_number: referenceNumber,
+        reporter_name: (incident as any).reporter_name || (incident as any).reporterName,
+        contact_number: (incident as any).contact_number || (incident as any).contactNumber,
+        incident_type: (incident as any).incident_type || (incident as any).incidentType
+      }])
       .select()
       .single();
     

@@ -63,34 +63,50 @@ const GalleryManagement: React.FC = () => {
       if (isBulkUpload && formData.files) {
         // Handle bulk upload
         const files = Array.from(formData.files);
-        const bulkUploadId = `bulk_${Date.now()}`;
+        let successCount = 0;
         
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
           setUploadProgress(((i + 1) / files.length) * 100);
           
-          // In a real app, you would upload to a file storage service
-          // For now, we'll use a placeholder URL
-          const imageUrl = `https://images.pexels.com/photos/6146970/pexels-photo-6146970.jpeg`;
+          try {
+            // Upload to Supabase Storage
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+            
+            const { data: uploadData, error: uploadError } = await supabase.storage
+              .from('gallery')
+              .upload(fileName, file);
+
+            if (uploadError) {
+              console.error('Upload error:', uploadError);
+              continue; // Skip this file and continue with others
+            }
+
+            const { data: { publicUrl } } = supabase.storage
+              .from('gallery')
+              .getPublicUrl(fileName);
           
-          const galleryItem = {
-            title: formData.title || file.name.replace(/\.[^/.]+$/, ""),
-            description: formData.description || `Uploaded image: ${file.name}`,
-            image: imageUrl,
-            category: formData.category,
-            date: formData.date,
-            location: formData.location,
-            tags: formData.tags,
-            status: formData.status,
-            featured: false,
-            bulk_upload_id: bulkUploadId,
-            file_path: file.name
-          };
+            const galleryItem = {
+              title: formData.title || file.name.replace(/\.[^/.]+$/, ""),
+              description: formData.description || `Uploaded image: ${file.name}`,
+              image: publicUrl,
+              category: formData.category,
+              date: formData.date,
+              location: formData.location,
+              tags: formData.tags,
+              status: formData.status,
+              featured: false
+            };
           
-          await addGalleryItem(galleryItem);
+            await addGalleryItem(galleryItem);
+            successCount++;
+          } catch (itemError) {
+            console.error('Error adding gallery item:', itemError);
+          }
         }
         
-        alert(`Successfully uploaded ${files.length} images!`);
+        alert(`Successfully uploaded ${successCount} out of ${files.length} images!`);
       } else {
         // Handle single upload
         if (editingItem) {

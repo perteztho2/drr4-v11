@@ -64,13 +64,14 @@ const Settings: React.FC = () => {
       ];
 
       for (const setting of settingsToSave) {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('system_settings')
           .upsert({
             setting_key: setting.key,
             setting_value: JSON.stringify(setting.value),
             setting_type: setting.type,
-            is_public: setting.public
+            is_public: setting.public,
+            description: `System setting for ${setting.key}`
           }, {
             onConflict: 'setting_key'
           });
@@ -79,6 +80,7 @@ const Settings: React.FC = () => {
       }
       
       alert('Settings saved successfully!');
+      await fetchSettings(); // Refresh settings after save
     } catch (error) {
       console.error('Error saving settings:', error);
       alert('Error saving settings. Please try again.');
