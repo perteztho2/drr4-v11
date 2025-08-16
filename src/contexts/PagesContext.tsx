@@ -323,13 +323,18 @@ export const PagesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const incrementDownload = async (id: string) => {
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('resources')
-        .update({ download_count: supabase.sql`download_count + 1` })
-        .eq('id', id);
+        .select('download_count')
+        .eq('id', id)
+        .single();
 
       if (error) throw error;
       
+      const { error: updateError } = await supabase
+        .from('resources')
+        .update({ download_count: (data.download_count || 0) + 1 })
+        .eq('id', id);
       // Update local state
       setResources(prev => prev.map(resource => 
         resource.id === id 
@@ -341,6 +346,8 @@ export const PagesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
+      if (updateError) throw updateError;
+      
   return (
     <PagesContext.Provider value={{
       pages, addPage, updatePage, deletePage, getPageBySlug, incrementPageView,

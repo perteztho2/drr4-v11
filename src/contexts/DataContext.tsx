@@ -160,13 +160,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Services functions
   const addService = async (service: Omit<Service, 'id' | 'created_at' | 'updated_at'>) => {
     try {
-      const { data, error } = await supabase
-        .from('services')
-        .insert([service])
-        .select()
-        .single();
-
-      if (error) throw error;
+      const data = await databaseManager.createService(service);
       setServices(prev => [data, ...prev]);
     } catch (err) {
       console.error('Error adding service:', err);
@@ -176,14 +170,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const updateService = async (id: string, updates: Partial<Service>) => {
     try {
-      const { data, error } = await supabase
-        .from('services')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
+      const data = await databaseManager.updateService(id, updates);
       setServices(prev => prev.map(item => item.id === id ? data : item));
     } catch (err) {
       console.error('Error updating service:', err);
@@ -193,12 +180,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const deleteService = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('services')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
+      await databaseManager.deleteService(id);
       setServices(prev => prev.filter(item => item.id !== id));
     } catch (err) {
       console.error('Error deleting service:', err);
@@ -240,7 +222,14 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const updateIncident = async (id: string, updates: Partial<IncidentReport>) => {
     try {
-      const data = await databaseManager.updateIncident(id, updates);
+      const { data, error } = await supabase
+        .from('incident_reports')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
       setIncidents(prev => prev.map(item => item.id === id ? data : item));
     } catch (err) {
       console.error('Error updating incident:', err);
@@ -250,7 +239,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const deleteIncident = async (id: string) => {
     try {
-      await databaseManager.deleteIncident(id);
+      const { error } = await supabase
+        .from('incident_reports')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
       setIncidents(prev => prev.filter(item => item.id !== id));
     } catch (err) {
       console.error('Error deleting incident:', err);
