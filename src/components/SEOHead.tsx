@@ -11,9 +11,9 @@ interface SEOHeadProps {
 }
 
 const SEOHead: React.FC<SEOHeadProps> = ({
-  title = 'MDRRMO Pio Duran',
+  title = 'MDRRMO Pio Duran, Albay | Official Disaster Management & Response',
   description = 'Municipal Disaster Risk Reduction and Management Office - Building resilient communities through effective disaster preparedness and response.',
-  keywords = 'MDRRMO, disaster management, emergency response, Pio Duran, Albay, Philippines',
+  keywords = 'MDRRMO Pio Duran, Pio Duran disaster management, Albay emergency services, Disaster preparedness, Pio Duran Emergency Response Albay, Pio Duran safety, Disaster risk reduction, Albay disaster resilience, Civil defense Pio Duran, Emergency alerts, Incident reporting Pio Duran, Disaster response team, Search and rescue Albay, First aid training, Family disaster plan, Emergency kit checklist, Evacuation routes map, Volunteer registration MDRRMO, Pio Duran news and updates, MDRRMO gallery, About MDRRMO Pio Duran, Disaster planning resources, Downloadable emergency guides, Pio Duran, Albay, Bicol region disaster management, Municipality of Pio Duran, "How to prepare for a typhoon in Pio Duran", "Latest news from MDRRMO Pio Duran", "Emergency contact numbers in Albay", "Where to find evacuation centers in Pio Duran", "How to volunteer for disaster response in Albay", "Family disaster preparedness plan template", "What to include in an emergency kit",  Agol, Alabangpuro, Banawan, Barangay I (Poblacion), Barangay II (Poblacion), Barangay III (Poblacion), Barangay IV (Poblacion), Barangay V (Poblacion), Basicao Coastal, Basicao Interior, Binodegahan, Buenavista, Buyo, Caratagan, Cuyaoyao, Flores, La Medalla, Lawinon, Macasitas, Malapay, Malidong, Mamlad, Marigondon, Matanglad, Nablangbulod, Oringon, Palapas, Panganiran, Santo Cristo, Sukip, Tibabo',
   image = 'https://res.cloudinary.com/dedcmctqk/image/upload/v1750079276/logome_h9snnx.webp',
   url,
   type = 'website'
