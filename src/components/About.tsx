@@ -95,7 +95,7 @@ const About: React.FC = () => {
         <div className="text-center mt-12">
           <Link 
             to="/about"
-            className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden font-bold text-white hover:text-black rounded-full bg-gradient-to-r from-blue-600 to-blue-900 hover:from-yellow-400 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105"
+            className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden font-bold text-white hover:text-blue-900 rounded-full bg-gradient-to-r from-blue-600 to-blue-900 hover:from-yellow-400 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105"
           >
             <Users className="mr-2" size={20} />
             <span className="text-lg tracking-wide">Meet the DRRM Staff</span>
