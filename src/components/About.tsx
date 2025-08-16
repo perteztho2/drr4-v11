@@ -65,12 +65,12 @@ const About: React.FC = () => {
     <section id="about" className="py-20 bg-blue-950">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-extrabold text-blue-900 mb-4 relative inline-block">
-            <span className="relative z-10 px-4">OUR SERVICES</span>
+          <h2 className="text-4xl font-extrabold text-gray-100 mb-4 relative inline-block">
+            <span className="relative z-10 px-4">About DRRM Pio Duran</span>
             <span className="absolute bottom-0 left-0 right-0 h-2 bg-yellow-400 z-0"></span>
           </h2>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            <strong>Comprehensive disaster risk reduction and management services for the Duran community</strong>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <strong>MDRRMO Pio Duran is the central hub for all disaster risk reduction and management activities, ensuring coordinated responses and sustainable preparedness measures.</strong>
           </p>
         </div>
 
