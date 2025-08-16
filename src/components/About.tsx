@@ -62,7 +62,7 @@ const About: React.FC = () => {
       }))
     : cards;
   return (
-    <section id="about" className="py-20 bg-blue-950">
+    <section id="about" className="py-20 bg-blue-900">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-extrabold text-yellow-500 mb-4 relative inline-block">
