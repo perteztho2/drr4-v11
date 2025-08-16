@@ -7,7 +7,7 @@ interface HeroProps {
 //  onIncidentClick: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
+//const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
   const rainContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
