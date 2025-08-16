@@ -5,10 +5,45 @@ import { Link } from 'react-router-dom';
 
 const Services: React.FC = () => {
   const { services } = useData();
-  const activeServices = services.filter(service => service.status === 'active');
+ // const activeServices = services.filter(service => service.status === 'active');
 
   const defaultServices = [
-   
+    {
+      icon: Shield,
+      title: 'Disaster Prevention & Mitigation',
+      description: 'Immediate response to disaster-related emergencies with our trained response teams.',
+      tags: ['Search & Rescue', 'Medical Assistance', 'Fire Response'],
+      color: 'border-green-500',
+      bgColor: 'bg-green-100',
+      iconColor: 'text-green-600'
+    },
+    {
+      icon: Heart,
+      title: 'Disaster Preparedness',
+      description: 'Regular training programs for community members, volunteers, and responders.',
+      tags: ['First Aid Training', 'DRRM Workshops', 'Drills'],
+      color: 'border-blue-500',
+      bgColor: 'bg-blue-100',
+      iconColor: 'text-blue-600'
+    },
+    {
+      icon: Truck,
+      title: 'Disaster Response',
+      description: 'Comprehensive hazard, vulnerability, and capacity assessments for communities.',
+      tags: ['Flood Mapping', 'Risk Analysis', 'Mitigation Plans'],
+      color: 'border-red-500',
+      bgColor: 'bg-red-100',
+      iconColor: 'text-red-600'
+    },
+    {
+      icon: Home,
+      title: 'Disaster Recovery & Rehabilitation',
+      description: 'Engagement initiatives to build disaster-resilient communities.',
+      tags: ['Barangay DRRM', 'School Programs', 'Volunteer Network'],
+      color: 'border-yellow-500',
+      bgColor: 'bg-yellow-100',
+      iconColor: 'text-yellow-600'
+    }
   ];
 
   return (
