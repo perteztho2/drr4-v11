@@ -3,11 +3,11 @@ import { Phone, AlertTriangle, ChevronDown } from 'lucide-react';
 import Navigation from './Navigation';
 
 interface HeroProps {
-//  onEmergencyClick: () => void;
-//  onIncidentClick: () => void;
+  onEmergencyClick: () => void;
+  onIncidentClick: () => void;
 }
 
-//const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
+const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
   const rainContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
