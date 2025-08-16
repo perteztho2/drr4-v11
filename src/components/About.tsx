@@ -64,14 +64,14 @@ const About: React.FC = () => {
   return (
     <section id="about" className="py-20 bg-blue-950">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <Link 
-            to="/about"
-            className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden font-bold text-white rounded-full bg-gradient-to-r from-blue-600 to-blue-900 hover:from-yellow-400 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105"
-          >
-            <Shield className="mr-2" size={20} />
-            <span className="text-lg font-semibold tracking-wide">About MDRRMO</span>
-          </Link>
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-extrabold text-blue-900 mb-4 relative inline-block">
+            <span className="relative z-10 px-4">OUR SERVICES</span>
+            <span className="absolute bottom-0 left-0 right-0 h-2 bg-yellow-400 z-0"></span>
+          </h2>
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            <strong>Comprehensive disaster risk reduction and management services for the Duran community</strong>
+          </p>
         </div>
 
         <div className={`grid grid-cols-1 ${displayCards.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2 lg:grid-cols-3'} gap-8`}>
