@@ -1,7 +1,35 @@
 import React from 'react';
 import { Shield, Eye, Target, Users, Handshake, Leaf, Building, GraduationCap, Database, Award } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
 
 const AboutPage: React.FC = () => {
+  const [organizationalHierarchy, setOrganizationalHierarchy] = React.useState<any[]>([]);
+  const [keyPersonnel, setKeyPersonnel] = React.useState<any[]>([]);
+  const [aboutSections, setAboutSections] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    fetchAboutData();
+  }, []);
+
+  const fetchAboutData = async () => {
+    try {
+      const [hierarchyData, personnelData, sectionsData] = await Promise.all([
+        supabase.from('organizational_hierarchy').select('*').eq('is_active', true).order('level').order('order_index'),
+        supabase.from('key_personnel').select('*').eq('is_active', true).order('order_index'),
+        supabase.from('about_sections').select('*').eq('is_active', true).order('order_index')
+      ]);
+
+      setOrganizationalHierarchy(hierarchyData.data || []);
+      setKeyPersonnel(personnelData.data || []);
+      setAboutSections(sectionsData.data || []);
+    } catch (error) {
+      console.error('Error fetching about data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const coreValues = [
     {
       icon: Handshake,
@@ -60,26 +88,30 @@ const AboutPage: React.FC = () => {
     }
   ];
 
-  const keyPersonnel = [
+  const defaultKeyPersonnel = [
     {
       name: 'Engr. Maria Santos',
-      position: 'MDRRMO Director',
-      description: '15+ years experience in disaster management and civil engineering. Leads strategic planning and policy development.',
-      icon: 'fas fa-user-tie'
+      designation: 'MDRRMO Director',
+      bio: '15+ years experience in disaster management and civil engineering. Leads strategic planning and policy development.',
+      photo: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg'
     },
     {
       name: 'Dr. Juan Dela Cruz',
-      position: 'Deputy Director',
-      description: 'Expert in emergency response coordination and community engagement. Oversees field operations and training programs.',
-      icon: 'fas fa-user'
+      designation: 'Deputy Director',
+      bio: 'Expert in emergency response coordination and community engagement. Oversees field operations and training programs.',
+      photo: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg'
     },
     {
       name: 'Ana Reyes',
-      position: 'Training Coordinator',
-      description: 'Specializes in capacity building and educational programs. Coordinates all training and workshop activities.',
-      icon: 'fas fa-user-graduate'
+      designation: 'Training Coordinator',
+      bio: 'Specializes in capacity building and educational programs. Coordinates all training and workshop activities.',
+      photo: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg'
     }
   ];
+
+  // Use database data if available, otherwise use defaults
+  const displayPersonnel = keyPersonnel.length > 0 ? keyPersonnel : defaultKeyPersonnel;
+  const displayHierarchy = organizationalHierarchy.length > 0 ? organizationalHierarchy : [];
 
   const achievements = [
     { value: '95%', label: 'Community Preparedness', description: 'Households with emergency plans and disaster kits' },
@@ -176,33 +208,56 @@ const AboutPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-gray-800 rounded-lg p-8 mb-12">
-            <h3 className="text-2xl font-bold mb-6 text-center">Organizational Hierarchy</h3>
-            <div className="flex flex-col items-center space-y-4">
-              <div className="bg-yellow-500 text-gray-900 px-8 py-4 rounded-lg font-bold text-lg">
-                MDRRMO Director
+          {displayHierarchy.length > 0 ? (
+            <div className="bg-gray-800 rounded-lg p-8 mb-12">
+              <h3 className="text-2xl font-bold mb-6 text-center">Organizational Hierarchy</h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {displayHierarchy.map((person, index) => (
+                  <div key={index} className="bg-gray-700 rounded-lg p-6 text-center">
+                    <img
+                      src={person.photo || 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg'}
+                      alt={person.name}
+                      className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
+                    />
+                    <h4 className="text-lg font-bold text-white mb-1">{person.name}</h4>
+                    <p className="text-yellow-500 mb-2">{person.designation}</p>
+                    <p className="text-gray-300 text-sm">{person.department}</p>
+                    <span className="inline-block mt-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
+                      Level {person.level}
+                    </span>
+                  </div>
+                ))}
               </div>
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="bg-blue-600 px-6 py-3 rounded-lg text-center">
-                  Deputy Director
+            </div>
+          ) : (
+            <div className="bg-gray-800 rounded-lg p-8 mb-12">
+              <h3 className="text-2xl font-bold mb-6 text-center">Organizational Hierarchy</h3>
+              <div className="flex flex-col items-center space-y-4">
+                <div className="bg-yellow-500 text-gray-900 px-8 py-4 rounded-lg font-bold text-lg">
+                  MDRRMO Director
                 </div>
-                <div className="bg-blue-600 px-6 py-3 rounded-lg text-center">
-                  Administrative Officer
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="bg-blue-600 px-6 py-3 rounded-lg text-center">
+                    Deputy Director
+                  </div>
+                  <div className="bg-blue-600 px-6 py-3 rounded-lg text-center">
+                    Administrative Officer
+                  </div>
                 </div>
-              </div>
-              <div className="grid md:grid-cols-3 gap-4 w-full max-w-4xl">
-                <div className="bg-gray-700 px-4 py-3 rounded-lg text-center">
-                  Preparedness & Response Team
-                </div>
-                <div className="bg-gray-700 px-4 py-3 rounded-lg text-center">
-                  Training & Capacity Building Unit
-                </div>
-                <div className="bg-gray-700 px-4 py-3 rounded-lg text-center">
-                  Data Management & Analysis Unit
+                <div className="grid md:grid-cols-3 gap-4 w-full max-w-4xl">
+                  <div className="bg-gray-700 px-4 py-3 rounded-lg text-center">
+                    Preparedness & Response Team
+                  </div>
+                  <div className="bg-gray-700 px-4 py-3 rounded-lg text-center">
+                    Training & Capacity Building Unit
+                  </div>
+                  <div className="bg-gray-700 px-4 py-3 rounded-lg text-center">
+                    Data Management & Analysis Unit
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-gray-800 rounded-lg p-6">
@@ -283,14 +338,22 @@ const AboutPage: React.FC = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {keyPersonnel.map((person, index) => (
+            {displayPersonnel.map((person, index) => (
               <div key={index} className="bg-gray-800 rounded-lg p-6 text-center">
-                <div className="w-24 h-24 bg-gray-700 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <Users className="text-yellow-500 text-3xl" size={48} />
-                </div>
+                <img
+                  src={person.photo || 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg'}
+                  alt={person.name}
+                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                />
                 <h3 className="text-xl font-bold mb-2">{person.name}</h3>
-                <p className="text-yellow-500 mb-3">{person.position}</p>
-                <p className="text-gray-300 text-sm">{person.description}</p>
+                <p className="text-yellow-500 mb-3">{person.designation}</p>
+                <p className="text-gray-300 text-sm">{person.bio}</p>
+                {person.email && (
+                  <p className="text-blue-300 text-xs mt-2">📧 {person.email}</p>
+                )}
+                {person.phone && (
+                  <p className="text-blue-300 text-xs">📞 {person.phone}</p>
+                )}
               </div>
             ))}
           </div>
