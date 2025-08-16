@@ -15,15 +15,20 @@ import {
   Facebook,
   Twitter,
   Instagram,
-  Youtube
+  Youtube,
+  X,
+  Save
 } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 interface SocialPost {
   id: string;
   platform: 'facebook' | 'twitter' | 'instagram' | 'youtube';
   content: string;
   image?: string;
+  link?: string;
   scheduledTime?: string;
+  scheduled_time?: string;
   status: 'draft' | 'scheduled' | 'published';
   engagement: {
     likes: number;
@@ -34,23 +39,160 @@ interface SocialPost {
 
 const SocialMediaManagement: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'posts' | 'schedule' | 'analytics'>('overview');
-  const [scheduledPosts, setScheduledPosts] = useState<SocialPost[]>([
-    {
-      id: '1',
-      platform: 'facebook',
-      content: 'BDRRM Planning Training Workshop completed successfully! 🎯 Thank you to all barangay officials who participated.',
-      image: 'https://res.cloudinary.com/dedcmctqk/image/upload/v1750575265/487673077_1062718335885316_7552782387266701410_n_gexfn2.jpg',
-      status: 'published',
-      engagement: { likes: 45, shares: 12, comments: 8 }
-    },
-    {
-      id: '2',
-      platform: 'twitter',
-      content: 'Nationwide Earthquake Drill: Over 5,000 participants joined our community preparedness exercise! 🏢 #DisasterPreparedness #PioDuran',
-      status: 'published',
-      engagement: { likes: 23, shares: 18, comments: 5 }
+  const [scheduledPosts, setScheduledPosts] = useState<SocialPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingPost, setEditingPost] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    platform: 'facebook' as 'facebook' | 'twitter' | 'instagram' | 'youtube',
+    content: '',
+    image: '',
+    link: '',
+    scheduledTime: '',
+    status: 'draft' as 'draft' | 'scheduled' | 'published'
+  });
+
+  React.useEffect(() => {
+    fetchSocialPosts();
+  }, []);
+
+  const fetchSocialPosts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('social_posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error && !error.message.includes('relation "social_posts" does not exist')) {
+        throw error;
+      }
+      
+      if (data && data.length > 0) {
+        setScheduledPosts(data);
+      } else {
+        // Fallback to sample data
+        setScheduledPosts([
+          {
+            id: '1',
+            platform: 'facebook',
+            content: 'BDRRM Planning Training Workshop completed successfully! 🎯 Thank you to all barangay officials who participated.',
+            image: 'https://res.cloudinary.com/dedcmctqk/image/upload/v1750575265/487673077_1062718335885316_7552782387266701410_n_gexfn2.jpg',
+            status: 'published',
+            engagement: { likes: 45, shares: 12, comments: 8 }
+          },
+          {
+            id: '2',
+            platform: 'twitter',
+            content: 'Nationwide Earthquake Drill: Over 5,000 participants joined our community preparedness exercise! 🏢 #DisasterPreparedness #PioDuran',
+            status: 'published',
+            engagement: { likes: 23, shares: 18, comments: 5 }
+          }
+        ]);
+      }
+    } catch (error) {
+      console.error('Error fetching social posts:', error);
+    } finally {
+      setLoading(false);
     }
-  ]);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      if (editingPost) {
+        const { data, error } = await supabase
+          .from('social_posts')
+          .update({
+            platform: formData.platform,
+            content: formData.content,
+            image: formData.image || null,
+            link: formData.link || null,
+            scheduled_time: formData.scheduledTime || null,
+            status: formData.status
+          })
+          .eq('id', editingPost)
+          .select()
+          .single();
+
+        if (error) throw error;
+        
+        setScheduledPosts(prev => prev.map(post => 
+          post.id === editingPost ? data : post
+        ));
+        alert('Social post updated successfully!');
+      } else {
+        const { data, error } = await supabase
+          .from('social_posts')
+          .insert([{
+            platform: formData.platform,
+            content: formData.content,
+            image: formData.image || null,
+            link: formData.link || null,
+            scheduled_time: formData.scheduledTime || null,
+            status: formData.status,
+            engagement: { likes: 0, shares: 0, comments: 0 }
+          }])
+          .select()
+          .single();
+
+        if (error) throw error;
+        
+        setScheduledPosts(prev => [data, ...prev]);
+        alert('Social post created successfully!');
+      }
+      
+      resetForm();
+    } catch (error) {
+      console.error('Error saving social post:', error);
+      alert('Error saving social post. Please try again.');
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      platform: 'facebook',
+      content: '',
+      image: '',
+      link: '',
+      scheduledTime: '',
+      status: 'draft'
+    });
+    setEditingPost(null);
+    setIsModalOpen(false);
+  };
+
+  const handleEdit = (post: SocialPost) => {
+    setFormData({
+      platform: post.platform,
+      content: post.content,
+      image: post.image || '',
+      link: post.link || '',
+      scheduledTime: post.scheduled_time || '',
+      status: post.status
+    });
+    setEditingPost(post.id);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (window.confirm('Are you sure you want to delete this post?')) {
+      try {
+        const { error } = await supabase
+          .from('social_posts')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+        
+        setScheduledPosts(prev => prev.filter(post => post.id !== id));
+        alert('Social post deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting social post:', error);
+        alert('Error deleting social post. Please try again.');
+      }
+    }
+  };
 
   const socialStats = {
     totalFollowers: 8342,
@@ -87,7 +229,10 @@ const SocialMediaManagement: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-900">Social Media Management</h1>
           <p className="text-gray-600">Manage your social media presence and engagement</p>
         </div>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+        <button 
+          onClick={() => setIsModalOpen(true)}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+        >
           <Plus size={20} />
           <span>Create Post</span>
         </button>
@@ -205,54 +350,92 @@ const SocialMediaManagement: React.FC = () => {
         </div>
       )}
 
+      {/* Posts Management */}
       {activeTab === 'posts' && (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Posts</h3>
-          <div className="space-y-4">
-            {scheduledPosts.map((post) => {
-              const platformConfig = platformStats.find(p => p.platform.toLowerCase() === post.platform);
-              return (
-                <div key={post.id} className="border border-gray-200 rounded-lg p-4">
-                  <div className="flex items-start space-x-3">
-                    <div className={`${platformConfig?.color} p-2 rounded-lg`}>
-                      {platformConfig && <platformConfig.icon size={16} className="text-white" />}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-gray-900">{platformConfig?.platform}</span>
-                        <span className={`px-2 py-1 text-xs rounded-full ${
-                          post.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                        }`}>
-                          {post.status}
-                        </span>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div className="p-6 border-b border-gray-200">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900">Manage Posts</h3>
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+              >
+                <Plus size={16} />
+                <span>New Post</span>
+              </button>
+            </div>
+          </div>
+          <div className="p-6">
+            {scheduledPosts.length > 0 ? (
+              <div className="space-y-4">
+                {scheduledPosts.map((post) => {
+                  const config = platformStats.find(p => p.platform.toLowerCase() === post.platform);
+                  return (
+                    <div key={post.id} className="border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-start space-x-3">
+                        <div className={`${config?.color} p-2 rounded-lg`}>
+                          {config && <config.icon size={16} className="text-white" />}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-medium text-gray-900">{config?.platform}</span>
+                            <div className="flex items-center space-x-2">
+                              <span className={`px-2 py-1 text-xs rounded-full ${
+                                post.status === 'published' ? 'bg-green-100 text-green-800' : 
+                                post.status === 'scheduled' ? 'bg-blue-100 text-blue-800' :
+                                'bg-gray-100 text-gray-800'
+                              }`}>
+                                {post.status}
+                              </span>
+                              <button
+                                onClick={() => handleEdit(post)}
+                                className="text-blue-600 hover:text-blue-800"
+                              >
+                                <Edit size={16} />
+                              </button>
+                              <button
+                                onClick={() => handleDelete(post.id)}
+                                className="text-red-600 hover:text-red-800"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+                          </div>
+                          <p className="text-gray-700 mb-3">{post.content}</p>
+                          {post.image && (
+                            <img 
+                              src={post.image} 
+                              alt="Post"
+                              className="w-full h-32 object-cover rounded-lg mb-3"
+                            />
+                          )}
+                          <div className="flex items-center space-x-4 text-sm text-gray-500">
+                            <div className="flex items-center space-x-1">
+                              <Heart size={14} />
+                              <span>{post.engagement?.likes || 0}</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Share2 size={14} />
+                              <span>{post.engagement?.shares || 0}</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <MessageCircle size={14} />
+                              <span>{post.engagement?.comments || 0}</span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <p className="text-gray-700 mb-3">{post.content}</p>
-                      {post.image && (
-                        <img 
-                          src={post.image} 
-                          alt="Post"
-                          className="w-full h-32 object-cover rounded-lg mb-3"
-                        />
-                      )}
-                      <div className="flex items-center space-x-4 text-sm text-gray-500">
-                        <div className="flex items-center space-x-1">
-                          <Heart size={14} />
-                          <span>{post.engagement.likes}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Share2 size={14} />
-                          <span>{post.engagement.shares}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <MessageCircle size={14} />
-                          <span>{post.engagement.comments}</span>
-                        </div>
-                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <Share2 className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No Posts Yet</h3>
+                <p className="text-gray-500">Create your first social media post.</p>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -429,7 +612,7 @@ const SocialMediaManagement: React.FC = () => {
                   type="submit"
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
                 >
-                  <Save size={16} />
+                  <Plus size={16} />
                   <span>{editingPost ? 'Update' : 'Create'}</span>
                 </button>
               </div>
