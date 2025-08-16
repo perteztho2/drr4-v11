@@ -19,7 +19,8 @@ import {
   Images,
   Share2,
   Siren,
-  FolderOpen
+  FolderOpen,
+  Phone
 } from 'lucide-react';
 
 const AdminLayout: React.FC = () => {

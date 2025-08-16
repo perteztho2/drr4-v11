@@ -29,6 +29,7 @@ import AboutManagement from './pages/admin/AboutManagement';
 import GalleryManagement from './pages/admin/GalleryManagement';
 import SocialMediaManagement from './pages/admin/SocialMediaManagement';
 import EmergencyManagement from './pages/admin/EmergencyManagement';
+import EmergencyHotlineManagement from './pages/admin/EmergencyHotlineManagement';
 import PagesManagement from './pages/admin/PagesManagement';
 import ResourcesManagement from './pages/admin/ResourcesManagement';
 import UsersManagement from './pages/admin/UsersManagement';
@@ -75,6 +76,7 @@ function App() {
                 }>
                   <Route index element={<Dashboard />} />
                   <Route path="emergency" element={<EmergencyManagement />} />
+                  <Route path="hotlines" element={<EmergencyHotlineManagement />} />
                   <Route path="news" element={<NewsManagement />} />
                   <Route path="services" element={<ServicesManagement />} />
                   <Route path="about" element={<AboutManagement />} />

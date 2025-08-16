@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useData } from '../../contexts/DataContext';
-import { Plus, Edit, Trash2, Eye, Search, Upload, X, Calendar, MapPin, Tag, Zap } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, Search, Upload, X, Calendar, MapPin, Tag, Zap, Images } from 'lucide-react';
 
 interface GalleryFormData {
   title: string;
@@ -12,6 +12,7 @@ interface GalleryFormData {
   tags: string[];
   status: 'published' | 'draft';
   featured: boolean;
+  files?: FileList;
 }
 
 const GalleryManagement: React.FC = () => {
@@ -30,9 +31,13 @@ const GalleryManagement: React.FC = () => {
     location: '',
     tags: [],
     status: 'draft',
-    featured: false
+    featured: false,
+    files: undefined
   });
   const [tagInput, setTagInput] = useState('');
+  const [isBulkUpload, setIsBulkUpload] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
 
   const categories = ['Training', 'Drill', 'Response', 'Community Event', 'Meeting', 'Workshop', 'Assessment'];
 
@@ -53,15 +58,57 @@ const GalleryManagement: React.FC = () => {
     e.preventDefault();
     
     try {
-      if (editingItem) {
-        await updateGalleryItem(editingItem, formData);
+      setIsUploading(true);
+      
+      if (isBulkUpload && formData.files) {
+        // Handle bulk upload
+        const files = Array.from(formData.files);
+        const bulkUploadId = `bulk_${Date.now()}`;
+        
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          setUploadProgress(((i + 1) / files.length) * 100);
+          
+          // In a real app, you would upload to a file storage service
+          // For now, we'll use a placeholder URL
+          const imageUrl = `https://images.pexels.com/photos/6146970/pexels-photo-6146970.jpeg`;
+          
+          const galleryItem = {
+            title: formData.title || file.name.replace(/\.[^/.]+$/, ""),
+            description: formData.description || `Uploaded image: ${file.name}`,
+            image: imageUrl,
+            category: formData.category,
+            date: formData.date,
+            location: formData.location,
+            tags: formData.tags,
+            status: formData.status,
+            featured: false,
+            bulk_upload_id: bulkUploadId,
+            file_path: file.name
+          };
+          
+          await addGalleryItem(galleryItem);
+        }
+        
+        alert(`Successfully uploaded ${files.length} images!`);
       } else {
-        await addGalleryItem(formData);
+        // Handle single upload
+        if (editingItem) {
+          await updateGalleryItem(editingItem, formData);
+          alert('Gallery item updated successfully!');
+        } else {
+          await addGalleryItem(formData);
+          alert('Gallery item created successfully!');
+        }
       }
+      
       resetForm();
     } catch (error) {
       console.error('Error saving gallery item:', error);
       alert('Error saving gallery item. Please try again.');
+    } finally {
+      setIsUploading(false);
+      setUploadProgress(0);
     }
   };
 
@@ -75,11 +122,14 @@ const GalleryManagement: React.FC = () => {
       location: '',
       tags: [],
       status: 'draft',
-      featured: false
+      featured: false,
+      files: undefined
     });
     setTagInput('');
     setEditingItem(null);
     setIsModalOpen(false);
+    setIsBulkUpload(false);
+    setUploadProgress(0);
   };
 
   const handleEdit = (item: any) => {
@@ -162,6 +212,16 @@ const GalleryManagement: React.FC = () => {
           >
             <Plus size={20} />
             <span>Add Gallery Item</span>
+          </button>
+          <button
+            onClick={() => {
+              setIsBulkUpload(true);
+              setIsModalOpen(true);
+            }}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
+          >
+            <Images size={20} />
+            <span>Bulk Upload</span>
           </button>
         </div>
       </div>
@@ -369,7 +429,7 @@ const GalleryManagement: React.FC = () => {
             <div className="p-6 border-b border-gray-200">
               <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold text-gray-900">
-                  {editingItem ? 'Edit Gallery Item' : 'Add Gallery Item'}
+                  {isBulkUpload ? 'Bulk Upload Images' : editingItem ? 'Edit Gallery Item' : 'Add Gallery Item'}
                 </h2>
                 <button
                   onClick={resetForm}
@@ -381,44 +441,79 @@ const GalleryManagement: React.FC = () => {
             </div>
             
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Title
-                </label>
-                <input
-                  type="text"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
+              {/* Bulk Upload Section */}
+              {isBulkUpload && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                  <h3 className="font-medium text-blue-900 mb-2">Bulk Upload Mode</h3>
+                  <p className="text-sm text-blue-700">
+                    Upload multiple images at once. Individual titles will be generated from filenames.
+                  </p>
+                </div>
+              )}
+
+              {/* File Upload */}
+              {isBulkUpload ? (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Select Images
+                  </label>
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={(e) => setFormData({ ...formData, files: e.target.files || undefined })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    required
+                  />
+                  {formData.files && (
+                    <p className="text-sm text-gray-600 mt-1">
+                      {formData.files.length} file(s) selected
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Title
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    required
+                  />
+                </div>
+              )}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Description
+                  {isBulkUpload ? 'Default Description' : 'Description'}
                 </label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  required
+                  required={!isBulkUpload}
+                  placeholder={isBulkUpload ? "This description will be used for all uploaded images" : ""}
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Image URL
-                </label>
-                <input
-                  type="url"
-                  value={formData.image}
-                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
+              {!isBulkUpload && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Image URL
+                  </label>
+                  <input
+                    type="url"
+                    value={formData.image}
+                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    required
+                  />
+                </div>
+              )}
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -447,27 +542,28 @@ const GalleryManagement: React.FC = () => {
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    required
+                    required={!isBulkUpload}
                   />
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Location
+                  {isBulkUpload ? 'Default Location' : 'Location'}
                 </label>
                 <input
                   type="text"
                   value={formData.location}
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  required
+                  required={!isBulkUpload}
+                  placeholder={isBulkUpload ? "This location will be used for all uploaded images" : ""}
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Tags
+                  {isBulkUpload ? 'Default Tags' : 'Tags'}
                 </label>
                 <div className="flex space-x-2 mb-2">
                   <input
@@ -476,7 +572,7 @@ const GalleryManagement: React.FC = () => {
                     onChange={(e) => setTagInput(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
                     className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Add a tag"
+                    placeholder={isBulkUpload ? "Add tags for all images" : "Add a tag"}
                   />
                   <button
                     type="button"
@@ -505,48 +601,72 @@ const GalleryManagement: React.FC = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Status
-                  </label>
-                  <select
-                    value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value as 'published' | 'draft' })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    <option value="draft">Draft</option>
-                    <option value="published">Published</option>
-                  </select>
-                </div>
+              {!isBulkUpload && (
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Status
+                    </label>
+                    <select
+                      value={formData.status}
+                      onChange={(e) => setFormData({ ...formData, status: e.target.value as 'published' | 'draft' })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="draft">Draft</option>
+                      <option value="published">Published</option>
+                    </select>
+                  </div>
 
-                <div className="flex items-center">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={formData.featured}
-                      onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700">Featured Item</span>
-                  </label>
+                  <div className="flex items-center">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.featured}
+                        onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      />
+                      <span className="ml-2 text-sm font-medium text-gray-700">Featured Item</span>
+                    </label>
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {/* Upload Progress */}
+              {isUploading && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-blue-900">Uploading...</span>
+                    <span className="text-sm text-blue-700">{Math.round(uploadProgress)}%</span>
+                  </div>
+                  <div className="w-full bg-blue-200 rounded-full h-2">
+                    <div 
+                      className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${uploadProgress}%` }}
+                    ></div>
+                  </div>
+                </div>
+              )}
 
               <div className="flex justify-end space-x-3 pt-4 border-t">
                 <button
                   type="button"
                   onClick={resetForm}
                   className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                  disabled={isUploading}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isUploading}
                 >
                   <Upload size={16} />
-                  <span>{editingItem ? 'Update' : 'Create'}</span>
+                  <span>
+                    {isUploading ? 'Uploading...' : 
+                     isBulkUpload ? 'Upload All' : 
+                     editingItem ? 'Update' : 'Create'}
+                  </span>
                 </button>
               </div>
             </form>

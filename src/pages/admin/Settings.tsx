@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Save, Upload, Globe, Bell, Shield, Database } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
 
 const Settings: React.FC = () => {
   const [settings, setSettings] = useState({
@@ -17,9 +18,71 @@ const Settings: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState('general');
 
-  const handleSave = () => {
-    // In a real app, this would save to backend
-    alert('Settings saved successfully!');
+  React.useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('*');
+
+      if (error && !error.message.includes('relation "system_settings" does not exist')) {
+        throw error;
+      }
+      
+      if (data && data.length > 0) {
+        const settingsObj: any = {};
+        data.forEach(setting => {
+          const value = setting.setting_value;
+          settingsObj[setting.setting_key] = typeof value === 'string' ? 
+            JSON.parse(value) : value;
+        });
+        
+        setSettings(prev => ({ ...prev, ...settingsObj }));
+      }
+    } catch (error) {
+      console.error('Error fetching settings:', error);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      // Convert settings to database format
+      const settingsToSave = [
+        { key: 'siteName', value: settings.siteName, type: 'string', public: true },
+        { key: 'siteDescription', value: settings.siteDescription, type: 'string', public: true },
+        { key: 'contactEmail', value: settings.contactEmail, type: 'string', public: true },
+        { key: 'emergencyHotline', value: settings.emergencyHotline, type: 'string', public: true },
+        { key: 'address', value: settings.address, type: 'string', public: true },
+        { key: 'enableNotifications', value: settings.enableNotifications, type: 'boolean', public: false },
+        { key: 'enablePublicReporting', value: settings.enablePublicReporting, type: 'boolean', public: false },
+        { key: 'maintenanceMode', value: settings.maintenanceMode, type: 'boolean', public: false },
+        { key: 'autoBackup', value: settings.autoBackup, type: 'boolean', public: false },
+        { key: 'backupFrequency', value: settings.backupFrequency, type: 'string', public: false }
+      ];
+
+      for (const setting of settingsToSave) {
+        const { error } = await supabase
+          .from('system_settings')
+          .upsert({
+            setting_key: setting.key,
+            setting_value: JSON.stringify(setting.value),
+            setting_type: setting.type,
+            is_public: setting.public
+          }, {
+            onConflict: 'setting_key'
+          });
+
+        if (error) throw error;
+      }
+      
+      alert('Settings saved successfully!');
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      alert('Error saving settings. Please try again.');
+    }
   };
 
   const tabs = [

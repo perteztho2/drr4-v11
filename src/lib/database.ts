@@ -8,6 +8,8 @@ type NewsRow = Tables['news']['Row'];
 type ServiceRow = Tables['services']['Row'];
 type IncidentRow = Tables['incident_reports']['Row'];
 type GalleryRow = Tables['gallery']['Row'];
+type UserRow = Tables['users']['Row'];
+type SettingRow = Tables['system_settings']['Row'];
 
 export class DatabaseManager {
   private isConnected = false;
@@ -203,6 +205,74 @@ export class DatabaseManager {
       .from('gallery')
       .delete()
       .eq('id', id);
+    
+    if (error) throw error;
+  }
+
+  // Users operations
+  async getUsers(): Promise<UserRow[]> {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data || [];
+  }
+
+  async createUser(user: Omit<UserRow, 'id' | 'created_at' | 'updated_at'>): Promise<UserRow> {
+    const { data, error } = await supabase
+      .from('users')
+      .insert([user])
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  }
+
+  async updateUser(id: string, updates: Partial<UserRow>): Promise<UserRow> {
+    const { data, error } = await supabase
+      .from('users')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  }
+
+  async deleteUser(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('users')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+  }
+
+  // Settings operations
+  async getSettings(): Promise<SettingRow[]> {
+    const { data, error } = await supabase
+      .from('system_settings')
+      .select('*');
+    
+    if (error) throw error;
+    return data || [];
+  }
+
+  async updateSetting(key: string, value: any, type: string = 'string', isPublic: boolean = false): Promise<void> {
+    const { error } = await supabase
+      .from('system_settings')
+      .upsert({
+        setting_key: key,
+        setting_value: JSON.stringify(value),
+        setting_type: type,
+        is_public: isPublic
+      }, {
+        onConflict: 'setting_key'
+      });
     
     if (error) throw error;
   }

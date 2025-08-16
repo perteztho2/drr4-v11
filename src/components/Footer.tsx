@@ -1,17 +1,48 @@
 import React from 'react';
 import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
 
 const Footer: React.FC = () => {
-  const emergencyHotlines = [
-    { name: 'Office of the Mayor', number: '(052) 123-4567' },
-    { name: 'MDRRMO', number: '911 / (052) 234-5678' },
-    { name: 'MSWD', number: '1343' },
-    { name: 'Medical/MHO', number: '(052) 345-6789' },
-    { name: 'PNP', number: '117 / (052) 456-7890' },
-    { name: 'BFP', number: '(052) 567-8901' },
-    { name: 'PCG', number: '(052) 678-9012' }
-  ];
+  const [emergencyHotlines, setEmergencyHotlines] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    fetchHotlines();
+  }, []);
+
+  const fetchHotlines = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('emergency_hotlines')
+        .select('*')
+        .eq('is_active', true)
+        .order('order_index', { ascending: true });
+
+      if (error && !error.message.includes('relation "emergency_hotlines" does not exist')) {
+        throw error;
+      }
+      
+      if (data && data.length > 0) {
+        setEmergencyHotlines(data.map(hotline => ({
+          name: hotline.contact_name,
+          number: hotline.phone_number
+        })));
+      } else {
+        // Fallback to default hotlines
+        setEmergencyHotlines([
+          { name: 'Office of the Mayor', number: '(052) 123-4567' },
+          { name: 'MDRRMO', number: '911 / (052) 234-5678' },
+          { name: 'MSWD', number: '1343' },
+          { name: 'Medical/MHO', number: '(052) 345-6789' },
+          { name: 'PNP', number: '117 / (052) 456-7890' },
+          { name: 'BFP', number: '(052) 567-8901' },
+          { name: 'PCG', number: '(052) 678-9012' }
+        ]);
+      }
+    } catch (error) {
+      console.error('Error fetching hotlines:', error);
+    }
+  };
 
   const quickLinks = [
     { label: 'About Us', path: '/about' },

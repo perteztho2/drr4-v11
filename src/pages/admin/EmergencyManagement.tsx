@@ -25,6 +25,7 @@ interface EmergencyAlert {
   status: 'draft' | 'active' | 'expired' | 'cancelled';
   channels: string[];
   priority: 1 | 2 | 3 | 4 | 5;
+  show_on_frontend: boolean;
 }
 
 const EmergencyManagement: React.FC = () => {
@@ -40,7 +41,8 @@ const EmergencyManagement: React.FC = () => {
     message: '',
     location: '',
     channels: ['social-media'],
-    priority: 3
+    priority: 3,
+    show_on_frontend: true
   });
 
   React.useEffect(() => {
@@ -68,7 +70,8 @@ const EmergencyManagement: React.FC = () => {
         issued_at: alert.issued_at,
         status: alert.status,
         channels: alert.channels || ['social-media'],
-        priority: alert.priority || 3
+        priority: alert.priority || 3,
+        show_on_frontend: alert.show_on_frontend !== false
       }));
       
       setAlerts(transformedData);
@@ -108,37 +111,80 @@ const EmergencyManagement: React.FC = () => {
       return;
     }
 
-    const alert: EmergencyAlert = {
-      id: Date.now().toString(),
-      type: newAlert.type as any,
-      severity: newAlert.severity as any,
-      title: newAlert.title,
-      message: newAlert.message,
-      location: newAlert.location || 'Municipality-wide',
-      issuedAt: new Date().toISOString(),
-      status: 'active',
-      channels: newAlert.channels || [],
-      priority: newAlert.priority || 3
+    const createAlert = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('emergency_alerts')
+          .insert([{
+            type: newAlert.type,
+            severity: newAlert.severity,
+            title: newAlert.title,
+            message: newAlert.message,
+            location: newAlert.location || 'Municipality-wide',
+            status: 'active',
+            channels: newAlert.channels || ['social-media'],
+            priority: newAlert.priority || 3,
+            show_on_frontend: newAlert.show_on_frontend !== false
+          }])
+          .select()
+          .single();
+
+        if (error) throw error;
+        
+        const transformedAlert = {
+          id: data.id,
+          type: data.type,
+          severity: data.severity,
+          title: data.title,
+          message: data.message,
+          location: data.location,
+          issued_at: data.issued_at,
+          status: data.status,
+          channels: data.channels,
+          priority: data.priority,
+          show_on_frontend: data.show_on_frontend
+        };
+
+        setAlerts(prev => [transformedAlert, ...prev]);
+        setNewAlert({
+          type: 'general',
+          severity: 'medium',
+          title: '',
+          message: '',
+          location: '',
+          channels: ['social-media'],
+          priority: 3,
+          show_on_frontend: true
+        });
+        setIsCreating(false);
+        alert('Emergency alert created successfully!');
+      } catch (error) {
+        console.error('Error creating alert:', error);
+        alert('Error creating alert. Please try again.');
+      }
     };
 
-    setAlerts(prev => [alert, ...prev]);
-    setNewAlert({
-      type: 'general',
-      severity: 'medium',
-      title: '',
-      message: '',
-      location: '',
-      channels: ['social-media'],
-      priority: 3
-    });
-    setIsCreating(false);
+    createAlert();
   };
 
-  const handleCancelAlert = (alertId: string) => {
+  const handleCancelAlert = async (alertId: string) => {
     if (window.confirm('Are you sure you want to cancel this alert?')) {
-      setAlerts(prev => prev.map(a => 
-        a.id === alertId ? { ...a, status: 'cancelled' } : a
-      ));
+      try {
+        const { error } = await supabase
+          .from('emergency_alerts')
+          .update({ status: 'cancelled' })
+          .eq('id', alertId);
+
+        if (error) throw error;
+        
+        setAlerts(prev => prev.map(a => 
+          a.id === alertId ? { ...a, status: 'cancelled' } : a
+        ));
+        alert('Alert cancelled successfully!');
+      } catch (error) {
+        console.error('Error cancelling alert:', error);
+        alert('Error cancelling alert. Please try again.');
+      }
     }
   };
 
@@ -254,6 +300,11 @@ const EmergencyManagement: React.FC = () => {
                             <span className={`${severityConfig?.color} text-white text-xs px-2 py-1 rounded-full font-medium`}>
                               {severityConfig?.name}
                             </span>
+                            {alert.show_on_frontend && (
+                              <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                                Public
+                              </span>
+                            )}
                           </div>
                           <div className="flex items-center space-x-4 text-sm text-gray-600">
                             <span>{alert.location}</span>
@@ -384,6 +435,20 @@ const EmergencyManagement: React.FC = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                   placeholder="Specific location or 'Municipality-wide'"
                 />
+              </div>
+
+              {/* Show on Frontend */}
+              <div>
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={newAlert.show_on_frontend !== false}
+                    onChange={(e) => setNewAlert({ ...newAlert, show_on_frontend: e.target.checked })}
+                    className="rounded border-gray-300 text-red-600 focus:ring-red-500"
+                  />
+                  <span className="ml-2 text-sm font-medium text-gray-700">Show on Frontend</span>
+                </label>
+                <p className="text-xs text-gray-500 ml-6">Display this alert on the public website</p>
               </div>
 
               {/* Actions */}

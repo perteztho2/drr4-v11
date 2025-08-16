@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone } from 'lucide-react';
+import { useDatabase } from '../contexts/DatabaseContext';
 
 interface NavigationProps {
   variant?: 'public' | 'admin';
@@ -9,6 +10,7 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { isConnected } = useDatabase();
 
   const publicNavItems = [
     { path: '/', label: 'Home', icon: Home },
@@ -28,7 +30,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
   };
 
   return (
-    <nav className="bg-blue-950 border-b-4 border-yellow-500 sticky top-0 z-50">
+    <nav className="bg-blue-950 border-b-4 border-yellow-500 sticky top-0 z-50 shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -41,6 +43,9 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
             <div>
               <h1 className="font-bold text-yellow-500 text-lg">MDRRMO</h1>
               <p className="text-yellow-400 text-xs">PIO DURAN, ALBAY</p>
+              {!isConnected && (
+                <p className="text-red-400 text-xs">⚠ Offline Mode</p>
+              )}
             </div>
           </Link>
 

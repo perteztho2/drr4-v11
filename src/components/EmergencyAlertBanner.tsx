@@ -28,6 +28,7 @@ const EmergencyAlertBanner: React.FC = () => {
         .from('emergency_alerts')
         .select('*')
         .eq('status', 'active')
+        .eq('show_on_frontend', true)
         .order('issued_at', { ascending: false });
 
       if (error && !error.message.includes('relation "emergency_alerts" does not exist')) {

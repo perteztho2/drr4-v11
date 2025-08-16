@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Phone, AlertTriangle, ChevronDown } from 'lucide-react';
-import Header from './Header';
+import Navigation from './Navigation';
 
 interface HeroProps {
   onEmergencyClick: () => void;
@@ -43,7 +43,29 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
   return (
     <section id="home" className="relative h-screen flex flex-col overflow-hidden">
       {/* Header */}
-      <Header onEmergencyClick={onEmergencyClick} onIncidentClick={onIncidentClick} />
+      <div className="relative z-40">
+        <Navigation />
+        <div className="bg-gradient-to-r from-blue-900/90 to-blue-800/90 backdrop-blur-sm border-b border-blue-700/50">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center justify-center space-x-4">
+              <button
+                onClick={onEmergencyClick}
+                className="inline-flex items-center px-6 py-3 bg-yellow-500 text-blue-900 font-semibold rounded-lg hover:bg-yellow-400 transition-colors duration-200"
+              >
+                <Phone className="mr-2" size={16} />
+                Emergency Hotline
+              </button>
+              <button
+                onClick={onIncidentClick}
+                className="inline-flex items-center px-6 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors duration-200"
+              >
+                <AlertTriangle className="mr-2" size={16} />
+                Report Incident
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Hero Content Container */}
       <div className="flex-1 flex items-center justify-center relative">

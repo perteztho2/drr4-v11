@@ -1,37 +1,22 @@
 import React, { useState } from 'react';
 import { Plus, Edit, Trash2, Search, Shield, User } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
 
-interface User {
+interface UserData {
   id: string;
   name: string;
   username: string;
   email: string;
   role: 'admin' | 'editor';
   status: 'active' | 'inactive';
-  lastLogin: string;
+  last_login: string;
+  created_at: string;
+  updated_at: string;
 }
 
 const UsersManagement: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([
-    {
-      id: '1',
-      name: 'MDRRMO Administrator',
-      username: 'admin',
-      email: 'admin@mdrrmo.gov.ph',
-      role: 'admin',
-      status: 'active',
-      lastLogin: '2025-01-22T10:30:00Z'
-    },
-    {
-      id: '2',
-      name: 'Content Editor',
-      username: 'editor',
-      email: 'editor@mdrrmo.gov.ph',
-      role: 'editor',
-      status: 'active',
-      lastLogin: '2025-01-21T14:15:00Z'
-    }
-  ]);
+  const [users, setUsers] = useState<UserData[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<string | null>(null);
@@ -45,6 +30,29 @@ const UsersManagement: React.FC = () => {
     password: ''
   });
 
+  React.useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error && !error.message.includes('relation "users" does not exist')) {
+        throw error;
+      }
+      
+      setUsers(data || []);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -54,22 +62,63 @@ const UsersManagement: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (editingUser) {
-      setUsers(prev => prev.map(user => 
-        user.id === editingUser 
-          ? { ...user, ...formData, lastLogin: user.lastLogin }
-          : user
-      ));
-    } else {
-      const newUser: User = {
-        id: Date.now().toString(),
-        ...formData,
-        lastLogin: new Date().toISOString()
-      };
-      setUsers(prev => [newUser, ...prev]);
-    }
+    const saveUser = async () => {
+      try {
+        if (editingUser) {
+          const updateData: any = {
+            name: formData.name,
+            username: formData.username,
+            email: formData.email,
+            role: formData.role,
+            status: formData.status
+          };
+          
+          if (formData.password) {
+            updateData.password_hash = formData.password; // In production, hash this
+          }
 
-    resetForm();
+          const { data, error } = await supabase
+            .from('users')
+            .update(updateData)
+            .eq('id', editingUser)
+            .select()
+            .single();
+
+          if (error) throw error;
+          
+          setUsers(prev => prev.map(user => 
+            user.id === editingUser ? data : user
+          ));
+          alert('User updated successfully!');
+        } else {
+          const { data, error } = await supabase
+            .from('users')
+            .insert([{
+              name: formData.name,
+              username: formData.username,
+              email: formData.email,
+              role: formData.role,
+              status: formData.status,
+              password_hash: formData.password, // In production, hash this
+              last_login: new Date().toISOString()
+            }])
+            .select()
+            .single();
+
+          if (error) throw error;
+          
+          setUsers(prev => [data, ...prev]);
+          alert('User created successfully!');
+        }
+        
+        resetForm();
+      } catch (error) {
+        console.error('Error saving user:', error);
+        alert('Error saving user. Please try again.');
+      }
+    };
+
+    saveUser();
   };
 
   const resetForm = () => {
@@ -85,7 +134,7 @@ const UsersManagement: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const handleEdit = (user: User) => {
+  const handleEdit = (user: UserData) => {
     setFormData({
       name: user.name,
       username: user.username,
@@ -98,19 +147,66 @@ const UsersManagement: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
-      setUsers(prev => prev.filter(user => user.id !== id));
+      try {
+        const { error } = await supabase
+          .from('users')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+        
+        setUsers(prev => prev.filter(user => user.id !== id));
+        alert('User deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        alert('Error deleting user. Please try again.');
+      }
     }
   };
 
-  const toggleUserStatus = (id: string) => {
-    setUsers(prev => prev.map(user => 
-      user.id === id 
-        ? { ...user, status: user.status === 'active' ? 'inactive' : 'active' }
-        : user
-    ));
+  const toggleUserStatus = async (id: string) => {
+    try {
+      const user = users.find(u => u.id === id);
+      if (!user) return;
+      
+      const newStatus = user.status === 'active' ? 'inactive' : 'active';
+      
+      const { error } = await supabase
+        .from('users')
+        .update({ status: newStatus })
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      setUsers(prev => prev.map(user => 
+        user.id === id 
+          ? { ...user, status: newStatus }
+          : user
+      ));
+    } catch (error) {
+      console.error('Error updating user status:', error);
+      alert('Error updating user status. Please try again.');
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Users Management</h1>
+            <p className="text-gray-600">Loading...</p>
+          </div>
+        </div>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="text-gray-600 mt-4">Loading users...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -208,7 +304,7 @@ const UsersManagement: React.FC = () => {
                     </button>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
-                    {new Date(user.lastLogin).toLocaleDateString()}
+                    {user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center space-x-2">

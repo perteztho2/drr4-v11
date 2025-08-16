@@ -171,6 +171,208 @@ export interface Database {
           updated_at?: string
         }
       }
+      users: {
+        Row: {
+          id: string
+          username: string
+          email: string
+          password_hash: string
+          role: 'admin' | 'editor'
+          name: string
+          avatar: string | null
+          status: 'active' | 'inactive'
+          last_login: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          username: string
+          email: string
+          password_hash: string
+          role?: 'admin' | 'editor'
+          name: string
+          avatar?: string | null
+          status?: 'active' | 'inactive'
+          last_login?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          username?: string
+          email?: string
+          password_hash?: string
+          role?: 'admin' | 'editor'
+          name?: string
+          avatar?: string | null
+          status?: 'active' | 'inactive'
+          last_login?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      system_settings: {
+        Row: {
+          id: string
+          setting_key: string
+          setting_value: any
+          setting_type: string
+          description: string | null
+          is_public: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          setting_key: string
+          setting_value: any
+          setting_type?: string
+          description?: string | null
+          is_public?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          setting_key?: string
+          setting_value?: any
+          setting_type?: string
+          description?: string | null
+          is_public?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      organizational_hierarchy: {
+        Row: {
+          id: string
+          name: string
+          designation: string
+          photo: string | null
+          department: string
+          level: number
+          parent_id: string | null
+          order_index: number
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          designation: string
+          photo?: string | null
+          department: string
+          level?: number
+          parent_id?: string | null
+          order_index?: number
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          designation?: string
+          photo?: string | null
+          department?: string
+          level?: number
+          parent_id?: string | null
+          order_index?: number
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      key_personnel: {
+        Row: {
+          id: string
+          name: string
+          designation: string
+          photo: string | null
+          bio: string | null
+          email: string | null
+          phone: string | null
+          department: string
+          order_index: number
+          is_featured: boolean
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          designation: string
+          photo?: string | null
+          bio?: string | null
+          email?: string | null
+          phone?: string | null
+          department: string
+          order_index?: number
+          is_featured?: boolean
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          designation?: string
+          photo?: string | null
+          bio?: string | null
+          email?: string | null
+          phone?: string | null
+          department?: string
+          order_index?: number
+          is_featured?: boolean
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      emergency_hotlines: {
+        Row: {
+          id: string
+          contact_name: string
+          phone_number: string
+          logo: string | null
+          department: string
+          description: string | null
+          is_primary: boolean
+          order_index: number
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          contact_name: string
+          phone_number: string
+          logo?: string | null
+          department: string
+          description?: string | null
+          is_primary?: boolean
+          order_index?: number
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          contact_name?: string
+          phone_number?: string
+          logo?: string | null
+          department?: string
+          description?: string | null
+          is_primary?: boolean
+          order_index?: number
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
   }
 }

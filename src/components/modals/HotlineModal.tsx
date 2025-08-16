@@ -1,5 +1,6 @@
 import React from 'react';
 import { X, Phone, Users, Heart, Stethoscope, Shield, Flame, Anchor } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
 
 interface HotlineModalProps {
   isOpen: boolean;
@@ -7,57 +8,70 @@ interface HotlineModalProps {
 }
 
 const HotlineModal: React.FC<HotlineModalProps> = ({ isOpen, onClose }) => {
-  const hotlines = [
-    {
-      icon: Users,
-      name: 'Office of the Mayor',
-      number: '(052) 123-4567',
-      color: 'bg-blue-50',
-      iconColor: 'text-blue-600'
-    },
-    {
-      icon: Shield,
-      name: 'MDRRMO',
-      number: '911 / (052) 234-5678',
-      color: 'bg-red-50',
-      iconColor: 'text-red-600'
-    },
-    {
-      icon: Heart,
-      name: 'MSWD',
-      number: '1343',
-      color: 'bg-purple-50',
-      iconColor: 'text-purple-600'
-    },
-    {
-      icon: Stethoscope,
-      name: 'Medical/MHO',
-      number: '(052) 345-6789',
-      color: 'bg-blue-50',
-      iconColor: 'text-blue-600'
-    },
-    {
-      icon: Shield,
-      name: 'PNP',
-      number: '117 / (052) 456-7890',
-      color: 'bg-blue-50',
-      iconColor: 'text-blue-600'
-    },
-    {
-      icon: Flame,
-      name: 'BFP',
-      number: '(052) 567-8901',
-      color: 'bg-orange-50',
-      iconColor: 'text-orange-600'
-    },
-    {
-      icon: Anchor,
-      name: 'PCG',
-      number: '(052) 678-9012',
-      color: 'bg-blue-50',
-      iconColor: 'text-blue-600'
+  const [hotlines, setHotlines] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    if (isOpen) {
+      fetchHotlines();
     }
-  ];
+  }, [isOpen]);
+
+  const fetchHotlines = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('emergency_hotlines')
+        .select('*')
+        .eq('is_active', true)
+        .order('order_index', { ascending: true });
+
+      if (error && !error.message.includes('relation "emergency_hotlines" does not exist')) {
+        throw error;
+      }
+      
+      if (data && data.length > 0) {
+        setHotlines(data.map(hotline => ({
+          icon: Phone,
+          name: hotline.contact_name,
+          number: hotline.phone_number,
+          department: hotline.department,
+          description: hotline.description,
+          logo: hotline.logo,
+          color: hotline.is_primary ? 'bg-red-50' : 'bg-blue-50',
+          iconColor: hotline.is_primary ? 'text-red-600' : 'text-blue-600'
+        })));
+      } else {
+        // Fallback to default hotlines
+        setHotlines([
+          {
+            icon: Shield,
+            name: 'MDRRMO',
+            number: '911 / (052) 234-5678',
+            color: 'bg-red-50',
+            iconColor: 'text-red-600'
+          },
+          {
+            icon: Users,
+            name: 'Office of the Mayor',
+            number: '(052) 123-4567',
+            color: 'bg-blue-50',
+            iconColor: 'text-blue-600'
+          },
+          {
+            icon: Stethoscope,
+            name: 'Medical/MHO',
+            number: '(052) 345-6789',
+            color: 'bg-blue-50',
+            iconColor: 'text-blue-600'
+          }
+        ]);
+      }
+    } catch (error) {
+      console.error('Error fetching hotlines:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -81,30 +95,51 @@ const HotlineModal: React.FC<HotlineModalProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Hotline List */}
-        <div className="space-y-3 text-gray-800 text-sm">
-          {hotlines.map((hotline, index) => (
-            <div
-              key={index}
-              className={`flex items-start gap-3 ${hotline.color} rounded-lg p-3 hover:shadow-md transition duration-300`}
-            >
-              <hotline.icon className={`${hotline.iconColor} w-6 h-6 mt-1`} />
-              <div className="flex-1">
-                <p className="font-semibold">{hotline.name}:</p>
-                <div className="flex flex-wrap gap-2">
-                  {hotline.number.split(' / ').map((num, numIndex) => (
-                    <a
-                      key={numIndex}
-                      href={`tel:${num.replace(/[^\d]/g, '')}`}
-                      className="text-yellow-600 hover:text-yellow-700 hover:underline font-medium transition-colors"
-                    >
-                      {num}
-                    </a>
-                  ))}
+        {loading ? (
+          <div className="text-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading emergency hotlines...</p>
+          </div>
+        ) : (
+          <div className="space-y-3 text-gray-800 text-sm">
+            {hotlines.map((hotline, index) => (
+              <div
+                key={index}
+                className={`flex items-start gap-3 ${hotline.color} rounded-lg p-3 hover:shadow-md transition duration-300`}
+              >
+                {hotline.logo ? (
+                  <img 
+                    src={hotline.logo} 
+                    alt={hotline.name}
+                    className="w-6 h-6 mt-1 rounded"
+                  />
+                ) : (
+                  <hotline.icon className={`${hotline.iconColor} w-6 h-6 mt-1`} />
+                )}
+                <div className="flex-1">
+                  <p className="font-semibold">{hotline.name}:</p>
+                  {hotline.department && (
+                    <p className="text-xs text-gray-500">{hotline.department}</p>
+                  )}
+                  <div className="flex flex-wrap gap-2">
+                    {hotline.number.split(' / ').map((num: string, numIndex: number) => (
+                      <a
+                        key={numIndex}
+                        href={`tel:${num.replace(/[^\d]/g, '')}`}
+                        className="text-yellow-600 hover:text-yellow-700 hover:underline font-medium transition-colors"
+                      >
+                        {num}
+                      </a>
+                    ))}
+                  </div>
+                  {hotline.description && (
+                    <p className="text-xs text-gray-600 mt-1">{hotline.description}</p>
+                  )}
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Footer Note */}
         <div className="mt-6 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
