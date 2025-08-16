@@ -18,7 +18,7 @@ import { Plus,
   X,
   Save
 } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { supabase } from "../../lib/supabase";
 
 interface SocialPost {
   id: string;
