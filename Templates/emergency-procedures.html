@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Procedures</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: box-sizing;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: white;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .emergency-section {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(23, 37, 84, 0.15);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #172554 0%, #1e40af 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(234, 179, 8, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.05); opacity: 0.6; }
+        }
+
+        .section-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+            color: #eab308;
+        }
+
+        .section-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+            font-weight: 400;
+        }
+
+        .tabs-container {
+            padding: 1.5rem;
+        }
+
+        .tabs-nav {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 0.25rem;
+            margin-bottom: 1.5rem;
+            background: #f1f5f9;
+            padding: 0.375rem;
+            border-radius: 12px;
+        }
+
+        .tab-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.75rem 0.5rem;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #64748b;
+            position: relative;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .tab-button:hover {
+            background: rgba(23, 37, 84, 0.08);
+            color: #172554;
+            transform: translateY(-1px);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #172554, #1e40af);
+            color: white;
+            box-shadow: 0 4px 12px rgba(23, 37, 84, 0.25);
+        }
+
+        .tab-icon {
+            font-size: 1.25rem;
+            transition: transform 0.3s ease;
+        }
+
+        .tab-button:hover .tab-icon {
+            transform: scale(1.05);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .emergency-phases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .phase-card {
+            background: #fafbfc;
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(23, 37, 84, 0.08);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .phase-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(23, 37, 84, 0.12);
+            border-color: #172554;
+        }
+
+        .phase-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.875rem;
+            color: #172554;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .phase-title::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .before .phase-title { color: #172554; }
+        .during .phase-title { color: #eab308; }
+        .after .phase-title { color: #172554; }
+
+        .phase-list {
+            list-style: none;
+        }
+
+        .phase-list li {
+            padding: 0.625rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.625rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: #475569;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+        }
+
+        .phase-list li:last-child {
+            border-bottom: none;
+        }
+
+        .phase-list li::before {
+            content: '✓';
+            color: #eab308;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-top: 0.125rem;
+            flex-shrink: 0;
+        }
+
+        .download-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #172554;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .download-btn:hover {
+            background: #1e40af;
+            transform: translateY(-1px);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0.5rem;
+            }
+            
+            .section-header {
+                padding: 1.5rem 1rem;
+            }
+            
+            .section-header h1 {
+                font-size: 1.75rem;
+            }
+            
+            .tabs-container {
+                padding: 1rem;
+            }
+            
+            .tabs-nav {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.25rem;
+                margin-bottom: 1rem;
+            }
+            
+            .tab-button {
+                font-size: 0.6875rem;
+                padding: 0.625rem 0.25rem;
+                gap: 0.25rem;
+            }
+            
+            .tab-icon {
+                font-size: 1rem;
+            }
+            
+            .emergency-phases {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .phase-card {
+                padding: 1rem;
+            }
+            
+            .phase-title {
+                font-size: 1rem;
+            }
+            
+            .phase-list li {
+                font-size: 0.8125rem;
+                padding: 0.5rem 0;
+            }
+            
+            .download-btn {
+                padding: 4px 8px;
+                font-size: 0.65rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="emergency-section">
+        <div class="section-header">
+            <h1>EMERGENCY PROCEDURES</h1>
+            <p>What to do before, during, and after different types of emergencies</p>
+        </div>
+        
+        <div class="tabs-container">
+            <div class="tabs-nav">
+                <button class="tab-button active" data-tab="storm-surge">
+                    <span class="tab-icon">🌊</span>
+                    <span>Storm Surge</span>
+                </button>
+                <button class="tab-button" data-tab="landslide">
+                    <span class="tab-icon">⛰️</span>
+                    <span>Landslide</span>
+                </button>
+                <button class="tab-button" data-tab="thunderstorm">
+                    <span class="tab-icon">⛈️</span>
+                    <span>Thunderstorm</span>
+                </button>
+                <button class="tab-button" data-tab="typhoon">
+                    <span class="tab-icon">🌀</span>
+                    <span>Typhoon</span>
+                </button>
+                <button class="tab-button" data-tab="flood">
+                    <span class="tab-icon">🌊</span>
+                    <span>Flood</span>
+                </button>
+                <button class="tab-button" data-tab="earthquake">
+                    <span class="tab-icon">🏚️</span>
+                    <span>Earthquake</span>
+                </button>
+                <button class="tab-button" data-tab="fire">
+                    <span class="tab-icon">🔥</span>
+                    <span>Fire</span>
+                </button>
+                <button class="tab-button" data-tab="tsunami">
+                    <span class="tab-icon">🌊</span>
+                    <span>Tsunami</span>
+                </button>
+                <button class="tab-button" data-tab="heat">
+                    <span class="tab-icon">🌡️</span>
+                    <span>Heat</span>
+                </button>
+            </div>
+
+            <!-- Storm Surge Content -->
+            <div class="tab-content active" id="storm-surge">
+                <div class="emergency-phases">
+                    <div class="phase-card before">
+                        <button class="download-btn" onclick="downloadPDF('storm-surge', 'before')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">Before Storm Surge</h3>
+                        <ul class="phase-list">
+                            <li>Monitor weather forecasts and storm surge warnings</li>
+                            <li>Know your evacuation zone and routes</li>
+                            <li>Prepare emergency kit with supplies for 72 hours</li>
+                            <li>Secure outdoor furniture and objects</li>
+                            <li>Review insurance policies and document belongings</li>
+                            <li>Identify higher ground locations</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card during">
+                        <button class="download-btn" onclick="downloadPDF('storm-surge', 'during')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">During Storm Surge</h3>
+                        <ul class="phase-list">
+                            <li>Evacuate immediately if ordered by authorities</li>
+                            <li>Move to higher ground or upper floors</li>
+                            <li>Stay away from floodwater</li>
+                            <li>Avoid walking or driving through moving water</li>
+                            <li>Listen to emergency broadcasts</li>
+                            <li>Stay indoors until authorities say it's safe</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card after">
+                        <button class="download-btn" onclick="downloadPDF('storm-surge', 'after')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">After Storm Surge</h3>
+                        <ul class="phase-list">
+                            <li>Wait for official all-clear before returning</li>
+                            <li>Avoid floodwater - may contain debris or contaminants</li>
+                            <li>Check for structural damage before entering buildings</li>
+                            <li>Document damage with photos for insurance</li>
+                            <li>Clean and disinfect everything touched by floodwater</li>
+                            <li>Be aware of displaced wildlife and hazards</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Landslide Content -->
+            <div class="tab-content" id="landslide">
+                <div class="emergency-phases">
+                    <div class="phase-card before">
+                        <button class="download-btn" onclick="downloadPDF('landslide', 'before')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">Before Landslide</h3>
+                        <ul class="phase-list">
+                            <li>Learn about landslide risk in your area</li>
+                            <li>Watch for warning signs like tilting trees or poles</li>
+                            <li>Develop evacuation plan with multiple routes</li>
+                            <li>Keep emergency supplies ready</li>
+                            <li>Install flexible pipe fittings for gas and water</li>
+                            <li>Consider professional slope stability assessment</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card during">
+                        <button class="download-btn" onclick="downloadPDF('landslide', 'during')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">During Landslide</h3>
+                        <ul class="phase-list">
+                            <li>Move away from the path of landslide quickly</li>
+                            <li>Run to nearest high ground perpendicular to flow</li>
+                            <li>Protect your head from falling debris</li>
+                            <li>Stay alert for flooding after landslide</li>
+                            <li>Listen for unusual sounds indicating movement</li>
+                            <li>Evacuate if you suspect imminent landslide</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card after">
+                        <button class="download-btn" onclick="downloadPDF('landslide', 'after')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">After Landslide</h3>
+                        <ul class="phase-list">
+                            <li>Stay away from slide area - more slides may occur</li>
+                            <li>Check for injured or trapped persons</li>
+                            <li>Watch for flooding or broken utility lines</li>
+                            <li>Report broken utility lines to authorities</li>
+                            <li>Replant damaged ground as soon as possible</li>
+                            <li>Seek professional evaluation of land stability</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thunderstorm Content -->
+            <div class="tab-content" id="thunderstorm">
+                <div class="emergency-phases">
+                    <div class="phase-card before">
+                        <button class="download-btn" onclick="downloadPDF('thunderstorm', 'before')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">Before Thunderstorm</h3>
+                        <ul class="phase-list">
+                            <li>Monitor weather forecasts and warnings</li>
+                            <li>Secure outdoor objects that could blow away</li>
+                            <li>Trim tree branches near your home</li>
+                            <li>Install surge protectors for electronics</li>
+                            <li>Review family emergency plan</li>
+                            <li>Charge electronic devices and flashlights</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card during">
+                        <button class="download-btn" onclick="downloadPDF('thunderstorm', 'during')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">During Thunderstorm</h3>
+                        <ul class="phase-list">
+                            <li>Go indoors immediately when thunder is heard</li>
+                            <li>Stay away from windows, doors, and porches</li>
+                            <li>Avoid electrical equipment and plumbing</li>
+                            <li>Don't use corded phones except for emergencies</li>
+                            <li>If outdoors, seek shelter in hard-topped vehicle</li>
+                            <li>Avoid tall objects like trees if caught outside</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card after">
+                        <button class="download-btn" onclick="downloadPDF('thunderstorm', 'after')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">After Thunderstorm</h3>
+                        <ul class="phase-list">
+                            <li>Wait 30 minutes after last thunder before going out</li>
+                            <li>Check for damage to home and property</li>
+                            <li>Avoid downed power lines and report them</li>
+                            <li>Be cautious of flooding in low-lying areas</li>
+                            <li>Check on neighbors, especially elderly</li>
+                            <li>Document any damage for insurance claims</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Typhoon Content -->
+            <div class="tab-content" id="typhoon">
+                <div class="emergency-phases">
+                    <div class="phase-card before">
+                        <button class="download-btn" onclick="downloadPDF('typhoon', 'before')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">Before Typhoon</h3>
+                        <ul class="phase-list">
+                            <li>Monitor typhoon tracking and evacuation orders</li>
+                            <li>Stock up on food, water, and medical supplies</li>
+                            <li>Secure or bring in outdoor furniture</li>
+                            <li>Board up windows with plywood</li>
+                            <li>Fill bathtubs and containers with water</li>
+                            <li>Fuel vehicles and check emergency equipment</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card during">
+                        <button class="download-btn" onclick="downloadPDF('typhoon', 'during')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">During Typhoon</h3>
+                        <ul class="phase-list">
+                            <li>Stay indoors and away from windows</li>
+                            <li>Go to interior room on lowest floor</li>
+                            <li>Listen to battery-powered radio for updates</li>
+                            <li>Avoid using candles - use flashlights instead</li>
+                            <li>Don't go outside during eye of storm</li>
+                            <li>Be prepared for power outages</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card after">
+                        <button class="download-btn" onclick="downloadPDF('typhoon', 'after')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">After Typhoon</h3>
+                        <ul class="phase-list">
+                            <li>Wait for official all-clear before venturing out</li>
+                            <li>Watch for flooding and storm surge</li>
+                            <li>Avoid downed power lines and damaged buildings</li>
+                            <li>Use generators outdoors only to prevent CO poisoning</li>
+                            <li>Boil water if advised by authorities</li>
+                            <li>Take photos of damage for insurance</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flood Content -->
+            <div class="tab-content" id="flood">
+                <div class="emergency-phases">
+                    <div class="phase-card before">
+                        <button class="download-btn" onclick="downloadPDF('flood', 'before')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">Before Flood</h3>
+                        <ul class="phase-list">
+                            <li>Know your area's flood risk and evacuation routes</li>
+                            <li>Sign up for community alert systems</li>
+                            <li>Make flood emergency plan with family</li>
+                            <li>Keep emergency supplies in waterproof container</li>
+                            <li>Consider flood insurance (requires 30-day waiting period)</li>
+                            <li>Identify higher ground locations nearby</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card during">
+                        <button class="download-btn" onclick="downloadPDF('flood', 'during')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">During Flood</h3>
+                        <ul class="phase-list">
+                            <li>Move to higher ground immediately</li>
+                            <li>Avoid walking in moving water</li>
+                            <li>Don't drive through flooded roads</li>
+                            <li>Stay away from downed power lines</li>
+                            <li>Listen to emergency broadcasts</li>
+                            <li>Evacuate if told to do so by authorities</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card after">
+                        <button class="download-btn" onclick="downloadPDF('flood', 'after')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">After Flood</h3>
+                        <ul class="phase-list">
+                            <li>Return home only when authorities say it's safe</li>
+                            <li>Avoid floodwater - may be contaminated</li>
+                            <li>Check for structural damage before entering</li>
+                            <li>Clean and disinfect everything touched by floodwater</li>
+                            <li>Throw away food that came in contact with floodwater</li>
+                            <li>Document damage with photos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earthquake Content -->
+            <div class="tab-content" id="earthquake">
+                <div class="emergency-phases">
+                    <div class="phase-card before">
+                        <button class="download-btn" onclick="downloadPDF('earthquake', 'before')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">Before Earthquake</h3>
+                        <ul class="phase-list">
+                            <li>Secure heavy furniture and appliances to walls</li>
+                            <li>Practice "Drop, Cover, and Hold On" drills</li>
+                            <li>Identify safe spots in each room</li>
+                            <li>Keep emergency supplies accessible</li>
+                            <li>Learn how to turn off gas, water, and electricity</li>
+                            <li>Make family communication plan</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card during">
+                        <button class="download-btn" onclick="downloadPDF('earthquake', 'during')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">During Earthquake</h3>
+                        <ul class="phase-list">
+                            <li>Drop to hands and knees immediately</li>
+                            <li>Take cover under sturdy desk or table</li>
+                            <li>Hold on to shelter and protect head/neck</li>
+                            <li>Stay where you are until shaking stops</li>
+                            <li>If outdoors, move away from buildings and trees</li>
+                            <li>If driving, pull over and stop safely</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card after">
+                        <button class="download-btn" onclick="downloadPDF('earthquake', 'after')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">After Earthquake</h3>
+                        <ul class="phase-list">
+                            <li>Check for injuries and provide first aid</li>
+                            <li>Inspect home for damage and hazards</li>
+                            <li>Turn off utilities if damaged</li>
+                            <li>Clean up spilled hazardous materials</li>
+                            <li>Be prepared for aftershocks</li>
+                            <li>Stay out of damaged buildings</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fire Content -->
+            <div class="tab-content" id="fire">
+                <div class="emergency-phases">
+                    <div class="phase-card before">
+                        <button class="download-btn" onclick="downloadPDF('fire', 'before')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">Before Fire</h3>
+                        <ul class="phase-list">
+                            <li>Install smoke alarms and check batteries monthly</li>
+                            <li>Create and practice fire escape plan</li>
+                            <li>Keep fire extinguishers in key locations</li>
+                            <li>Clear vegetation around home (defensible space)</li>
+                            <li>Use fire-resistant materials for landscaping</li>
+                            <li>Know two ways out of every room</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card during">
+                        <button class="download-btn" onclick="downloadPDF('fire', 'during')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">During Fire</h3>
+                        <ul class="phase-list">
+                            <li>Get out fast and call 911</li>
+                            <li>Crawl low under smoke to avoid inhaling it</li>
+                            <li>Feel doors before opening - don't open if hot</li>
+                            <li>Close doors behind you as you escape</li>
+                            <li>Meet at designated meeting place</li>
+                            <li>Never go back inside for belongings</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card after">
+                        <button class="download-btn" onclick="downloadPDF('fire', 'after')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">After Fire</h3>
+                        <ul class="phase-list">
+                            <li>Don't enter damaged building until cleared</li>
+                            <li>Watch for hot spots that may re-ignite</li>
+                            <li>Check with fire department before re-entry</li>
+                            <li>Beware of structural damage</li>
+                            <li>Document damage with photos</li>
+                            <li>Contact insurance company immediately</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tsunami Content -->
+            <div class="tab-content" id="tsunami">
+                <div class="emergency-phases">
+                    <div class="phase-card before">
+                        <button class="download-btn" onclick="downloadPDF('tsunami', 'before')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">Before Tsunami</h3>
+                        <ul class="phase-list">
+                            <li>Learn if you live in tsunami hazard zone</li>
+                            <li>Know evacuation routes to higher ground</li>
+                            <li>Practice evacuation drills with family</li>
+                            <li>Prepare emergency kit for quick grab</li>
+                            <li>Sign up for tsunami warning alerts</li>
+                            <li>Identify vertical evacuation structures</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card during">
+                        <button class="download-btn" onclick="downloadPDF('tsunami', 'during')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">During Tsunami</h3>
+                        <ul class="phase-list">
+                            <li>Move to higher ground immediately</li>
+                            <li>Don't wait for official warning</li>
+                            <li>Go as high and as far inland as possible</li>
+                            <li>If trapped, go to upper floor of sturdy building</li>
+                            <li>Stay away from beach and waterfront</li>
+                            <li>Listen to emergency broadcasts</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card after">
+                        <button class="download-btn" onclick="downloadPDF('tsunami', 'after')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">After Tsunami</h3>
+                        <ul class="phase-list">
+                            <li>Stay away from flooded and damaged areas</li>
+                            <li>Wait for official all-clear before returning</li>
+                            <li>Be aware that tsunamis come in series</li>
+                            <li>Avoid disaster areas to allow rescue operations</li>
+                            <li>Help injured or trapped persons if safe to do so</li>
+                            <li>Stay out of buildings with water around them</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Heat Content -->
+            <div class="tab-content" id="heat">
+                <div class="emergency-phases">
+                    <div class="phase-card before">
+                        <button class="download-btn" onclick="downloadPDF('heat', 'before')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">Before Heat Emergency</h3>
+                        <ul class="phase-list">
+                            <li>Install air conditioning or cooling systems</li>
+                            <li>Identify air-conditioned public places nearby</li>
+                            <li>Check on elderly neighbors and relatives</li>
+                            <li>Never leave people or pets in parked cars</li>
+                            <li>Learn signs of heat-related illness</li>
+                            <li>Prepare cooling supplies and extra water</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card during">
+                        <button class="download-btn" onclick="downloadPDF('heat', 'during')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">During Heat Emergency</h3>
+                        <ul class="phase-list">
+                            <li>Stay indoors in air conditioning when possible</li>
+                            <li>Drink plenty of water even if not thirsty</li>
+                            <li>Avoid alcohol and caffeine</li>
+                            <li>Wear lightweight, light-colored clothing</li>
+                            <li>Take cool showers or baths</li>
+                            <li>Limit outdoor activities to early morning/evening</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card after">
+                        <button class="download-btn" onclick="downloadPDF('heat', 'after')">
+                            <span>📥</span> PDF
+                        </button>
+                        <h3 class="phase-title">After Heat Emergency</h3>
+                        <ul class="phase-list">
+                            <li>Continue monitoring weather forecasts</li>
+                            <li>Check on family, friends, and neighbors</li>
+                            <li>Watch for signs of heat exhaustion or heat stroke</li>
+                            <li>Seek medical attention if feeling unwell</li>
+                            <li>Gradually return to normal activities</li>
+                            <li>Evaluate cooling strategies for future events</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Tab functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                // Show corresponding content
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Add smooth scrolling for better UX
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                setTimeout(() => {
+                    document.querySelector('.tab-content.active').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest'
+                    });
+                }, 100);
+            });
+        });
+
+        // PDF Download functionality
+        function downloadPDF(disasterType, phase) {
+            // Get the specific phase card
+            const activeTab = document.querySelector(`.tab-content.active`);
+            const phaseCard = activeTab.querySelector(`.${phase}`);
+            
+            // Get disaster name
+            const disasterName = document.querySelector(`.tab-button.active span:last-child`).textContent;
+            
+            // Create a temporary element for PDF generation
+            const tempElement = document.createElement('div');
+            tempElement.style.padding = '20px';
+            tempElement.style.fontFamily = 'Arial, sans-serif';
+            tempElement.style.maxWidth = '600px';
+            tempElement.style.backgroundColor = '#fff';
+            
+            // Clone the content
+            const title = phaseCard.querySelector('.phase-title').cloneNode(true);
+            const list = phaseCard.querySelector('.phase-list').cloneNode(true);
+            
+            // Remove download button from clone
+            const buttonClone = tempElement.querySelector('.download-btn');
+            if (buttonClone) buttonClone.remove();
+            
+            tempElement.appendChild(title);
+            tempElement.appendChild(list);
+            
+            // Add header information
+            const header = document.createElement('div');
+            header.innerHTML = `
+                <h1 style="color: #172554; text-align: center; margin-bottom: 20px;">
+                    ${disasterName} - ${title.textContent}
+                </h1>
+                <hr style="margin-bottom: 20px;">
+            `;
+            tempElement.insertBefore(header, tempElement.firstChild);
+            
+            // Add footer
+            const footer = document.createElement('div');
+            footer.innerHTML = `
+                <hr style="margin-top: 20px;">
+                <p style="text-align: center; font-size: 12px; color: #666; margin-top: 10px;">
+                    MDRRMO Pio Duran - Emergency Procedures Guide - Generated on ${new Date().toLocaleDateString()}
+                </p>
+            `;
+            tempElement.appendChild(footer);
+            
+            // Add to body temporarily
+            document.body.appendChild(tempElement);
+            
+            // Use html2canvas and jsPDF
+            html2canvas(tempElement, {
+                scale: 2,
+                backgroundColor: '#fff'
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 297; // A4 height in mm
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+                
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+                
+                // Add new pages if content is too long
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                
+                // Save the PDF
+                const filename = `${disasterName.replace(/\s+/g, '_')}_${phase}_procedures.pdf`;
+                pdf.save(filename);
+                
+                // Remove temporary element
+                document.body.removeChild(tempElement);
+            });
+        }
+
+        // Initialize jsPDF
+        window.jspdf = window.jspdf || {};
+        window.html2canvas = window.html2canvas || {};
+    </script>
+</body>
+</html>
