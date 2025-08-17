@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Photo Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        .gallery-item {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .modal {
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .archive-item {
+            transition: all 0.2s ease;
+        }
+        
+        .archive-item:hover {
+            background-color: rgba(234, 179, 8, 0.1);
+            transform: translateX(4px);
+        }
+        
+        .download-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .download-btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-950 to-blue-900 min-h-screen">
+    <div class="flex h-screen">
+        <!-- Photo Albums Sidebar -->
+        <div class="w-80 bg-blue-950 shadow-xl border-r border-yellow-500/20 overflow-y-auto">
+            <div class="p-6 border-b border-yellow-500/20">
+                <div class="flex items-center gap-3 mb-4">
+                    <i data-lucide="book-open" class="w-6 h-6 text-yellow-500"></i>
+                    <h2 class="text-2xl font-bold text-yellow-500">Photo Albums</h2>
+                </div>
+                <p class="text-yellow-200 text-sm">Browse your collections</p>
+            </div>
+            
+            <div class="p-4">
+                <div class="space-y-4" id="albumsList">
+                    <!-- Album items will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Gallery -->
+        <div class="flex-1 overflow-y-auto">
+            <div class="p-8">
+                <div class="mb-8">
+                    <h1 class="text-4xl font-bold text-yellow-500 mb-2">My Gallery</h1>
+                    <p class="text-yellow-200">A curated collection of beautiful moments</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="galleryGrid">
+                    <!-- Gallery items will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Full Screen Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 modal hidden z-50 flex items-center justify-center p-4">
+        <div class="relative max-w-7xl max-h-full">
+            <button id="closeModal" class="absolute -top-12 right-0 text-white hover:text-yellow-500 text-2xl font-bold z-10 transition-colors">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+            
+            <img id="modalImage" src="" alt="" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl">
+            
+            <div class="absolute bottom-4 right-4 flex gap-3">
+                <button id="downloadBtn" class="download-btn bg-yellow-500 hover:bg-yellow-600 text-blue-950 px-6 py-3 rounded-full font-medium shadow-lg flex items-center gap-2">
+                    <i data-lucide="download" class="w-5 h-5"></i>
+                    Download
+                </button>
+            </div>
+            
+            <div class="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white px-4 py-2 rounded-full">
+                <span id="modalTitle" class="font-medium"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Photo albums data structure
+        const albums = [
+            {
+                id: 1,
+                name: "Nature Collection",
+                description: "Beautiful landscapes and wildlife",
+                icon: "trees",
+                count: 4,
+                coverImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+                photos: [1, 3, 6, 7]
+            },
+            {
+                id: 2,
+                name: "Ocean & Beaches",
+                description: "Coastal photography",
+                icon: "waves",
+                count: 2,
+                coverImage: "https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=800&h=600&fit=crop",
+                photos: [2, 8]
+            },
+            {
+                id: 3,
+                name: "Urban Life",
+                description: "City scenes and architecture",
+                icon: "building",
+                count: 1,
+                coverImage: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop",
+                photos: [4]
+            },
+            {
+                id: 4,
+                name: "Desert Adventures",
+                description: "Arid landscapes and dunes",
+                icon: "sun",
+                count: 1,
+                coverImage: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=800&h=600&fit=crop",
+                photos: [5]
+            }
+        ];
+
+        // Sample photo data with real images
+        const photos = [
+            {
+                id: 1,
+                title: "Mountain Sunrise",
+                category: "Nature",
+                date: "2024-01-15",
+                url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop"
+            },
+            {
+                id: 2,
+                title: "Ocean Waves",
+                category: "Seascape",
+                date: "2024-01-20",
+                url: "https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=800&h=600&fit=crop"
+            },
+            {
+                id: 3,
+                title: "Forest Path",
+                category: "Nature",
+                date: "2024-01-25",
+                url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop"
+            },
+            {
+                id: 4,
+                title: "City Skyline",
+                category: "Urban",
+                date: "2024-02-01",
+                url: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop"
+            },
+            {
+                id: 5,
+                title: "Desert Dunes",
+                category: "Landscape",
+                date: "2024-02-05",
+                url: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=800&h=600&fit=crop"
+            },
+            {
+                id: 6,
+                title: "Autumn Leaves",
+                category: "Nature",
+                date: "2024-02-10",
+                url: "https://images.unsplash.com/photo-1507041957456-9c397ce39c97?w=800&h=600&fit=crop"
+            },
+            {
+                id: 7,
+                title: "Northern Lights",
+                category: "Nature",
+                date: "2024-02-15",
+                url: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&h=600&fit=crop"
+            },
+            {
+                id: 8,
+                title: "Tropical Beach",
+                category: "Seascape",
+                date: "2024-02-20",
+                url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=600&fit=crop"
+            }
+        ];
+
+        let currentImageIndex = 0;
+        let currentAlbumId = null;
+        let currentPhotos = photos;
+
+        function initializeGallery() {
+            initializeAlbums();
+            displayPhotos(photos);
+        }
+
+        function initializeAlbums() {
+            const albumsList = document.getElementById('albumsList');
+            
+            // Add "All Photos" album
+            const allPhotosAlbum = document.createElement('div');
+            allPhotosAlbum.className = 'archive-item bg-blue-900 rounded-xl p-4 cursor-pointer border border-yellow-500/20 hover:border-yellow-500/40 transition-all';
+            allPhotosAlbum.innerHTML = `
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="image" class="w-8 h-8 text-blue-950"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-yellow-500 mb-1">All Photos</h3>
+                        <p class="text-sm text-yellow-200">${photos.length} photos</p>
+                    </div>
+                </div>
+                <p class="text-xs text-yellow-300">Complete collection</p>
+            `;
+            allPhotosAlbum.addEventListener('click', () => selectAlbum(null));
+            albumsList.appendChild(allPhotosAlbum);
+            
+            // Add individual albums
+            albums.forEach(album => {
+                const albumItem = document.createElement('div');
+                albumItem.className = 'archive-item bg-blue-900 rounded-xl p-4 cursor-pointer border border-yellow-500/20 hover:border-yellow-500/40 transition-all';
+                albumItem.innerHTML = `
+                    <div class="flex items-center gap-4 mb-3">
+                        <div class="w-16 h-16 rounded-lg overflow-hidden">
+                            <img src="${album.coverImage}" alt="${album.name}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i data-lucide="${album.icon}" class="w-4 h-4 text-yellow-500"></i>
+                                <h3 class="font-semibold text-yellow-500">${album.name}</h3>
+                            </div>
+                            <p class="text-sm text-yellow-200">${album.count} photos</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-yellow-300">${album.description}</p>
+                `;
+                albumItem.addEventListener('click', () => selectAlbum(album.id));
+                albumsList.appendChild(albumItem);
+            });
+        }
+
+        function selectAlbum(albumId) {
+            currentAlbumId = albumId;
+            
+            if (albumId === null) {
+                // Show all photos
+                currentPhotos = photos;
+                document.querySelector('h1').textContent = 'My Gallery';
+                document.querySelector('h1').nextElementSibling.textContent = 'A curated collection of beautiful moments';
+            } else {
+                // Show album photos
+                const album = albums.find(a => a.id === albumId);
+                currentPhotos = photos.filter(photo => album.photos.includes(photo.id));
+                document.querySelector('h1').textContent = album.name;
+                document.querySelector('h1').nextElementSibling.textContent = album.description;
+            }
+            
+            displayPhotos(currentPhotos);
+        }
+
+        function displayPhotos(photosToShow) {
+            const galleryGrid = document.getElementById('galleryGrid');
+            galleryGrid.innerHTML = '';
+            
+            photosToShow.forEach((photo, index) => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item bg-blue-900 rounded-xl shadow-lg overflow-hidden border border-yellow-500/20';
+                galleryItem.innerHTML = `
+                    <div class="aspect-square overflow-hidden">
+                        <img src="${photo.url}" alt="${photo.title}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-yellow-500 mb-1">${photo.title}</h3>
+                        <p class="text-sm text-yellow-200">${photo.category} • ${photo.date}</p>
+                    </div>
+                `;
+                galleryItem.addEventListener('click', () => openModal(index));
+                galleryGrid.appendChild(galleryItem);
+            });
+        }
+
+        function openModal(index) {
+            currentImageIndex = index;
+            const photo = currentPhotos[index];
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            modalImage.src = photo.url;
+            modalTitle.textContent = photo.title;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function downloadImage() {
+            const photo = currentPhotos[currentImageIndex];
+            
+            const a = document.createElement('a');
+            a.href = photo.url;
+            a.download = `${photo.title.replace(/\s+/g, '_')}.jpg`;
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Event listeners
+        document.getElementById('closeModal').addEventListener('click', closeModal);
+        document.getElementById('downloadBtn').addEventListener('click', downloadImage);
+        
+        // Close modal on escape key or background click
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+        
+        document.getElementById('imageModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+
+        // Initialize the gallery
+        initializeGallery();
+        
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
