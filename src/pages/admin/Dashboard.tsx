@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useData } from '../../contexts/DataContext';
 import { usePages } from '../../contexts/PagesContext';
 import { useAuth } from '../../contexts/AuthContext';
-import WeatherWidget from '../../components/WeatherWidget';
+//import WeatherWidget from '../../components/WeatherWidget';
 import Analytics from '../../components/Analytics';
 import SocialMediaFeed from '../../components/SocialMediaFeed';
 import SystemStatus from '../../components/SystemStatus';
