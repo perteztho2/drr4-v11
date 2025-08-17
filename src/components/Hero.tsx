@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { Phone, AlertTriangle, ChevronDown } from 'lucide-react';
 import Navigation from './Navigation';
-import WeatherWidget from './WeatherWidget';
+import WeatherTickerWidget from './WeatherTickerWidget';
+import WeatherForecastWidget from './WeatherForecastWidget';
 
 interface HeroProps {
   onEmergencyClick: () => void;
@@ -125,28 +126,12 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
         <div className="absolute bottom-20 left-0 right-0 flex justify-center z-30">
           <ChevronDown className="text-white animate-bounce" size={32} />
         </div>
-
-        {/* Weather Widget */}
-        <div className="absolute top-20 right-4 z-30 hidden lg:block">
-          <div className="w-80">
-            <WeatherWidget />
-          </div>
-        </div>
       </div>
-
-      {/* Weather Alert Bar */}
-      <div className="relative z-30 bg-red-600 text-white py-2 px-4 border-t-4 border-yellow-500 shadow-xl">
-        <div className="container mx-auto flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
-            <AlertTriangle className="text-xl text-yellow-300 animate-bounce" size={20} />
-            <span className="font-bold">WEATHER UPDATE:</span>
-          </div>
-          <div className="flex-1 overflow-hidden">
-            <div className="animate-marquee whitespace-nowrap">
-              Real-time weather update from PAGASA will appear here...
-            </div>
-          </div>
-        </div>
+      
+      {/* Weather Ticker Widget */}
+      <div className="relative z-30">
+        <WeatherTickerWidget />
+        <WeatherForecastWidget />
       </div>
     </section>
   );

@@ -514,6 +514,82 @@ export interface Database {
           updated_at?: string
         }
       }
+      weather_api_settings: {
+        Row: {
+          id: string
+          api_key: string
+          api_secret: string
+          station_id: string
+          is_active: boolean
+          last_sync: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          api_key: string
+          api_secret: string
+          station_id: string
+          is_active?: boolean
+          last_sync?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          api_key?: string
+          api_secret?: string
+          station_id?: string
+          is_active?: boolean
+          last_sync?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      weather_forecast: {
+        Row: {
+          id: string
+          date: string
+          temperature_high: number
+          temperature_low: number
+          condition: string
+          humidity: number
+          wind_speed: number
+          precipitation: number
+          icon: string
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          date: string
+          temperature_high: number
+          temperature_low: number
+          condition: string
+          humidity?: number
+          wind_speed?: number
+          precipitation?: number
+          icon?: string
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          date?: string
+          temperature_high?: number
+          temperature_low?: number
+          condition?: string
+          humidity?: number
+          wind_speed?: number
+          precipitation?: number
+          icon?: string
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
   }
 }
