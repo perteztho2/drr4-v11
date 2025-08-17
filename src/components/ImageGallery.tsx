@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Camera } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Camera, Play } from 'lucide-react';
 import { useData } from '../contexts/DataContext';
 import { Link } from 'react-router-dom';
 import LazyImage from './LazyImage';
@@ -134,6 +134,13 @@ const ImageGallery: React.FC = () => {
           >
             <Camera className="mr-2" size={16} />
             View Full Gallery
+          </Link>
+          <Link
+            to="/video-gallery"
+            className="inline-flex items-center px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-400 transition-colors font-medium ml-4"
+          >
+            <Play className="mr-2" size={16} />
+            Watch Videos
           </Link>
         </div>
       </div>

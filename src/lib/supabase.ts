@@ -461,6 +461,59 @@ export interface Database {
           updated_at?: string
         }
       }
+      videos: {
+        Row: {
+          id: string
+          title: string
+          description: string | null
+          video_url: string
+          thumbnail: string
+          category: string | null
+          date: string | null
+          location: string | null
+          duration: string | null
+          tags: string[] | null
+          status: 'published' | 'draft'
+          featured: boolean
+          view_count: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          description?: string | null
+          video_url: string
+          thumbnail: string
+          category?: string | null
+          date?: string | null
+          location?: string | null
+          duration?: string | null
+          tags?: string[] | null
+          status?: 'published' | 'draft'
+          featured?: boolean
+          view_count?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string | null
+          video_url?: string
+          thumbnail?: string
+          category?: string | null
+          date?: string | null
+          location?: string | null
+          duration?: string | null
+          tags?: string[] | null
+          status?: 'published' | 'draft'
+          featured?: boolean
+          view_count?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
   }
 }

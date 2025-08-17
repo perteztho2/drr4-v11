@@ -8,6 +8,7 @@ type NewsItem = Database['public']['Tables']['news']['Row'];
 type Service = Database['public']['Tables']['services']['Row'];
 type IncidentReport = Database['public']['Tables']['incident_reports']['Row'];
 type GalleryItem = Database['public']['Tables']['gallery']['Row'];
+type VideoItem = Database['public']['Tables']['videos']['Row'];
 
 interface DataContextType {
   // News
@@ -34,6 +35,13 @@ interface DataContextType {
   updateGalleryItem: (id: string, item: Partial<GalleryItem>) => Promise<void>;
   deleteGalleryItem: (id: string) => Promise<void>;
 
+  // Videos
+  videos: VideoItem[];
+  addVideo: (video: Omit<VideoItem, 'id' | 'created_at' | 'updated_at' | 'view_count'>) => Promise<void>;
+  updateVideo: (id: string, video: Partial<VideoItem>) => Promise<void>;
+  deleteVideo: (id: string) => Promise<void>;
+  incrementVideoView: (id: string) => Promise<void>;
+
   // Loading states
   loading: boolean;
   error: string | null;
@@ -54,6 +62,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [services, setServices] = useState<Service[]>([]);
   const [incidents, setIncidents] = useState<IncidentReport[]>([]);
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
+  const [videos, setVideos] = useState<VideoItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -102,11 +111,22 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       )
       .subscribe();
 
+    const videosSubscription = supabase
+      .channel('videos_changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'videos' }, 
+        (payload) => {
+          console.log('Videos change detected:', payload);
+          fetchAllData();
+        }
+      )
+      .subscribe();
+
     return () => {
       newsSubscription.unsubscribe();
       servicesSubscription.unsubscribe();
       incidentsSubscription.unsubscribe();
       gallerySubscription.unsubscribe();
+      videosSubscription.unsubscribe();
     };
   }, []);
 
@@ -116,17 +136,19 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setError(null);
 
       // Use database manager for all operations
-      const [newsData, servicesData, incidentsData, galleryData] = await Promise.all([
+      const [newsData, servicesData, incidentsData, galleryData, videosData] = await Promise.all([
         databaseManager.getNews(),
         databaseManager.getServices(),
         databaseManager.getIncidents(),
-        databaseManager.getGallery()
+        databaseManager.getGallery(),
+        fetchVideos()
       ]);
 
       setNews(newsData);
       setServices(servicesData);
       setIncidents(incidentsData);
       setGallery(galleryData);
+      setVideos(videosData);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       console.error('Error fetching data:', err);
@@ -276,6 +298,24 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const fetchVideos = async (): Promise<VideoItem[]> => {
+    try {
+      const { data, error } = await supabase
+        .from('videos')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error && !error.message.includes('relation "videos" does not exist')) {
+        throw error;
+      }
+      
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+      return [];
+    }
+  };
+
   // Gallery functions
   const addGalleryItem = async (item: Omit<GalleryItem, 'id' | 'created_at' | 'updated_at'>) => {
     try {
@@ -307,12 +347,82 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  // Videos functions
+  const addVideo = async (video: Omit<VideoItem, 'id' | 'created_at' | 'updated_at' | 'view_count'>) => {
+    try {
+      const { data, error } = await supabase
+        .from('videos')
+        .insert([{ ...video, view_count: 0 }])
+        .select()
+        .single();
+
+      if (error) throw error;
+      setVideos(prev => [data, ...prev]);
+    } catch (err) {
+      console.error('Error adding video:', err);
+      throw err;
+    }
+  };
+
+  const updateVideo = async (id: string, updates: Partial<VideoItem>) => {
+    try {
+      const { data, error } = await supabase
+        .from('videos')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      setVideos(prev => prev.map(video => video.id === id ? data : video));
+    } catch (err) {
+      console.error('Error updating video:', err);
+      throw err;
+    }
+  };
+
+  const deleteVideo = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('videos')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      setVideos(prev => prev.filter(video => video.id !== id));
+    } catch (err) {
+      console.error('Error deleting video:', err);
+      throw err;
+    }
+  };
+
+  const incrementVideoView = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('videos')
+        .update({ view_count: supabase.sql`view_count + 1` })
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      // Update local state
+      setVideos(prev => prev.map(video => 
+        video.id === id 
+          ? { ...video, view_count: video.view_count + 1 }
+          : video
+      ));
+    } catch (err) {
+      console.error('Error incrementing video view:', err);
+    }
+  };
+
   return (
     <DataContext.Provider value={{
       news, addNews, updateNews, deleteNews,
       services, addService, updateService, deleteService,
       incidents, addIncident, updateIncident, deleteIncident,
       gallery, addGalleryItem, updateGalleryItem, deleteGalleryItem,
+      videos, addVideo, updateVideo, deleteVideo, incrementVideoView,
       loading, error
     }}>
       {children}

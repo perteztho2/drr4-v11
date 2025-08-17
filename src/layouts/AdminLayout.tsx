@@ -21,7 +21,8 @@ import {
   Siren,
   FolderOpen,
   Phone,
-  Cloud
+  Cloud,
+  Play
 } from 'lucide-react';
 
 const AdminLayout: React.FC = () => {
@@ -44,6 +45,7 @@ const AdminLayout: React.FC = () => {
     { path: '/admin/services', icon: Shield, label: 'Services' },
     { path: '/admin/about', icon: Info, label: 'About Page' },
     { path: '/admin/gallery', icon: Images, label: 'Gallery' },
+    { path: '/admin/videos', icon: Play, label: 'Videos' },
     { path: '/admin/social', icon: Share2, label: 'Social Media' },
     { path: '/admin/pages', icon: FileText, label: 'Pages' },
     { path: '/admin/resources', icon: FolderOpen, label: 'Resources' },

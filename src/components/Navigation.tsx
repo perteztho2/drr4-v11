@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, Search, FileText, ChevronDown, ChevronRight } from 'lucide-react';
+import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, Search, FileText, ChevronDown, ChevronRight, Play } from 'lucide-react';
 import { useDatabase } from '../contexts/DatabaseContext';
 import { usePages } from '../contexts/PagesContext';
 import { supabase } from '../lib/supabase';
@@ -82,6 +82,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
     { path: '/resources', label: 'Resources', icon: FolderOpen },
     { path: '/disaster-planning', label: 'Planning', icon: Calendar },
     { path: '/gallery', label: 'Gallery', icon: Camera },
+    { path: '/video-gallery', label: 'Videos', icon: Play },
     { path: '/contact', label: 'Contact', icon: Phone }
   ];
 
@@ -95,7 +96,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
 
   function getIconComponent(iconName: string) {
     const icons: Record<string, any> = {
-      Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, FileText, Shield
+      Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, FileText, Shield, Play
     };
     return icons[iconName] || Home;
   }

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Phone, AlertTriangle, ChevronDown } from 'lucide-react';
 import Navigation from './Navigation';
+import WeatherWidget from './WeatherWidget';
 
 interface HeroProps {
   onEmergencyClick: () => void;
@@ -123,6 +124,13 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
         {/* Scroll Indicator */}
         <div className="absolute bottom-20 left-0 right-0 flex justify-center z-30">
           <ChevronDown className="text-white animate-bounce" size={32} />
+        </div>
+
+        {/* Weather Widget */}
+        <div className="absolute top-20 right-4 z-30 hidden lg:block">
+          <div className="w-80">
+            <WeatherWidget />
+          </div>
         </div>
       </div>
 

@@ -37,6 +37,8 @@ import UsersManagement from './pages/admin/UsersManagement';
 import IncidentReports from './pages/admin/IncidentReports';
 import Settings from './pages/admin/Settings';
 import WeatherManagement from './pages/admin/WeatherManagement';
+import VideoGallery from './pages/public/VideoGallery';
+import VideoManagement from './pages/admin/VideoManagement';
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -62,6 +64,7 @@ function App() {
                   <Route path="resources" element={<ResourcesPage />} />
                   <Route path="disaster-planning" element={<DisasterPlanPage />} />
                   <Route path="gallery" element={<Gallery />} />
+                  <Route path="video-gallery" element={<VideoGallery />} />
                   <Route path="contact" element={<Contact />} />
                   {/* Dynamic pages route */}
                   <Route path=":slug" element={<DynamicPage />} />
@@ -84,6 +87,7 @@ function App() {
                   <Route path="services" element={<ServicesManagement />} />
                   <Route path="about" element={<AboutManagement />} />
                   <Route path="gallery" element={<GalleryManagement />} />
+                  <Route path="videos" element={<VideoManagement />} />
                   <Route path="social" element={<SocialMediaManagement />} />
                   <Route path="pages" element={<PagesManagement />} />
                   <Route path="resources" element={<ResourcesManagement />} />
