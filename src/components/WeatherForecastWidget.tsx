@@ -113,7 +113,7 @@ const WeatherForecastWidget: React.FC = () => {
       <div className="bg-white border-t border-gray-700 py-4">
         <div className="container mx-auto px-4">
           <div className="text-center text-gray-500">
-            <Cloud className="mx-auto h-8 w-8 mb-2" />
+            <Cloud className="mx-auto h-4 w-8 mb-2" />
             <p className="text-sm">7-day forecast not available</p>
           </div>
         </div>
