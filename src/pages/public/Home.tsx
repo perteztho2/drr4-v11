@@ -52,9 +52,9 @@ const Home: React.FC = () => {
       />
       <About />
       <Services />
-      <Planning />
-      <EmergencyProcedures />
       <News />
+      <EmergencyProcedures />
+       <Planning />
       
       {/* Social Media Feed Section */}
       <section className="py-16 bg-gray-50">
