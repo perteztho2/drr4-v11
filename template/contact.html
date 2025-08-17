@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .contact-card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .form-input:focus {
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        .contact-info-item:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 min-h-screen">
+    <div class="container mx-auto px-4 py-12">
+        <!-- Main Content -->
+        <div class="max-w-6xl mx-auto">
+            <!-- Header Section -->
+            <div class="text-center mb-16">
+                <h1 class="text-5xl font-bold text-white mb-6">Get In Touch</h1>
+                <p class="text-xl text-blue-100 max-w-2xl mx-auto">
+                    We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Contact Form -->
+                <div class="contact-card rounded-2xl p-8 border border-white/20">
+                    <h2 class="text-3xl font-semibold text-white mb-8">Send Message</h2>
+                    <form class="space-y-6" onsubmit="handleSubmit(event)">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-blue-100 text-sm font-medium mb-2">First Name</label>
+                                <input type="text" required class="form-input w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" placeholder="Juan">
+                            </div>
+                            <div>
+                                <label class="block text-blue-100 text-sm font-medium mb-2">Last Name</label>
+                                <input type="text" required class="form-input w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" placeholder="Dela Cruz">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-blue-100 text-sm font-medium mb-2">Email Address</label>
+                            <input type="email" required class="form-input w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" placeholder="juandelacruz@gmail.com">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-blue-100 text-sm font-medium mb-2">Subject</label>
+                            <input type="text" required class="form-input w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" placeholder="How can we help?">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-blue-100 text-sm font-medium mb-2">Message</label>
+                            <textarea required rows="5" class="form-input w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent resize-none" placeholder="Tell us more about your inquiry..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-400 text-blue-950 font-semibold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2">
+                            <i data-lucide="send" class="w-5 h-5"></i>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="space-y-8">
+                    <div class="contact-card rounded-2xl p-8 border border-white/20">
+                        <h2 class="text-3xl font-semibold text-white mb-8">Contact Information</h2>
+                        
+                        <div class="space-y-6">
+                            <div class="contact-info-item flex items-start gap-4 p-4 rounded-lg hover:bg-white/5 cursor-pointer">
+                                <div class="bg-yellow-500 p-3 rounded-lg">
+                                    <i data-lucide="map-pin" class="w-6 h-6 text-blue-950"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold text-lg mb-1">Address</h3>
+                                    <p class="text-blue-100">Manucipal Bldg, DRRM Operation Center<br>Barangay Caratagan, Pio Duran, Albay<br>4516, Philippines</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-info-item flex items-start gap-4 p-4 rounded-lg hover:bg-white/5 cursor-pointer">
+                                <div class="bg-yellow-500 p-3 rounded-lg">
+                                    <i data-lucide="phone" class="w-6 h-6 text-blue-950"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold text-lg mb-1">Phone</h3>
+                                    <p class="text-blue-100">+1 (555) 123-4567</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-info-item flex items-start gap-4 p-4 rounded-lg hover:bg-white/5 cursor-pointer">
+                                <div class="bg-yellow-500 p-3 rounded-lg">
+                                    <i data-lucide="mail" class="w-6 h-6 text-blue-950"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold text-lg mb-1">Email</h3>
+                                    <p class="text-blue-100">contact@company.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-info-item flex items-start gap-4 p-4 rounded-lg hover:bg-white/5 cursor-pointer">
+                                <div class="bg-yellow-500 p-3 rounded-lg">
+                                    <i data-lucide="clock" class="w-6 h-6 text-blue-950"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold text-lg mb-1">Business Hours</h3>
+                                    <p class="text-blue-100">Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 4:00 PM<br>Sunday: Closed</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Media -->
+                    <div class="contact-card rounded-2xl p-8 border border-white/20">
+                        <h3 class="text-2xl font-semibold text-white mb-6">Follow Us</h3>
+                        <div class="flex gap-4">
+                            <a href="#" class="bg-white/10 hover:bg-yellow-500 p-3 rounded-lg transition-all duration-300 group">
+                                <i data-lucide="facebook" class="w-6 h-6 text-yellow-500 group-hover:text-blue-950"></i>
+                            </a>
+                            <a href="#" class="bg-white/10 hover:bg-yellow-500 p-3 rounded-lg transition-all duration-300 group">
+                                <i data-lucide="twitter" class="w-6 h-6 text-yellow-500 group-hover:text-blue-950"></i>
+                            </a>
+                            <a href="#" class="bg-white/10 hover:bg-yellow-500 p-3 rounded-lg transition-all duration-300 group">
+                                <i data-lucide="linkedin" class="w-6 h-6 text-yellow-500 group-hover:text-blue-950"></i>
+                            </a>
+                            <a href="#" class="bg-white/10 hover:bg-yellow-500 p-3 rounded-lg transition-all duration-300 group">
+                                <i data-lucide="instagram" class="w-6 h-6 text-yellow-500 group-hover:text-blue-950"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Form submission handler
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(event.target);
+            const firstName = event.target.querySelector('input[placeholder="John"]').value;
+            const lastName = event.target.querySelector('input[placeholder="Doe"]').value;
+            const email = event.target.querySelector('input[type="email"]').value;
+            const subject = event.target.querySelector('input[placeholder="How can we help?"]').value;
+            const message = event.target.querySelector('textarea').value;
+            
+            // Show success message
+            const button = event.target.querySelector('button[type="submit"]');
+            const originalText = button.innerHTML;
+            
+            button.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i> Message Sent!';
+            button.classList.add('bg-green-500', 'hover:bg-green-400');
+            button.classList.remove('bg-yellow-500', 'hover:bg-yellow-400');
+            
+            // Re-initialize icons for the new check icon
+            lucide.createIcons();
+            
+            // Reset form
+            event.target.reset();
+            
+            // Reset button after 3 seconds
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('bg-green-500', 'hover:bg-green-400');
+                button.classList.add('bg-yellow-500', 'hover:bg-yellow-400');
+                lucide.createIcons();
+            }, 3000);
+        }
+
+        // Add smooth animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all contact cards
+        document.querySelectorAll('.contact-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
