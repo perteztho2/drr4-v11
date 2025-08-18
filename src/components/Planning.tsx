@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Bell, Route, Leaf, Building, Handshake, Shield, Users, Target, BarChart3, CheckCircle, ArrowRight, Download, FileText, Calendar, Clock, Zap } from 'lucide-react';
+import { MapPin, Bell, Route, Leaf, Building, Handshake, Shield, Users, Target, BarChart3, ChevronRight, CheckCircle, ArrowRight, Download, FileText, Calendar, Clock, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Planning: React.FC = () => {
