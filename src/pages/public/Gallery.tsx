@@ -113,7 +113,7 @@ const Gallery: React.FC = () => {
           title="Photo Gallery - MDRRMO Pio Duran"
           description="Browse photos from MDRRMO activities, training sessions, and community events in Pio Duran, Albay."
         />
-        <div className="min-h-screen bg-gray-50 py-3">
+        <div className="min-h-screen bg-gray-50 py-20">
           <div className="container mx-auto px-6">
             <div className="text-center">
               <h1 className="text-4xl font-bold text-blue-900 mb-8">Photo Gallery</h1>
@@ -144,7 +144,7 @@ const Gallery: React.FC = () => {
         keywords="MDRRMO gallery, Pio Duran photos, disaster management activities, training photos, community events"
       />
       
-      <div className="bg-gradient-to-br from-blue-950 to-blue-900 min-h-screen flex pt-20">
+      <div className="bg-gradient-to-br from-blue-950 to-blue-900 min-h-screen flex pt-2">
         {/* Photo Albums Sidebar */}
         <div className="w-80 bg-blue-950 shadow-xl border-r border-yellow-500/20 overflow-y-auto">
           <div className="p-6 border-b border-yellow-500/20">
