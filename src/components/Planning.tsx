@@ -55,74 +55,65 @@ const Planning: React.FC = () => {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-10 left-10 w-96 h-96 bg-yellow-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
-      </div>
-      
+    <section className="py-16 bg-blue-900">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-yellow-500 mb-6 relative">
-            <span className="relative z-10">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-yellow-500 mb-4">
             Disaster Risk Reduction & Management Planning
-            </span>
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-40 h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"></div>
           </h2>
-          <p className="text-xl text-blue-100 max-w-4xl mx-auto leading-relaxed">
-            Building resilient communities through comprehensive planning, proactive strategies, and community engagement to minimize disaster risks and enhance emergency response capabilities.
+          <p className="text-lg text-white max-w-3xl mx-auto">
+            Preparedness is key to safeguarding lives, livelihoods, and infrastructure. Our MDRRMO Planning Division develops proactive strategies to minimize risks, improve response mechanisms, and enhance resilience across our community.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {planningAreas.map((area, index) => (
             <div
               key={index}
-              className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-white/20 hover:border-yellow-500/50 group"
+              className={`${area.bgColor} p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border-l-4 ${area.color}`}
             >
-              <div className="mb-6">
-                <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <area.icon size={32} className="text-blue-950" />
-                </div>
+              <div className={`${area.iconColor} text-3xl mb-4`}>
+                <area.icon size={32} />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">
+              <h3 className="text-xl font-bold text-blue-900 mb-3">
                 {area.title}
               </h3>
-              <p className="text-blue-100 mb-6 leading-relaxed">
+              <p className="text-gray-700 mb-4">
                 {area.description}
               </p>
-              <button className="text-yellow-400 font-semibold hover:text-yellow-300 flex items-center transition-colors group-hover:translate-x-1 duration-300">
+              <button className={`${area.iconColor} font-semibold hover:opacity-80 flex items-center transition-colors`}>
                 Read More
-                <ArrowRight size={16} className="ml-2" />
+                <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </button>
             </div>
           ))}
         </div>
 
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-2xl border border-white/20 mb-16">
+        <div className="bg-blue-50 rounded-xl p-8 shadow-inner mb-12">
           <div className="flex flex-col md:flex-row items-center">
-            <div className="md:w-1/2 mb-8 md:mb-0 md:pr-8">
-              <h3 className="text-3xl font-bold text-white mb-6">Interactive Hazard Map</h3>
-              <p className="text-blue-100 mb-6 leading-relaxed text-lg">
+            <div className="md:w-1/2 mb-6 md:mb-0 md:pr-8">
+              <h3 className="text-2xl font-bold text-blue-900 mb-4">Interactive Hazard Map</h3>
+              <p className="text-gray-700 mb-4">
                 Explore our real-time hazard mapping system to understand risks in your area.
               </p>
               <Link 
                 to="/disaster-planning"
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-blue-950 rounded-full font-bold hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 shadow-xl"
+                className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-6 rounded-lg transition duration-300 inline-flex items-center"
               >
-                <MapPin className="mr-3" size={20} />
                 View Community Map
+                <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </Link>
             </div>
-            <div className="md:w-1/2">
-              <div className="bg-white/20 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/30">
-                <div className="w-full h-64 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center">
+            <div className="md:w-1/2 bg-white p-4 rounded-lg shadow-md">
+              <div className="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center">
                 <div className="text-center">
-                  <MapPin className="mx-auto h-16 w-16 text-blue-600 mb-4" />
-                  <span className="text-blue-800 font-semibold text-lg">Interactive Map Preview</span>
-                  <p className="text-sm text-blue-600 mt-2">Click "View Community Map" to access full features</p>
-                </div>
+                  <MapPin className="mx-auto h-12 w-12 text-gray-400 mb-2" />
+                  <span className="text-gray-500">Interactive Map Preview</span>
+                  <p className="text-xs text-gray-400 mt-1">Click "View Community Map" to access</p>
                 </div>
               </div>
             </div>
@@ -130,23 +121,27 @@ const Planning: React.FC = () => {
         </div>
 
         <div className="text-center">
-          <h3 className="text-3xl font-bold text-yellow-500 mb-6">Community Engagement</h3>
-          <p className="text-blue-100 max-w-3xl mx-auto mb-8 text-lg leading-relaxed">
+          <h3 className="text-2xl font-bold text-yellow-500 mb-6">Share Your Input</h3>
+          <p className="text-white max-w-2xl mx-auto mb-6">
             Help us improve our disaster planning by sharing your local knowledge and suggestions.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-6">
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link 
               to="/contact"
-              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-blue-950 rounded-full font-bold hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 shadow-xl"
+              className="bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-3 px-6 rounded-lg transition duration-300 inline-flex items-center"
             >
-              <ClipboardList className="mr-3" size={20} />
+              <svg className="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
               Quick Survey
             </Link>
             <Link 
               to="/contact"
-              className="inline-flex items-center px-8 py-4 bg-white/20 backdrop-blur-sm text-white rounded-full font-bold hover:bg-white/30 transition-all duration-300 transform hover:scale-105 shadow-xl border border-white/30"
+              className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-lg transition duration-300 inline-flex items-center"
             >
-              <Users className="mr-3" size={20} />
+              <svg className="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
               Submit Suggestion
             </Link>
           </div>
