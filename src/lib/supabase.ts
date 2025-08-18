@@ -385,8 +385,6 @@ export interface Database {
           visibility: number
           condition: 'sunny' | 'cloudy' | 'rainy' | 'stormy'
           description: string
-          location: string
-          alerts: string[]
           last_updated: string
           is_active: boolean
           created_at: string
@@ -400,8 +398,6 @@ export interface Database {
           visibility: number
           condition: 'sunny' | 'cloudy' | 'rainy' | 'stormy'
           description: string
-          location?: string
-          alerts?: string[]
           last_updated?: string
           is_active?: boolean
           created_at?: string
@@ -415,8 +411,6 @@ export interface Database {
           visibility?: number
           condition?: 'sunny' | 'cloudy' | 'rainy' | 'stormy'
           description?: string
-          location?: string
-          alerts?: string[]
           last_updated?: string
           is_active?: boolean
           created_at?: string

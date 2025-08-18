@@ -105,28 +105,13 @@ const WeatherTickerWidget: React.FC = () => {
       try {
         const { data: dbData, error: dbError } = await supabase
           .from('weather_data')
-          .select('temperature, humidity, wind_speed, visibility, condition, description, location, last_updated')
+          .select('temperature, humidity, wind_speed, visibility, condition, description, last_updated')
           .eq('is_active', true)
           .order('last_updated', { ascending: false })
           .limit(1)
           .maybeSingle();
 
         if (dbData && !dbError) {
-          // Try to get alerts separately
-          let alerts: string[] = [];
-          try {
-            const { data: alertData } = await supabase
-              .from('weather_data')
-              .select('alerts')
-              .eq('is_active', true)
-              .order('last_updated', { ascending: false })
-              .limit(1)
-              .maybeSingle();
-            
-            alerts = alertData?.alerts || [];
-          } catch (alertError) {
-            console.warn('Could not fetch alerts from database:', alertError);
-          }
 
           setWeatherData({
             temperature: dbData.temperature,
@@ -134,8 +119,8 @@ const WeatherTickerWidget: React.FC = () => {
             wind_speed: dbData.wind_speed,
             condition: dbData.condition,
             description: dbData.description,
-            location: dbData.location || 'Pio Duran, Albay',
-            alerts,
+            location: 'Pio Duran, Albay',
+            alerts: [],
             last_updated: dbData.last_updated
           });
 

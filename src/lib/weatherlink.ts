@@ -218,8 +218,6 @@ export class WeatherLinkAPI {
           visibility: currentWeather.visibility || 10,
           condition: currentWeather.condition,
           description: currentWeather.description,
-          location: 'Pio Duran, Albay',
-          alerts: [],
           last_updated: new Date().toISOString(),
           is_active: true
         });
@@ -281,7 +279,6 @@ export class WeatherLinkAPI {
           visibility: weatherData.visibility,
           condition: weatherData.condition,
           description: weatherData.description,
-          location: 'Pio Duran, Albay',
           last_updated: new Date().toISOString(),
           is_active: true
         });
@@ -291,17 +288,6 @@ export class WeatherLinkAPI {
         return false;
       }
 
-      // Then try to update alerts separately (in case the column doesn't exist)
-      try {
-        const alerts = await this.getWeatherAlerts();
-        await supabase
-          .from('weather_data')
-          .update({ alerts })
-          .eq('is_active', true);
-      } catch (alertError) {
-        console.warn('Could not update alerts (column may not exist):', alertError);
-        // Continue without alerts - this is not critical
-      }
 
       return true;
     } catch (error) {
