@@ -1,149 +1,367 @@
-import React from 'react';
-import { MapPin, Bell, Route, Leaf, Building, Handshake } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, Bell, Route, Leaf, Building, Handshake, Shield, Users, Target, BarChart3, CheckCircle, ArrowRight, Download, FileText, Calendar, Clock, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Planning: React.FC = () => {
+  const [activeCard, setActiveCard] = useState<number | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  React.useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
   const planningAreas = [
     {
       icon: MapPin,
       title: 'Risk Assessment & Hazard Mapping',
-      description: 'Identifying vulnerable areas and creating updated local disaster maps with interactive GIS technology.',
-      color: 'border-blue-500',
-      bgColor: 'bg-blue-50',
-      iconColor: 'text-blue-500'
+      description: 'Advanced GIS technology for identifying vulnerable areas and creating comprehensive disaster risk maps.',
+      features: ['Interactive hazard mapping', 'Vulnerability assessments', 'Climate data analysis', 'Real-time monitoring'],
+      color: 'from-blue-500 to-cyan-600',
+      accent: 'blue',
+      stats: { coverage: '100%', accuracy: '95%', updates: 'Monthly' }
     },
     {
       icon: Bell,
       title: 'Early Warning Systems',
-      description: 'Implementing real-time alerts for typhoons, floods, and earthquakes through multiple channels.',
-      color: 'border-yellow-500',
-      bgColor: 'bg-yellow-50',
-      iconColor: 'text-yellow-500'
+      description: 'Multi-channel alert systems providing real-time notifications for various disaster types.',
+      features: ['SMS/Mobile alerts', 'Siren networks', 'Social media integration', 'Community radio'],
+      color: 'from-yellow-500 to-orange-600',
+      accent: 'yellow',
+      stats: { coverage: '98%', response: '< 2 min', channels: '5+' }
     },
     {
       icon: Route,
       title: 'Evacuation Planning',
-      description: 'Ensuring designated safe zones and clear evacuation routes with regular community drills.',
-      color: 'border-red-500',
-      bgColor: 'bg-red-50',
-      iconColor: 'text-red-500'
+      description: 'Comprehensive evacuation strategies with designated safe zones and optimized routes.',
+      features: ['Route optimization', 'Shelter management', 'Transportation coordination', 'Special needs planning'],
+      color: 'from-red-500 to-pink-600',
+      accent: 'red',
+      stats: { routes: '25+', shelters: '15', capacity: '10K+' }
     },
     {
       icon: Leaf,
       title: 'Climate Adaptation',
-      description: 'Promoting green infrastructure, sustainable land use, and environmental restoration projects.',
-      color: 'border-green-500',
-      bgColor: 'bg-green-50',
-      iconColor: 'text-green-500'
+      description: 'Sustainable environmental solutions and green infrastructure for long-term resilience.',
+      features: ['Green infrastructure', 'Ecosystem restoration', 'Sustainable development', 'Carbon reduction'],
+      color: 'from-green-500 to-emerald-600',
+      accent: 'green',
+      stats: { projects: '12', impact: 'High', timeline: '5 years' }
     },
     {
       icon: Building,
       title: 'Infrastructure Resilience',
-      description: 'Strengthening community structures to withstand disasters through engineering solutions.',
-      color: 'border-purple-500',
-      bgColor: 'bg-purple-50',
-      iconColor: 'text-purple-500'
+      description: 'Engineering solutions to strengthen community structures against natural disasters.',
+      features: ['Structural assessments', 'Retrofitting programs', 'Building codes', 'Critical facilities'],
+      color: 'from-purple-500 to-violet-600',
+      accent: 'purple',
+      stats: { buildings: '500+', compliance: '90%', upgrades: 'Ongoing' }
     },
     {
       icon: Handshake,
       title: 'Multi-Sector Collaboration',
-      description: 'Partnering with government agencies, NGOs, and businesses for comprehensive disaster response.',
-      color: 'border-indigo-500',
-      bgColor: 'bg-indigo-50',
-      iconColor: 'text-indigo-500'
+      description: 'Strategic partnerships with government, NGOs, and private sector for comprehensive response.',
+      features: ['Inter-agency coordination', 'Public-private partnerships', 'NGO collaboration', 'International cooperation'],
+      color: 'from-indigo-500 to-blue-600',
+      accent: 'indigo',
+      stats: { partners: '25+', agreements: '15', coverage: 'Regional' }
     }
   ];
 
+  const planningProcess = [
+    {
+      step: 1,
+      title: 'Assessment',
+      description: 'Comprehensive risk and vulnerability analysis',
+      icon: BarChart3,
+      color: 'from-blue-500 to-blue-600'
+    },
+    {
+      step: 2,
+      title: 'Planning',
+      description: 'Strategic plan development and resource allocation',
+      icon: FileText,
+      color: 'from-green-500 to-green-600'
+    },
+    {
+      step: 3,
+      title: 'Implementation',
+      description: 'Execute plans through training and infrastructure',
+      icon: Zap,
+      color: 'from-yellow-500 to-yellow-600'
+    },
+    {
+      step: 4,
+      title: 'Monitoring',
+      description: 'Continuous evaluation and improvement',
+      icon: Target,
+      color: 'from-purple-500 to-purple-600'
+    }
+  ];
+
+  const achievements = [
+    { value: '95%', label: 'Community Preparedness', description: 'Households with emergency plans' },
+    { value: '40+', label: 'Training Programs', description: 'Annual capacity building sessions' },
+    { value: '0', label: 'Disaster Fatalities', description: 'Zero casualties in past 3 years' },
+    { value: '25+', label: 'Partner Organizations', description: 'Active collaboration network' }
+  ];
+
   return (
-    <section className="py-16 bg-blue-900">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-yellow-500 mb-4">
-            Disaster Risk Reduction & Management Planning
+    <section className="py-24 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-20 left-10 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+          <div className="absolute top-40 right-10 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-yellow-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+        </div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Header */}
+        <div className={`text-center mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`}>
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl mb-8 shadow-2xl">
+            <Shield className="text-white" size={40} />
+          </div>
+          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+            Disaster Risk Reduction &
+            <span className="block bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+              Management Planning
+            </span>
           </h2>
-          <p className="text-lg text-white max-w-3xl mx-auto">
-            Preparedness is key to safeguarding lives, livelihoods, and infrastructure. Our MDRRMO Planning Division develops proactive strategies to minimize risks, improve response mechanisms, and enhance resilience across our community.
+          <div className="w-32 h-1.5 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto rounded-full mb-8"></div>
+          <p className="text-xl text-blue-100 max-w-4xl mx-auto leading-relaxed">
+            Building resilient communities through comprehensive planning, innovative strategies, and collaborative partnerships
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {planningAreas.map((area, index) => (
-            <div
-              key={index}
-              className={`${area.bgColor} p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border-l-4 ${area.color}`}
-            >
-              <div className={`${area.iconColor} text-3xl mb-4`}>
-                <area.icon size={32} />
+        {/* Planning Process Timeline */}
+        <div className={`mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '300ms' }}>
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-white mb-4">Our Planning Process</h3>
+            <p className="text-blue-200 max-w-2xl mx-auto">
+              A systematic approach to building disaster resilience
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {planningProcess.map((step, index) => (
+              <div key={index} className="relative group">
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:border-white/40 transition-all duration-500 hover:transform hover:-translate-y-2">
+                  <div className={`w-16 h-16 bg-gradient-to-br ${step.color} rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:scale-110 transition-transform duration-300`}>
+                    <span className="text-white font-bold text-xl">{step.step}</span>
+                  </div>
+                  <div className="text-center">
+                    <step.icon className="text-white mx-auto mb-4" size={32} />
+                    <h4 className="text-xl font-bold text-white mb-3">{step.title}</h4>
+                    <p className="text-blue-200 text-sm leading-relaxed">{step.description}</p>
+                  </div>
+                </div>
+                
+                {/* Connector Arrow */}
+                {index < planningProcess.length - 1 && (
+                  <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
+                    <ArrowRight className="text-white/40" size={24} />
+                  </div>
+                )}
               </div>
-              <h3 className="text-xl font-bold text-blue-900 mb-3">
-                {area.title}
-              </h3>
-              <p className="text-gray-700 mb-4">
-                {area.description}
-              </p>
-              <button className={`${area.iconColor} font-semibold hover:opacity-80 flex items-center transition-colors`}>
-                Read More
-                <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        <div className="bg-blue-50 rounded-xl p-8 shadow-inner mb-12">
-          <div className="flex flex-col md:flex-row items-center">
-            <div className="md:w-1/2 mb-6 md:mb-0 md:pr-8">
-              <h3 className="text-2xl font-bold text-blue-900 mb-4">Interactive Hazard Map</h3>
-              <p className="text-gray-700 mb-4">
-                Explore our real-time hazard mapping system to understand risks in your area.
+        {/* Planning Areas Grid */}
+        <div className={`mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '500ms' }}>
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-white mb-4">Strategic Planning Areas</h3>
+            <p className="text-blue-200 max-w-2xl mx-auto">
+              Comprehensive approaches to disaster risk reduction and community resilience
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {planningAreas.map((area, index) => (
+              <div
+                key={index}
+                className="group relative bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 hover:border-white/40 transition-all duration-500 hover:transform hover:-translate-y-3 cursor-pointer"
+                onMouseEnter={() => setActiveCard(index)}
+                onMouseLeave={() => setActiveCard(null)}
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                {/* Gradient Overlay */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${area.color} opacity-0 group-hover:opacity-10 rounded-3xl transition-opacity duration-500`}></div>
+                
+                {/* Icon */}
+                <div className={`relative w-16 h-16 bg-gradient-to-br ${area.color} rounded-2xl flex items-center justify-center mb-6 shadow-xl group-hover:scale-110 transition-transform duration-300`}>
+                  <area.icon className="text-white" size={32} />
+                </div>
+                
+                {/* Content */}
+                <div className="relative z-10">
+                  <h4 className="text-xl font-bold text-white mb-4 group-hover:text-yellow-300 transition-colors">
+                    {area.title}
+                  </h4>
+                  <p className="text-blue-200 mb-6 leading-relaxed">
+                    {area.description}
+                  </p>
+                  
+                  {/* Features List */}
+                  <div className="space-y-2 mb-6">
+                    {area.features.map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center text-sm text-blue-100">
+                        <CheckCircle size={14} className="text-green-400 mr-2 flex-shrink-0" />
+                        <span>{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Stats */}
+                  <div className="grid grid-cols-3 gap-4 pt-4 border-t border-white/20">
+                    {Object.entries(area.stats).map(([key, value], statIndex) => (
+                      <div key={statIndex} className="text-center">
+                        <div className="text-white font-bold text-sm">{value}</div>
+                        <div className="text-blue-300 text-xs capitalize">{key}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Hover Arrow */}
+                <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                  <ChevronRight className="text-white" size={20} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Achievements Section */}
+        <div className={`mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '700ms' }}>
+          <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-12 border border-white/20">
+            <div className="text-center mb-12">
+              <h3 className="text-3xl font-bold text-white mb-4">Our Impact</h3>
+              <p className="text-blue-200 max-w-2xl mx-auto">
+                Measurable results from our disaster risk reduction efforts
               </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              {achievements.map((achievement, index) => (
+                <div key={index} className="text-center group">
+                  <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-3xl font-bold text-white">{achievement.value}</span>
+                  </div>
+                  <h4 className="text-xl font-bold text-white mb-2">{achievement.label}</h4>
+                  <p className="text-blue-200 text-sm">{achievement.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Interactive Map Section */}
+        <div className={`mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '800ms' }}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h3 className="text-4xl font-bold text-white mb-6">
+                Interactive Hazard Mapping
+              </h3>
+              <p className="text-blue-200 mb-8 text-lg leading-relaxed">
+                Explore our comprehensive hazard mapping system powered by advanced GIS technology. 
+                Understand risks in your area and access real-time disaster information.
+              </p>
+              
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center text-blue-100">
+                  <CheckCircle className="text-green-400 mr-3" size={20} />
+                  <span>Real-time hazard monitoring</span>
+                </div>
+                <div className="flex items-center text-blue-100">
+                  <CheckCircle className="text-green-400 mr-3" size={20} />
+                  <span>Interactive evacuation routes</span>
+                </div>
+                <div className="flex items-center text-blue-100">
+                  <CheckCircle className="text-green-400 mr-3" size={20} />
+                  <span>Community vulnerability assessments</span>
+                </div>
+                <div className="flex items-center text-blue-100">
+                  <CheckCircle className="text-green-400 mr-3" size={20} />
+                  <span>Climate change projections</span>
+                </div>
+              </div>
+              
               <Link 
                 to="/disaster-planning"
-                className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-6 rounded-lg transition duration-300 inline-flex items-center"
+                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-600 text-white rounded-2xl hover:from-yellow-400 hover:to-orange-500 transition-all duration-300 font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 group"
               >
-                View Community Map
-                <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                <MapPin className="mr-3 group-hover:animate-bounce" size={24} />
+                Explore Interactive Map
+                <ArrowRight className="ml-3 group-hover:translate-x-1 transition-transform" size={20} />
               </Link>
             </div>
-            <div className="md:w-1/2 bg-white p-4 rounded-lg shadow-md">
-              <div className="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="mx-auto h-12 w-12 text-gray-400 mb-2" />
-                  <span className="text-gray-500">Interactive Map Preview</span>
-                  <p className="text-xs text-gray-400 mt-1">Click "View Community Map" to access</p>
+            
+            <div className="relative">
+              <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 shadow-2xl">
+                <div className="aspect-video bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center relative overflow-hidden">
+                  {/* Map Preview */}
+                  <div className="absolute inset-0 opacity-30">
+                    <div className="absolute inset-0" style={{
+                      backgroundImage: `radial-gradient(circle at 30% 30%, rgba(34, 197, 94, 0.3) 0%, transparent 50%),
+                                       radial-gradient(circle at 70% 70%, rgba(239, 68, 68, 0.3) 0%, transparent 50%),
+                                       radial-gradient(circle at 50% 80%, rgba(234, 179, 8, 0.3) 0%, transparent 50%)`
+                    }}></div>
+                  </div>
+                  
+                  <div className="text-center relative z-10">
+                    <MapPin className="mx-auto h-16 w-16 text-white mb-4 animate-pulse" />
+                    <h4 className="text-xl font-bold text-white mb-2">Interactive Hazard Map</h4>
+                    <p className="text-blue-200 text-sm">Click to access full mapping system</p>
+                  </div>
+                  
+                  {/* Floating Elements */}
+                  <div className="absolute top-4 left-4 bg-red-500 w-3 h-3 rounded-full animate-ping"></div>
+                  <div className="absolute top-8 right-8 bg-yellow-500 w-2 h-2 rounded-full animate-ping" style={{ animationDelay: '1s' }}></div>
+                  <div className="absolute bottom-6 left-8 bg-green-500 w-2 h-2 rounded-full animate-ping" style={{ animationDelay: '2s' }}></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="text-center">
-          <h3 className="text-2xl font-bold text-yellow-500 mb-6">Share Your Input</h3>
-          <p className="text-white max-w-2xl mx-auto mb-6">
-            Help us improve our disaster planning by sharing your local knowledge and suggestions.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link 
-              to="/contact"
-              className="bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-3 px-6 rounded-lg transition duration-300 inline-flex items-center"
-            >
-              <svg className="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-              Quick Survey
-            </Link>
-            <Link 
-              to="/contact"
-              className="bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-lg transition duration-300 inline-flex items-center"
-            >
-              <svg className="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-              </svg>
-              Submit Suggestion
-            </Link>
+        {/* Call to Action */}
+        <div className={`text-center ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '900ms' }}>
+          <div className="bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 rounded-3xl p-12 shadow-2xl relative overflow-hidden">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute inset-0" style={{
+                backgroundImage: `radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+                                 radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.2) 0%, transparent 50%)`
+              }}></div>
+            </div>
+            
+            <div className="relative z-10">
+              <h3 className="text-3xl font-bold text-white mb-6">Ready to Build Community Resilience?</h3>
+              <p className="text-white/90 mb-8 max-w-3xl mx-auto text-lg">
+                Join us in creating comprehensive disaster resilience for our community through expert guidance, 
+                proven strategies, and collaborative planning.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                <Link 
+                  to="/resources"
+                  className="group inline-flex items-center px-8 py-4 bg-white text-orange-600 rounded-2xl hover:bg-gray-100 transition-all duration-300 font-bold shadow-xl hover:shadow-2xl transform hover:scale-105"
+                >
+                  <Download className="mr-3 group-hover:animate-bounce" size={24} />
+                  Download Planning Guide
+                </Link>
+                <Link 
+                  to="/contact"
+                  className="group inline-flex items-center px-8 py-4 bg-white/20 backdrop-blur-sm text-white rounded-2xl hover:bg-white/30 transition-all duration-300 font-bold border border-white/30 hover:border-white/50 transform hover:scale-105"
+                >
+                  <Users className="mr-3 group-hover:animate-bounce" size={24} />
+                  Contact Our Experts
+                  <ArrowRight className="ml-3 group-hover:translate-x-1 transition-transform" size={20} />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

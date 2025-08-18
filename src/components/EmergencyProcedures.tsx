@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Waves, Mountain, Zap, Cloud, Home, Flame, Globe, Thermometer, Calendar, AlertTriangle, Download } from 'lucide-react';
+import { Waves, Mountain, Zap, Cloud, Home, Flame, Globe, Thermometer, Calendar, AlertTriangle, Download, ChevronRight, Shield, Clock, CheckCircle } from 'lucide-react';
 
 const EmergencyProcedures: React.FC = () => {
   const [activeTab, setActiveTab] = useState('storm-surge');
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    setIsVisible(true);
+    
     // Load external scripts for PDF generation
     const loadScript = (src: string) => {
       return new Promise((resolve, reject) => {
@@ -32,222 +35,231 @@ const EmergencyProcedures: React.FC = () => {
     'storm-surge': {
       icon: Waves,
       name: 'Storm Surge',
-      color: 'text-blue-500',
+      color: 'from-blue-500 to-blue-600',
+      accent: 'blue',
       before: [
-        { title: 'Know Your Risk', description: 'Check if your area is prone to storm surges and know your evacuation routes.' },
-        { title: 'Prepare Emergency Kit', description: 'Include food, water, medications, flashlight, batteries, and important documents.' },
-        { title: 'Reinforce Your Home', description: 'Install storm shutters or board up windows. Secure outdoor items that could become projectiles.' },
-        { title: 'Plan Evacuation', description: 'Identify higher ground and plan how to get there. Know where official shelters are located.' }
+        { title: 'Monitor Weather Alerts', description: 'Stay updated with official weather forecasts and storm surge warnings from PAGASA and local authorities.' },
+        { title: 'Know Your Evacuation Zone', description: 'Identify if you live in a storm surge-prone area and familiarize yourself with evacuation routes and centers.' },
+        { title: 'Prepare Emergency Kit', description: 'Pack essential supplies including food, water, medications, flashlight, batteries, and important documents.' },
+        { title: 'Secure Your Property', description: 'Reinforce windows, secure outdoor furniture, and ensure proper drainage around your home.' }
       ],
       during: [
-        { title: 'Evacuate if Ordered', description: 'Leave immediately if authorities issue evacuation orders. Don\'t wait until it\'s too late.' },
-        { title: 'Move to Higher Ground', description: 'If trapped by rising water, move to the highest level of your home or building.' },
+        { title: 'Evacuate Immediately', description: 'Follow evacuation orders without delay. Do not wait for conditions to worsen.' },
+        { title: 'Move to Higher Ground', description: 'If trapped by rising water, move to the highest level of your building and signal for help.' },
         { title: 'Avoid Flood Waters', description: 'Never walk, swim, or drive through flood waters. Just 6 inches can knock you down.' },
-        { title: 'Stay Informed', description: 'Listen to weather updates and emergency instructions on battery-powered radio.' }
+        { title: 'Stay Informed', description: 'Listen to battery-powered radio for updates and emergency instructions from authorities.' }
       ],
       after: [
-        { title: 'Wait for All Clear', description: 'Don\'t return home until authorities declare it\'s safe to do so.' },
-        { title: 'Inspect for Damage', description: 'Check for structural damage before entering buildings. Watch for downed power lines.' },
-        { title: 'Avoid Contaminated Water', description: 'Don\'t drink tap water until officials say it\'s safe. Boil water if unsure.' },
-        { title: 'Document Damage', description: 'Take photos for insurance claims before cleaning up or making repairs.' }
+        { title: 'Wait for Official All-Clear', description: 'Do not return home until authorities declare it safe. Storm surge can occur in multiple waves.' },
+        { title: 'Inspect for Damage', description: 'Check for structural damage, gas leaks, and electrical hazards before entering buildings.' },
+        { title: 'Avoid Contaminated Water', description: 'Do not drink tap water until officials confirm it\'s safe. Boil water if advised.' },
+        { title: 'Document Everything', description: 'Take photos of damage for insurance claims before cleaning up or making repairs.' }
       ]
     },
     'landslide': {
       icon: Mountain,
       name: 'Landslide',
-      color: 'text-amber-600',
+      color: 'from-amber-500 to-orange-600',
+      accent: 'amber',
       before: [
-        { title: 'Learn About Risk', description: 'Learn about landslide risk in your area and watch for warning signs like tilting trees or poles.' },
-        { title: 'Develop Plan', description: 'Develop evacuation plan with multiple routes and keep emergency supplies ready.' },
-        { title: 'Install Safety', description: 'Install flexible pipe fittings for gas and water and consider professional slope stability assessment.' },
-        { title: 'Know Escape Routes', description: 'Know two ways out of every room and identify safe areas away from slopes.' }
+        { title: 'Learn Warning Signs', description: 'Watch for tilting trees, poles, or fences, cracks in ground, and unusual water flow patterns.' },
+        { title: 'Develop Evacuation Plan', description: 'Plan multiple escape routes and identify safe areas away from steep slopes.' },
+        { title: 'Install Safety Measures', description: 'Use flexible pipe fittings for utilities and consider professional slope stability assessment.' },
+        { title: 'Emergency Preparedness', description: 'Keep emergency supplies ready and know two ways out of every room in your home.' }
       ],
       during: [
-        { title: 'Move Away Fast', description: 'Move away from the path of landslide quickly and run to nearest high ground perpendicular to flow.' },
-        { title: 'Protect Head', description: 'Protect your head from falling debris and stay alert for flooding after landslide.' },
-        { title: 'Listen for Sounds', description: 'Listen for unusual sounds indicating movement and evacuate if you suspect imminent landslide.' },
-        { title: 'Avoid Slope Areas', description: 'Stay away from steep slopes and areas with loose soil or rock.' }
+        { title: 'Move Away Quickly', description: 'Run perpendicular to the landslide path, not downhill or uphill in the same direction.' },
+        { title: 'Protect Your Head', description: 'Shield yourself from falling debris and rocks while moving to safety.' },
+        { title: 'Listen for Sounds', description: 'Be alert for unusual sounds that may indicate moving debris or additional slides.' },
+        { title: 'Avoid Slope Areas', description: 'Stay away from the slide area and watch for flooding that may follow.' }
       ],
       after: [
-        { title: 'Stay Away', description: 'Stay away from slide area - more slides may occur and check for injured or trapped persons.' },
-        { title: 'Watch for Hazards', description: 'Watch for flooding or broken utility lines and report broken utility lines to authorities.' },
-        { title: 'Replant Ground', description: 'Replant damaged ground as soon as possible and seek professional evaluation of land stability.' },
-        { title: 'Document Damage', description: 'Take photos for insurance claims and contact authorities for assessment.' }
+        { title: 'Stay Away from Slide Area', description: 'Additional slides may occur. Keep a safe distance from the affected area.' },
+        { title: 'Check for Casualties', description: 'Look for injured or trapped persons and provide assistance if safe to do so.' },
+        { title: 'Report Hazards', description: 'Notify authorities of broken utility lines, damaged roads, or continued instability.' },
+        { title: 'Seek Professional Help', description: 'Have land stability professionally evaluated before rebuilding or replanting.' }
       ]
     },
     'thunderstorm': {
       icon: Zap,
       name: 'Thunderstorm',
-      color: 'text-purple-600',
+      color: 'from-purple-500 to-indigo-600',
+      accent: 'purple',
       before: [
-        { title: 'Monitor Weather', description: 'Monitor weather forecasts and warnings and secure outdoor objects that could blow away.' },
-        { title: 'Prepare Home', description: 'Trim tree branches near your home and install surge protectors for electronics.' },
-        { title: 'Review Plan', description: 'Review family emergency plan and charge electronic devices and flashlights.' },
-        { title: 'Secure Items', description: 'Bring in or secure outdoor furniture, decorations, and equipment.' }
+        { title: 'Monitor Weather Conditions', description: 'Track weather forecasts and thunderstorm warnings through reliable sources.' },
+        { title: 'Secure Outdoor Items', description: 'Bring in or tie down outdoor furniture, decorations, and equipment that could become projectiles.' },
+        { title: 'Prepare Your Home', description: 'Trim tree branches near your home and install surge protectors for electronics.' },
+        { title: 'Charge Devices', description: 'Ensure all electronic devices and emergency equipment are fully charged.' }
       ],
       during: [
-        { title: 'Go Indoors', description: 'Go indoors immediately when thunder is heard and stay away from windows, doors, and porches.' },
-        { title: 'Avoid Electronics', description: 'Avoid electrical equipment and plumbing and don\'t use corded phones except for emergencies.' },
-        { title: 'Seek Shelter', description: 'If outdoors, seek shelter in hard-topped vehicle and avoid tall objects like trees if caught outside.' },
-        { title: 'Stay Inside', description: 'Remain indoors until 30 minutes after the last thunder is heard.' }
+        { title: 'Seek Indoor Shelter', description: 'Go indoors immediately when thunder is heard. Avoid windows, doors, and porches.' },
+        { title: 'Avoid Electrical Items', description: 'Stay away from electrical equipment, plumbing, and corded phones except for emergencies.' },
+        { title: 'Vehicle Safety', description: 'If outdoors, seek shelter in a hard-topped vehicle with windows closed.' },
+        { title: 'Lightning Safety', description: 'If caught outside, avoid tall objects and crouch low with feet together.' }
       ],
       after: [
-        { title: 'Wait Safely', description: 'Wait 30 minutes after last thunder before going out and check for damage to home and property.' },
-        { title: 'Avoid Hazards', description: 'Avoid downed power lines and report them and be cautious of flooding in low-lying areas.' },
-        { title: 'Check Others', description: 'Check on neighbors, especially elderly and document any damage for insurance claims.' },
-        { title: 'Report Issues', description: 'Report any electrical hazards or structural damage to authorities.' }
+        { title: 'Wait 30 Minutes', description: 'Stay indoors for 30 minutes after the last thunder before going outside.' },
+        { title: 'Inspect for Damage', description: 'Check your property for damage, including roof, windows, and outdoor areas.' },
+        { title: 'Report Hazards', description: 'Report downed power lines, damaged trees, or flooding to authorities immediately.' },
+        { title: 'Help Others', description: 'Check on neighbors, especially elderly residents, and offer assistance if needed.' }
       ]
     },
     'typhoon': {
       icon: Cloud,
       name: 'Typhoon',
-      color: 'text-orange-500',
+      color: 'from-slate-500 to-gray-700',
+      accent: 'slate',
       before: [
-        { title: 'Monitor Tracking', description: 'Monitor typhoon tracking and evacuation orders and stock up on food, water, and medical supplies.' },
-        { title: 'Secure Property', description: 'Secure or bring in outdoor furniture and board up windows with plywood.' },
-        { title: 'Prepare Water', description: 'Fill bathtubs and containers with water and fuel vehicles and check emergency equipment.' },
-        { title: 'Emergency Kit', description: 'Prepare emergency kit with 72-hour supplies and important documents in waterproof container.' }
+        { title: 'Track the Storm', description: 'Monitor typhoon path, intensity, and evacuation orders from official sources.' },
+        { title: 'Stock Emergency Supplies', description: 'Gather 72-hour supply of food, water, medications, and essential items.' },
+        { title: 'Secure Your Property', description: 'Install storm shutters, board windows, and secure or remove outdoor items.' },
+        { title: 'Prepare for Power Loss', description: 'Fill bathtubs with water, charge devices, and test emergency equipment.' }
       ],
       during: [
-        { title: 'Stay Indoors', description: 'Stay indoors and away from windows and go to interior room on lowest floor.' },
-        { title: 'Listen to Radio', description: 'Listen to battery-powered radio for updates and avoid using candles - use flashlights instead.' },
-        { title: 'Avoid Eye', description: 'Don\'t go outside during eye of storm and be prepared for power outages.' },
-        { title: 'Stay Alert', description: 'Remain alert for changing conditions and follow official evacuation orders.' }
+        { title: 'Stay Indoors', description: 'Remain inside and away from windows. Move to an interior room on the lowest floor.' },
+        { title: 'Monitor Updates', description: 'Listen to battery-powered radio for official updates and emergency instructions.' },
+        { title: 'Avoid Candles', description: 'Use flashlights instead of candles to prevent fire hazards during power outages.' },
+        { title: 'Beware of the Eye', description: 'Do not go outside during the calm eye of the storm - winds will return.' }
       ],
       after: [
-        { title: 'Wait for Clear', description: 'Wait for official all-clear before venturing out and watch for flooding and storm surge.' },
-        { title: 'Avoid Hazards', description: 'Avoid downed power lines and damaged buildings and use generators outdoors only to prevent CO poisoning.' },
-        { title: 'Water Safety', description: 'Boil water if advised by authorities and take photos of damage for insurance.' },
-        { title: 'Help Others', description: 'Check on neighbors and assist with recovery efforts when safe to do so.' }
+        { title: 'Wait for All-Clear', description: 'Do not venture outside until authorities declare it safe to do so.' },
+        { title: 'Watch for Hazards', description: 'Be aware of flooding, storm surge, downed power lines, and damaged structures.' },
+        { title: 'Generator Safety', description: 'Use generators outdoors only to prevent carbon monoxide poisoning.' },
+        { title: 'Document Damage', description: 'Photograph damage for insurance claims before cleaning up or making repairs.' }
       ]
     },
     'flood': {
-      icon: Home,
+      icon: Waves,
       name: 'Flood',
-      color: 'text-teal-600',
+      color: 'from-teal-500 to-cyan-600',
+      accent: 'teal',
       before: [
-        { title: 'Know Risk', description: 'Know your area\'s flood risk and evacuation routes and sign up for community alert systems.' },
-        { title: 'Make Plan', description: 'Make flood emergency plan with family and keep emergency supplies in waterproof container.' },
-        { title: 'Consider Insurance', description: 'Consider flood insurance (requires 30-day waiting period) and identify higher ground locations nearby.' },
-        { title: 'Prepare Kit', description: 'Prepare emergency kit with essential supplies and important documents.' }
+        { title: 'Know Your Risk', description: 'Understand your area\'s flood risk and identify evacuation routes to higher ground.' },
+        { title: 'Create Emergency Plan', description: 'Develop a family flood plan and sign up for community alert systems.' },
+        { title: 'Prepare Emergency Kit', description: 'Keep emergency supplies in waterproof containers in an easily accessible location.' },
+        { title: 'Consider Flood Insurance', description: 'Purchase flood insurance (requires 30-day waiting period before coverage begins).' }
       ],
       during: [
-        { title: 'Move Higher', description: 'Move to higher ground immediately and avoid walking in moving water.' },
-        { title: 'Don\'t Drive', description: 'Don\'t drive through flooded roads and stay away from downed power lines.' },
-        { title: 'Listen Updates', description: 'Listen to emergency broadcasts and evacuate if told to do so by authorities.' },
-        { title: 'Stay Safe', description: 'Never attempt to walk or drive through flood waters - turn around, don\'t drown.' }
+        { title: 'Move to Higher Ground', description: 'Evacuate to higher ground immediately when flooding begins or is imminent.' },
+        { title: 'Avoid Moving Water', description: 'Never walk or drive through flood waters. Turn around, don\'t drown.' },
+        { title: 'Stay Away from Power Lines', description: 'Avoid downed electrical lines and report them to authorities immediately.' },
+        { title: 'Follow Evacuation Orders', description: 'Leave immediately if told to evacuate by emergency officials.' }
       ],
       after: [
-        { title: 'Return Safely', description: 'Return home only when authorities say it\'s safe and avoid floodwater - may be contaminated.' },
-        { title: 'Check Damage', description: 'Check for structural damage before entering and clean and disinfect everything touched by floodwater.' },
-        { title: 'Food Safety', description: 'Throw away food that came in contact with floodwater and document damage with photos.' },
-        { title: 'Health Precautions', description: 'Seek medical attention if you come into contact with flood water.' }
+        { title: 'Return Safely', description: 'Only return home when authorities confirm it\'s safe to do so.' },
+        { title: 'Avoid Contaminated Water', description: 'Stay away from flood water which may contain sewage, chemicals, or debris.' },
+        { title: 'Check for Damage', description: 'Inspect your home for structural damage before entering and using utilities.' },
+        { title: 'Clean and Disinfect', description: 'Clean and disinfect everything that came in contact with flood water.' }
       ]
     },
     'earthquake': {
       icon: Globe,
       name: 'Earthquake',
-      color: 'text-red-600',
+      color: 'from-red-500 to-rose-600',
+      accent: 'red',
       before: [
-        { title: 'Secure Space', description: 'Secure heavy furniture and appliances to walls and practice "Drop, Cover, and Hold On" drills.' },
-        { title: 'Identify Safe Spots', description: 'Identify safe spots in each room and keep emergency supplies accessible.' },
-        { title: 'Learn Shutoffs', description: 'Learn how to turn off gas, water, and electricity and make family communication plan.' },
-        { title: 'Emergency Kit', description: 'Prepare earthquake emergency kit with supplies for 72 hours.' }
+        { title: 'Secure Your Space', description: 'Anchor heavy furniture and appliances to walls. Secure breakable items.' },
+        { title: 'Practice Drop, Cover, Hold', description: 'Regularly practice earthquake safety drills with all family members.' },
+        { title: 'Identify Safe Spots', description: 'Know the safest places in each room - under sturdy tables or against interior walls.' },
+        { title: 'Learn Utility Shutoffs', description: 'Know how to turn off gas, water, and electricity in case of damage.' }
       ],
       during: [
-        { title: 'Drop Cover Hold', description: 'Drop to hands and knees immediately and take cover under sturdy desk or table.' },
-        { title: 'Protect Head', description: 'Hold on to shelter and protect head/neck and stay where you are until shaking stops.' },
-        { title: 'If Outside', description: 'If outdoors, move away from buildings and trees and if driving, pull over and stop safely.' },
-        { title: 'Stay Calm', description: 'Remain calm and do not run outside during shaking.' }
+        { title: 'Drop, Cover, Hold On', description: 'Drop to hands and knees, take cover under sturdy furniture, hold on and protect your head.' },
+        { title: 'Stay Where You Are', description: 'Do not run outside during shaking. Most injuries occur from falling objects.' },
+        { title: 'If Outdoors', description: 'Move away from buildings, trees, and power lines. Drop to the ground and cover your head.' },
+        { title: 'If Driving', description: 'Pull over safely, stop, and stay in the vehicle until shaking stops.' }
       ],
       after: [
-        { title: 'Check Injuries', description: 'Check for injuries and provide first aid and inspect home for damage and hazards.' },
-        { title: 'Turn Off Utilities', description: 'Turn off utilities if damaged and clean up spilled hazardous materials.' },
-        { title: 'Expect Aftershocks', description: 'Be prepared for aftershocks and stay out of damaged buildings.' },
-        { title: 'Get Information', description: 'Listen to emergency broadcasts for updates and instructions.' }
+        { title: 'Check for Injuries', description: 'Provide first aid for injuries and get help for seriously injured persons.' },
+        { title: 'Inspect for Hazards', description: 'Check for gas leaks, electrical damage, and structural problems.' },
+        { title: 'Be Prepared for Aftershocks', description: 'Expect aftershocks and be ready to drop, cover, and hold on again.' },
+        { title: 'Stay Out of Damaged Buildings', description: 'Do not enter damaged structures until they are inspected by professionals.' }
       ]
     },
     'fire': {
       icon: Flame,
-      name: 'Fire',
-      color: 'text-red-500',
+      name: 'Fire Emergency',
+      color: 'from-orange-500 to-red-600',
+      accent: 'orange',
       before: [
-        { title: 'Install Alarms', description: 'Install smoke alarms and check batteries monthly and create and practice fire escape plan.' },
-        { title: 'Keep Extinguishers', description: 'Keep fire extinguishers in key locations and clear vegetation around home (defensible space).' },
-        { title: 'Fire-Resistant Materials', description: 'Use fire-resistant materials for landscaping and know two ways out of every room.' },
-        { title: 'Emergency Plan', description: 'Create family fire escape plan and practice regularly with all family members.' }
+        { title: 'Install Smoke Alarms', description: 'Install smoke detectors on every level and check batteries monthly.' },
+        { title: 'Create Escape Plan', description: 'Plan and practice fire escape routes with all family members.' },
+        { title: 'Maintain Fire Safety', description: 'Keep fire extinguishers accessible and maintain clear escape routes.' },
+        { title: 'Create Defensible Space', description: 'Clear vegetation and flammable materials around your property.' }
       ],
       during: [
-        { title: 'Get Out Fast', description: 'Get out fast and call 911 and crawl low under smoke to avoid inhaling it.' },
-        { title: 'Feel Doors', description: 'Feel doors before opening - don\'t open if hot and close doors behind you as you escape.' },
-        { title: 'Meeting Place', description: 'Meet at designated meeting place and never go back inside for belongings.' },
-        { title: 'Stop Drop Roll', description: 'If clothes catch fire: stop, drop to ground, and roll to smother flames.' }
+        { title: 'Get Out Fast', description: 'Exit immediately and call 911 from a safe location outside.' },
+        { title: 'Stay Low', description: 'Crawl under smoke to avoid inhaling toxic gases and to see better.' },
+        { title: 'Test Doors', description: 'Feel doors before opening. If hot, use alternate escape route.' },
+        { title: 'Never Go Back', description: 'Once outside, never return inside for belongings or pets.' }
       ],
       after: [
-        { title: 'Stay Out', description: 'Don\'t enter damaged building until cleared and watch for hot spots that may re-ignite.' },
-        { title: 'Check Clearance', description: 'Check with fire department before re-entry and beware of structural damage.' },
-        { title: 'Document Damage', description: 'Document damage with photos and contact insurance company immediately.' },
-        { title: 'Professional Help', description: 'Seek professional evaluation for structural integrity before reoccupying.' }
+        { title: 'Stay Out', description: 'Do not enter the building until fire department declares it safe.' },
+        { title: 'Watch for Hot Spots', description: 'Be aware of areas that may reignite and report them to firefighters.' },
+        { title: 'Contact Insurance', description: 'Document damage with photos and contact your insurance company immediately.' },
+        { title: 'Professional Inspection', description: 'Have the structure professionally inspected before reoccupying.' }
       ]
     },
     'tsunami': {
       icon: Waves,
       name: 'Tsunami',
-      color: 'text-blue-800',
+      color: 'from-blue-600 to-indigo-700',
+      accent: 'blue',
       before: [
-        { title: 'Know Zone', description: 'Learn if you live in tsunami hazard zone and know evacuation routes to higher ground.' },
-        { title: 'Practice Drills', description: 'Practice evacuation drills with family and prepare emergency kit for quick grab.' },
-        { title: 'Sign Up Alerts', description: 'Sign up for tsunami warning alerts and identify vertical evacuation structures.' },
-        { title: 'Emergency Supplies', description: 'Keep emergency supplies in easily accessible location.' }
+        { title: 'Know Your Zone', description: 'Learn if you live in a tsunami hazard zone and know evacuation routes to higher ground.' },
+        { title: 'Practice Evacuation', description: 'Practice evacuation drills and time how long it takes to reach safety.' },
+        { title: 'Prepare Go-Bag', description: 'Keep an emergency kit ready for immediate evacuation.' },
+        { title: 'Sign Up for Alerts', description: 'Register for tsunami warning alerts and emergency notifications.' }
       ],
       during: [
-        { title: 'Move Higher', description: 'Move to higher ground immediately and don\'t wait for official warning.' },
-        { title: 'Go Far Inland', description: 'Go as high and as far inland as possible and if trapped, go to upper floor of sturdy building.' },
-        { title: 'Stay Away Beach', description: 'Stay away from beach and waterfront and listen to emergency broadcasts.' },
-        { title: 'Don\'t Return', description: 'Do not return to evacuation zone until authorities give all-clear.' }
+        { title: 'Move to Higher Ground', description: 'Evacuate immediately to higher ground or inland. Do not wait for official warnings.' },
+        { title: 'Go Far and High', description: 'Move as far inland and as high as possible. Tsunamis can travel far inland.' },
+        { title: 'Abandon Vehicles', description: 'If traffic is heavy, abandon your vehicle and continue on foot to higher ground.' },
+        { title: 'Help Others', description: 'Assist others in evacuation if possible, but do not delay your own escape.' }
       ],
       after: [
-        { title: 'Stay Away', description: 'Stay away from flooded and damaged areas and wait for official all-clear before returning.' },
-        { title: 'Multiple Waves', description: 'Be aware that tsunamis come in series and avoid disaster areas to allow rescue operations.' },
-        { title: 'Help Others', description: 'Help injured or trapped persons if safe to do so and stay out of buildings with water around them.' },
-        { title: 'Follow Instructions', description: 'Follow all official instructions and avoid areas that may be unstable.' }
+        { title: 'Stay Away', description: 'Stay away from flooded and damaged areas until authorities declare them safe.' },
+        { title: 'Beware of Series', description: 'Tsunamis come in series. The first wave may not be the largest.' },
+        { title: 'Avoid Disaster Areas', description: 'Stay out of disaster areas to allow emergency responders to work.' },
+        { title: 'Check Water Safety', description: 'Do not drink water that may have been contaminated by the tsunami.' }
       ]
     },
     'heat': {
       icon: Thermometer,
       name: 'Heat Emergency',
-      color: 'text-red-400',
+      color: 'from-yellow-500 to-red-500',
+      accent: 'yellow',
       before: [
-        { title: 'Install Cooling', description: 'Install air conditioning or cooling systems and identify air-conditioned public places nearby.' },
-        { title: 'Check Others', description: 'Check on elderly neighbors and relatives and never leave people or pets in parked cars.' },
-        { title: 'Learn Signs', description: 'Learn signs of heat-related illness and prepare cooling supplies and extra water.' },
-        { title: 'Plan Activities', description: 'Plan outdoor activities for cooler parts of the day.' }
+        { title: 'Prepare Cooling Systems', description: 'Ensure air conditioning works or identify air-conditioned public places nearby.' },
+        { title: 'Check on Vulnerable People', description: 'Regularly check on elderly neighbors, relatives, and those with health conditions.' },
+        { title: 'Learn Heat Illness Signs', description: 'Recognize symptoms of heat exhaustion and heat stroke for quick response.' },
+        { title: 'Never Leave Anyone in Cars', description: 'Never leave people or pets in parked vehicles, even for short periods.' }
       ],
       during: [
-        { title: 'Stay Cool', description: 'Stay indoors in air conditioning when possible and drink plenty of water even if not thirsty.' },
-        { title: 'Avoid Substances', description: 'Avoid alcohol and caffeine and wear lightweight, light-colored clothing.' },
-        { title: 'Cool Down', description: 'Take cool showers or baths and limit outdoor activities to early morning/evening.' },
-        { title: 'Rest Often', description: 'Take frequent breaks in shade or air conditioning.' }
+        { title: 'Stay Cool Indoors', description: 'Remain in air-conditioned spaces as much as possible during extreme heat.' },
+        { title: 'Drink Plenty of Water', description: 'Drink water regularly, even if you don\'t feel thirsty. Avoid alcohol and caffeine.' },
+        { title: 'Dress Appropriately', description: 'Wear lightweight, light-colored, loose-fitting clothing.' },
+        { title: 'Limit Outdoor Activities', description: 'Avoid outdoor activities during the hottest parts of the day (10 AM - 4 PM).' }
       ],
       after: [
-        { title: 'Monitor Weather', description: 'Continue monitoring weather forecasts and check on family, friends, and neighbors.' },
-        { title: 'Watch for Signs', description: 'Watch for signs of heat exhaustion or heat stroke and seek medical attention if feeling unwell.' },
-        { title: 'Return Gradually', description: 'Gradually return to normal activities and evaluate cooling strategies for future events.' },
-        { title: 'Stay Hydrated', description: 'Continue drinking plenty of fluids even after temperatures cool.' }
+        { title: 'Continue Monitoring', description: 'Keep watching weather forecasts for continued heat warnings.' },
+        { title: 'Check on Others', description: 'Continue checking on family, friends, and neighbors for heat-related illness.' },
+        { title: 'Seek Medical Attention', description: 'Get medical help immediately if you or others show signs of heat-related illness.' },
+        { title: 'Gradual Return', description: 'Gradually return to normal outdoor activities as temperatures cool.' }
       ]
     }
   };
 
   const tabs = [
-    { id: 'storm-surge', icon: Waves, name: 'Storm Surge', color: 'text-blue-500' },
-    { id: 'landslide', icon: Mountain, name: 'Landslide', color: 'text-amber-600' },
-    { id: 'thunderstorm', icon: Zap, name: 'Thunderstorm', color: 'text-purple-600' },
-    { id: 'typhoon', icon: Cloud, name: 'Typhoon', color: 'text-orange-500' },
-    { id: 'flood', icon: Home, name: 'Flood', color: 'text-teal-600' },
-    { id: 'earthquake', icon: Globe, name: 'Earthquake', color: 'text-red-600' },
-    { id: 'fire', icon: Flame, name: 'Fire', color: 'text-red-500' },
-    { id: 'tsunami', icon: Waves, name: 'Tsunami', color: 'text-blue-800' },
-    { id: 'heat', icon: Thermometer, name: 'Heat', color: 'text-red-400' }
+    { id: 'storm-surge', icon: Waves, name: 'Storm Surge' },
+    { id: 'landslide', icon: Mountain, name: 'Landslide' },
+    { id: 'thunderstorm', icon: Zap, name: 'Thunderstorm' },
+    { id: 'typhoon', icon: Cloud, name: 'Typhoon' },
+    { id: 'flood', icon: Waves, name: 'Flood' },
+    { id: 'earthquake', icon: Globe, name: 'Earthquake' },
+    { id: 'fire', icon: Flame, name: 'Fire' },
+    { id: 'tsunami', icon: Waves, name: 'Tsunami' },
+    { id: 'heat', icon: Thermometer, name: 'Heat' }
   ];
 
   const downloadPDF = (disasterType: string, phase: string) => {
@@ -329,116 +341,194 @@ const EmergencyProcedures: React.FC = () => {
     }
   };
 
-  const renderProcedureCard = (title: string, items: Array<{title: string, description: string}>, icon: React.ReactNode, color: string, phase: string) => (
-    <div className={`bg-white p-6 rounded-xl shadow-lg h-full border-l-4 ${color.replace('text-', 'border-')} relative`}>
-      <button
-        onClick={() => downloadPDF(activeTab, phase)}
-        className="absolute top-4 right-4 bg-blue-950 text-white px-3 py-1 rounded-lg text-xs hover:bg-blue-800 transition-colors flex items-center space-x-1"
-      >
-        <Download size={12} />
-        <span>PDF</span>
-      </button>
-      
-      <h3 className="text-2xl font-bold mb-6 flex items-center text-blue-900">
-        {icon}
-        <span className="ml-3">{title}</span>
-      </h3>
-      <div className="space-y-4">
-        {items.map((item, index) => (
-          <div key={index} className="relative pl-6">
-            <div className={`absolute left-0 top-2 w-3 h-3 rounded-full ${color.replace('text-', 'bg-')}`}></div>
-            <h4 className="font-semibold mb-2 text-blue-950">{item.title}</h4>
-            <p className="text-gray-700 text-sm leading-relaxed">{item.description}</p>
+  const renderProcedureCard = (title: string, items: Array<{title: string, description: string}>, icon: React.ReactNode, phase: string, index: number) => {
+    const currentProcedure = procedures[activeTab as keyof typeof procedures];
+    
+    return (
+      <div className={`group relative bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} 
+           style={{ animationDelay: `${index * 150}ms` }}>
+        
+        {/* Download Button */}
+        <button
+          onClick={() => downloadPDF(activeTab, phase)}
+          className={`absolute top-4 right-4 bg-gradient-to-r ${currentProcedure.color} text-white px-4 py-2 rounded-xl text-sm font-medium hover:shadow-lg transition-all duration-300 flex items-center space-x-2 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0`}
+        >
+          <Download size={14} />
+          <span>PDF</span>
+        </button>
+        
+        {/* Phase Header */}
+        <div className="flex items-center space-x-4 mb-8">
+          <div className={`p-4 rounded-2xl bg-gradient-to-br ${currentProcedure.color} shadow-lg`}>
+            {icon}
           </div>
-        ))}
+          <div>
+            <h3 className="text-2xl font-bold text-gray-900">{title}</h3>
+            <p className="text-gray-600 text-sm">Essential steps to follow</p>
+          </div>
+        </div>
+
+        {/* Procedure Steps */}
+        <div className="space-y-6">
+          {items.map((item, stepIndex) => (
+            <div key={stepIndex} className="group/item relative">
+              <div className="flex items-start space-x-4">
+                <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-r ${currentProcedure.color} flex items-center justify-center text-white font-bold text-sm shadow-md`}>
+                  {stepIndex + 1}
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-bold text-gray-900 mb-2 group-hover/item:text-blue-600 transition-colors">
+                    {item.title}
+                  </h4>
+                  <p className="text-gray-700 leading-relaxed text-sm">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+              
+              {/* Connector Line */}
+              {stepIndex < items.length - 1 && (
+                <div className={`absolute left-4 top-8 w-px h-6 bg-gradient-to-b ${currentProcedure.color} opacity-30`}></div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Phase Indicator */}
+        <div className="absolute -left-2 top-8">
+          <div className={`w-4 h-16 rounded-r-full bg-gradient-to-b ${currentProcedure.color} shadow-lg`}></div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const currentProcedure = procedures[activeTab as keyof typeof procedures] || procedures['storm-surge'];
 
   return (
-    <section id="emergency-procedures" className="py-16 bg-blue-900">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-extrabold text-yellow-500 mb-4 relative inline-block">
-            <span className="relative z-10 px-4">EMERGENCY PROCEDURES</span>
-            <span className="absolute bottom-0 left-0 right-0 h-2 bg-gray-400 z-0"></span>
+    <section id="emergency-procedures" className="py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                           radial-gradient(circle at 80% 20%, rgba(234, 179, 8, 0.1) 0%, transparent 50%),
+                           radial-gradient(circle at 40% 40%, rgba(168, 85, 247, 0.05) 0%, transparent 50%)`
+        }}></div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Header Section */}
+        <div className={`text-center mb-16 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`}>
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-red-500 to-orange-600 rounded-3xl mb-8 shadow-2xl">
+            <AlertTriangle className="text-white" size={40} />
+          </div>
+          <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent mb-6">
+            Emergency Procedures
           </h2>
-          <p className="text-xl text-white max-w-3xl mx-auto">
-            What to do before, during, and after different types of emergencies
+          <div className="w-32 h-1.5 bg-gradient-to-r from-red-500 to-orange-500 mx-auto rounded-full mb-8"></div>
+          <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
+            Comprehensive step-by-step procedures for before, during, and after emergency situations
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden mb-12">
-          {/* Tab Navigation */}
-          <div className="bg-gray-50 p-4">
-            <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2">
-              {tabs.map((tab) => (
+        {/* Modern Tab Navigation */}
+        <div className={`bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 mb-16 overflow-hidden ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '200ms' }}>
+          <div className="p-6">
+            <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-3">
+              {tabs.map((tab, index) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex flex-col items-center gap-2 p-3 rounded-lg text-xs font-medium transition-all duration-300 hover:bg-blue-100 ${
+                  className={`group relative flex flex-col items-center gap-3 p-4 rounded-2xl text-sm font-semibold transition-all duration-300 hover:scale-105 ${
                     activeTab === tab.id
-                      ? `${tab.color} bg-blue-100 border-2 border-current`
-                      : 'text-gray-600 hover:text-gray-800'
+                      ? `bg-gradient-to-br ${procedures[tab.id as keyof typeof procedures]?.color || 'from-blue-500 to-blue-600'} text-white shadow-xl scale-105`
+                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
                   }`}
+                  style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <tab.icon size={20} />
-                  <span className="text-center leading-tight">{tab.name}</span>
+                  <tab.icon size={24} className="transition-transform duration-300 group-hover:scale-110" />
+                  <span className="text-center leading-tight text-xs">{tab.name}</span>
+                  
+                  {/* Active indicator */}
+                  {activeTab === tab.id && (
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full shadow-lg"></div>
+                  )}
                 </button>
               ))}
             </div>
           </div>
+        </div>
 
-          {/* Tab Content */}
-          <div className="p-8">
-            <div className="text-center mb-8">
-              <div className="flex items-center justify-center mb-4">
-                <currentProcedure.icon className={`${currentProcedure.color} text-4xl mr-4`} size={48} />
-                <h3 className="text-3xl font-bold text-blue-950">{currentProcedure.name} Emergency Procedures</h3>
+        {/* Procedure Content */}
+        <div className={`${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '400ms' }}>
+          {/* Current Procedure Header */}
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center mb-6">
+              <div className={`p-6 rounded-3xl bg-gradient-to-br ${currentProcedure.color} shadow-2xl`}>
+                <currentProcedure.icon className="text-white" size={48} />
               </div>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Follow these step-by-step procedures to stay safe during {currentProcedure.name.toLowerCase()} emergencies
-              </p>
             </div>
+            <h3 className="text-4xl font-bold text-gray-900 mb-4">{currentProcedure.name} Emergency Procedures</h3>
+            <p className="text-gray-600 max-w-3xl mx-auto text-lg">
+              Follow these comprehensive procedures to stay safe during {currentProcedure.name.toLowerCase()} emergencies
+            </p>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {renderProcedureCard(
-                'Before',
-                currentProcedure.before,
-                <Calendar size={24} />,
-                currentProcedure.color,
-                'before'
-              )}
-              {renderProcedureCard(
-                'During',
-                currentProcedure.during,
-                <AlertTriangle size={24} />,
-                currentProcedure.color,
-                'during'
-              )}
-              {renderProcedureCard(
-                'After',
-                currentProcedure.after,
-                <Home size={24} />,
-                currentProcedure.color,
-                'after'
-              )}
-            </div>
+          {/* Procedure Cards Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+            {renderProcedureCard(
+              'Before',
+              currentProcedure.before,
+              <Calendar size={28} className="text-white" />,
+              'before',
+              0
+            )}
+            {renderProcedureCard(
+              'During',
+              currentProcedure.during,
+              <AlertTriangle size={28} className="text-white" />,
+              'during',
+              1
+            )}
+            {renderProcedureCard(
+              'After',
+              currentProcedure.after,
+              <CheckCircle size={28} className="text-white" />,
+              'after',
+              2
+            )}
           </div>
         </div>
 
-        {/* Emergency Contact */}
-        <div className="text-center">
-          <div className="bg-red-600 rounded-xl p-8 shadow-xl">
-            <h3 className="text-2xl font-bold text-white mb-4">Emergency Contact</h3>
-            <p className="text-red-100 mb-6">
-              For immediate emergency assistance, call our 24/7 hotline:
-            </p>
-            <div className="bg-white text-red-600 font-bold py-4 px-8 rounded-lg shadow-lg inline-flex items-center text-2xl">
-              <AlertTriangle className="mr-3" size={28} />
-              <span>911</span>
+        {/* Emergency Contact Section */}
+        <div className={`${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '600ms' }}>
+          <div className="bg-gradient-to-r from-red-600 via-red-700 to-red-800 rounded-3xl p-12 shadow-2xl border border-red-500/20 relative overflow-hidden">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute inset-0" style={{
+                backgroundImage: `radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+                                 radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.2) 0%, transparent 50%)`
+              }}></div>
+            </div>
+            
+            <div className="relative z-10 text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-6">
+                <AlertTriangle className="text-white animate-pulse" size={40} />
+              </div>
+              <h3 className="text-3xl font-bold text-white mb-4">Emergency Contact</h3>
+              <p className="text-red-100 mb-8 text-lg max-w-2xl mx-auto">
+                For immediate emergency assistance, call our 24/7 hotline. Help is always available.
+              </p>
+              <div className="inline-flex items-center bg-white text-red-600 font-bold py-6 px-12 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 text-3xl">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                    <AlertTriangle size={24} />
+                  </div>
+                  <span>911</span>
+                </div>
+              </div>
+              <p className="text-red-200 mt-6 text-sm">
+                Available 24/7 • Multilingual Support • Immediate Response
+              </p>
             </div>
           </div>
         </div>

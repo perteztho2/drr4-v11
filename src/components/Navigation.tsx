@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, Search, FileText, ChevronDown, ChevronRight, Play } from 'lucide-react';
+import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, Search, FileText, ChevronDown, ChevronRight, Play, Bell, Zap } from 'lucide-react';
 import { useDatabase } from '../contexts/DatabaseContext';
 import { usePages } from '../contexts/PagesContext';
 import { supabase } from '../lib/supabase';
@@ -15,12 +15,21 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [dynamicNavItems, setDynamicNavItems] = useState<any[]>([]);
   const [openSubmenus, setOpenSubmenus] = useState<Set<string>>(new Set());
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { isConnected } = useDatabase();
   const { pages } = usePages();
 
   React.useEffect(() => {
     fetchNavigationItems();
+    
+    // Handle scroll effect
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const fetchNavigationItems = async () => {
@@ -74,16 +83,17 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
     
     return tree;
   };
+
   const publicNavItems = [
-    { path: '/', label: 'Home', icon: Home },
+    { path: '/', label: 'Home', icon: Home, featured: true },
     { path: '/about', label: 'About', icon: Info },
-    { path: '/services-detail', label: 'Services', icon: Wrench },
-    { path: '/news-portal', label: 'News', icon: Newspaper },
-    { path: '/resources', label: 'Resources', icon: FolderOpen },
+    { path: '/services-detail', label: 'Services', icon: Wrench, featured: true },
+    { path: '/news-portal', label: 'News', icon: Newspaper, featured: true },
+    { path: '/resources', label: 'Resources', icon: FolderOpen, featured: true },
     { path: '/disaster-planning', label: 'Planning', icon: Calendar },
     { path: '/gallery', label: 'Gallery', icon: Camera },
     { path: '/video-gallery', label: 'Videos', icon: Play },
-    { path: '/contact', label: 'Contact', icon: Phone }
+    { path: '/contact', label: 'Contact', icon: Phone, featured: true }
   ];
 
   // Use dynamic navigation items if available, otherwise use default
@@ -96,7 +106,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
 
   function getIconComponent(iconName: string) {
     const icons: Record<string, any> = {
-      Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, FileText, Shield, Play
+      Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, FileText, Shield, Play, Bell, Zap
     };
     return icons[iconName] || Home;
   }
@@ -110,47 +120,56 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
   const renderNavigationItem = (item: any, isMobile: boolean = false) => {
     const hasChildren = item.children && item.children.length > 0;
     const isSubmenuOpen = openSubmenus.has(item.id);
+    const itemIsActive = isActive(item.path);
     
     if (hasChildren) {
       return (
-        <div key={item.id || item.path} className="relative">
+        <div key={item.id || item.path} className="relative group">
           <button
             onClick={() => toggleSubmenu(item.id)}
-            className={`flex items-center justify-between w-full px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-              isActive(item.path)
-                ? 'bg-yellow-500 text-blue-950'
-                : 'text-yellow-500 hover:bg-blue-800 hover:text-yellow-400'
+            className={`flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:transform hover:scale-105 ${
+              itemIsActive
+                ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg'
+                : 'text-white/90 hover:bg-white/10 hover:text-white backdrop-blur-sm'
             }`}
           >
             <div className="flex items-center">
-              <item.icon size={16} className="mr-2" />
-              {item.label}
+              <item.icon size={18} className="mr-3" />
+              <span>{item.label}</span>
+              {item.featured && (
+                <span className="ml-2 w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
+              )}
             </div>
             {isMobile ? (
               isSubmenuOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />
             ) : (
-              <ChevronDown size={16} className={`transform transition-transform ${isSubmenuOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown size={16} className={`transform transition-transform duration-300 ${isSubmenuOpen ? 'rotate-180' : ''}`} />
             )}
           </button>
           
           {/* Submenu */}
           {isSubmenuOpen && (
-            <div className={`${isMobile ? 'ml-4 mt-2 space-y-1' : 'absolute top-full left-0 mt-1 w-48 bg-blue-900 rounded-lg shadow-lg py-2 z-50'}`}>
+            <div className={`${isMobile ? 'ml-4 mt-2 space-y-1' : 'absolute top-full left-0 mt-2 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl py-3 z-50 border border-white/20'}`}>
               {item.children.map((child: any) => (
                 <Link
                   key={child.id || child.path}
                   to={child.path}
                   onClick={() => isMobile && setIsOpen(false)}
-                  className={`flex items-center px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                    isMobile ? 'rounded-lg' : ''
+                  className={`flex items-center px-4 py-3 text-sm font-medium transition-all duration-300 hover:transform hover:scale-105 ${
+                    isMobile ? 'rounded-xl' : 'rounded-xl mx-2'
                   } ${
                     isActive(child.path)
-                      ? 'bg-yellow-500 text-blue-950'
-                      : 'text-yellow-400 hover:bg-blue-800 hover:text-yellow-300'
+                      ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg'
+                      : isMobile 
+                        ? 'text-white/90 hover:bg-white/10 hover:text-white'
+                        : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'
                   }`}
                 >
-                  <child.icon size={14} className="mr-2" />
-                  {child.label}
+                  <child.icon size={16} className="mr-3" />
+                  <span>{child.label}</span>
+                  {child.featured && (
+                    <span className="ml-2 w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
+                  )}
                 </Link>
               ))}
             </div>
@@ -164,80 +183,124 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
         key={item.id || item.path}
         to={item.path}
         onClick={() => isMobile && setIsOpen(false)}
-        className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-          isActive(item.path)
-            ? 'bg-yellow-500 text-blue-950'
-            : 'text-yellow-500 hover:bg-blue-800 hover:text-yellow-400'
+        className={`flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:transform hover:scale-105 group ${
+          itemIsActive
+            ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg'
+            : 'text-white/90 hover:bg-white/10 hover:text-white backdrop-blur-sm'
         }`}
       >
-        <item.icon size={16} className="mr-2" />
-        {item.label}
+        <item.icon size={18} className="mr-3 group-hover:animate-pulse" />
+        <span>{item.label}</span>
+        {item.featured && (
+          <span className="ml-2 w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
+        )}
       </Link>
     );
   };
+
   return (
-    <nav className="bg-blue-950 border-b-4 border-yellow-500 sticky top-0 z-50 shadow-lg">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <img 
-              src="https://res.cloudinary.com/dedcmctqk/image/upload/v1750079276/logome_h9snnx.webp" 
-              alt="MDRRMO" 
-              className="h-10 w-auto"
-            />
-            <div>
-              <h1 className="font-bold text-yellow-500 text-lg">MDRRMO</h1>
-              <p className="text-yellow-400 text-xs">PIO DURAN, ALBAY</p>
-              {!isConnected && (
-                <p className="text-red-400 text-xs">⚠ Offline Mode</p>
-              )}
-            </div>
-          </Link>
+    <>
+      <nav className={`sticky top-0 z-50 transition-all duration-500 ${
+        scrolled 
+          ? 'bg-blue-950/95 backdrop-blur-xl shadow-2xl border-b border-yellow-500/30' 
+          : 'bg-blue-950/90 backdrop-blur-sm border-b-4 border-yellow-500'
+      }`}>
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link to="/" className="flex items-center space-x-4 group">
+              <div className="relative">
+                <img 
+                  src="https://res.cloudinary.com/dedcmctqk/image/upload/v1750079276/logome_h9snnx.webp" 
+                  alt="MDRRMO" 
+                  className="h-12 w-auto transition-transform duration-300 group-hover:scale-110"
+                />
+                {!isConnected && (
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                )}
+              </div>
+              <div className="hidden sm:block">
+                <h1 className="font-bold text-yellow-500 text-xl tracking-wide">MDRRMO</h1>
+                <p className="text-yellow-400 text-sm font-medium">PIO DURAN, ALBAY</p>
+                {!isConnected && (
+                  <p className="text-red-400 text-xs font-medium flex items-center">
+                    <span className="w-2 h-2 bg-red-400 rounded-full mr-1 animate-pulse"></span>
+                    Offline Mode
+                  </p>
+                )}
+              </div>
+            </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
-            {navigationTree.map((item) => renderNavigationItem(item, false))}
-            <button
-              onClick={() => setIsSearchOpen(true)}
-              className="flex items-center px-4 py-2 rounded-lg text-sm font-medium text-yellow-500 hover:bg-blue-800 hover:text-yellow-400 transition-all duration-200"
-            >
-              <Search size={16} className="mr-2" />
-            {/* SEARCH NAME */}  
-            </button>
-          </div>
-
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-yellow-500 hover:text-yellow-400 transition-colors"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="lg:hidden py-4 border-t border-blue-800">
-            <div className="space-y-2">
-              {navigationTree.map((item) => renderNavigationItem(item, true))}
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-2">
+              {navigationTree.map((item) => renderNavigationItem(item, false))}
+              
+              {/* Search Button */}
               <button
-                onClick={() => {
-                  setIsSearchOpen(true);
-                  setIsOpen(false);
-                }}
-                className="flex items-center px-4 py-3 rounded-lg text-sm font-medium text-yellow-500 hover:bg-blue-800 w-full"
+                onClick={() => setIsSearchOpen(true)}
+                className="flex items-center px-4 py-3 rounded-xl text-sm font-medium text-white/90 hover:bg-white/10 hover:text-white transition-all duration-300 hover:transform hover:scale-105 backdrop-blur-sm group"
               >
-                <Search size={16} className="mr-3" />
-                Search
+                <Search size={18} className="mr-3 group-hover:animate-pulse" />
+                <span className="hidden xl:inline">Search</span>
+              </button>
+              
+              {/* Emergency Button */}
+              <Link
+                to="/contact"
+                className="flex items-center px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:scale-105 group"
+              >
+                <Bell size={18} className="mr-2 group-hover:animate-bounce" />
+                <span className="hidden xl:inline">Emergency</span>
+              </Link>
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="lg:hidden flex items-center space-x-3">
+              {/* Mobile Emergency Button */}
+              <Link
+                to="/contact"
+                className="flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 font-bold shadow-lg"
+              >
+                <Bell size={16} />
+              </Link>
+              
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="text-yellow-500 hover:text-yellow-400 transition-colors p-2 rounded-xl hover:bg-white/10"
+              >
+                {isOpen ? <X size={28} /> : <Menu size={28} />}
               </button>
             </div>
           </div>
-        )}
-      </div>
+
+          {/* Mobile Navigation */}
+          {isOpen && (
+            <div className="lg:hidden py-6 border-t border-blue-800/50 backdrop-blur-xl">
+              <div className="space-y-2">
+                {navigationTree.map((item) => renderNavigationItem(item, true))}
+                
+                {/* Mobile Search */}
+                <button
+                  onClick={() => {
+                    setIsSearchOpen(true);
+                    setIsOpen(false);
+                  }}
+                  className="flex items-center px-4 py-3 rounded-xl text-sm font-medium text-white/90 hover:bg-white/10 w-full group"
+                >
+                  <Search size={18} className="mr-3 group-hover:animate-pulse" />
+                  Search Resources
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+        
+        {/* Progress Bar */}
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 opacity-20"></div>
+      </nav>
       
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
-    </nav>
+    </>
   );
 };
 
