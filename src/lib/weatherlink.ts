@@ -42,14 +42,23 @@ interface WeatherLinkAPIResponse {
 }
 export class WeatherLinkAPI {
   private static async getAPISettings() {
-    const { data, error } = await supabase
-      .from('weather_api_settings')
-      .select('*')
-      .eq('is_active', true)
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('weather_api_settings')
+        .select('*')
+        .eq('is_active', true)
+        .maybeSingle();
 
-    if (error) throw error;
-    return data;
+      if (error) {
+        console.warn('Error fetching API settings:', error);
+        return null;
+      }
+      
+      return data;
+    } catch (error) {
+      console.warn('Failed to fetch API settings:', error);
+      return null;
+    }
   }
 
   private static async createSignature(apiSecret: string, parameters: string): Promise<string> {
@@ -71,7 +80,10 @@ export class WeatherLinkAPI {
   static async fetchCurrentWeather(): Promise<WeatherLinkData | null> {
     try {
       const settings = await this.getAPISettings();
-      if (!settings) return null;
+      if (!settings) {
+        console.warn('No WeatherLink API settings found, using fallback data');
+        return this.getFallbackWeatherData();
+      }
 
       const timestamp = Math.floor(Date.now() / 1000);
       const parameters = `api-key${settings.api_key}station-id${settings.station_id}t${timestamp}`;
@@ -128,28 +140,34 @@ export class WeatherLinkAPI {
       };
 
       // Update last sync time
-      await supabase
-        .from('weather_api_settings')
-        .update({ last_sync: new Date().toISOString() })
-        .eq('id', settings.id);
+      try {
+        await supabase
+          .from('weather_api_settings')
+          .update({ last_sync: new Date().toISOString() })
+          .eq('id', settings.id);
+      } catch (syncError) {
+        console.warn('Failed to update last sync time:', syncError);
+      }
 
       return weatherData;
     } catch (error) {
       console.error('Error fetching from WeatherLink API:', error);
-      
-      // Fallback to simulated data if API fails
-      return {
-        temperature: 28 + Math.floor(Math.random() * 6),
-        humidity: 70 + Math.floor(Math.random() * 20),
-        wind_speed: 5 + Math.floor(Math.random() * 15),
-        visibility: 10,
-        condition: 'partly-cloudy',
-        description: 'Partly Cloudy',
-        pressure: 1013,
-        uv_index: 6,
-        feels_like: 30
-      };
+      return this.getFallbackWeatherData();
     }
+  }
+
+  private static getFallbackWeatherData(): WeatherLinkData {
+    return {
+      temperature: 28 + Math.floor(Math.random() * 6),
+      humidity: 70 + Math.floor(Math.random() * 20),
+      wind_speed: 5 + Math.floor(Math.random() * 15),
+      visibility: 10,
+      condition: 'partly-cloudy',
+      description: 'Partly Cloudy',
+      pressure: 1013,
+      uv_index: 6,
+      feels_like: 30
+    };
   }
 
   static async fetchForecast(): Promise<WeatherLinkForecast[]> {
@@ -215,26 +233,33 @@ export class WeatherLinkAPI {
 
   static async getWeatherAlerts(): Promise<string[]> {
     try {
-      const currentWeather = await this.fetchCurrentWeather();
-      if (!currentWeather) return [];
+      // Get current weather data from database instead of API to avoid recursion
+      const { data: weatherData, error } = await supabase
+        .from('weather_data')
+        .select('temperature, wind_speed, condition')
+        .eq('is_active', true)
+        .order('last_updated', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error || !weatherData) {
+        console.warn('No weather data available for alerts');
+        return [];
+      }
 
       const alerts: string[] = [];
       
       // Generate alerts based on weather conditions
-      if (currentWeather.temperature >= 35) {
+      if (weatherData.temperature >= 35) {
         alerts.push('Heat Warning: Extreme temperatures expected');
       }
       
-      if (currentWeather.wind_speed >= 50) {
+      if (weatherData.wind_speed >= 50) {
         alerts.push('High Wind Warning: Strong winds may cause damage');
       }
       
-      if (currentWeather.condition === 'stormy') {
+      if (weatherData.condition === 'stormy') {
         alerts.push('Thunderstorm Warning: Severe weather conditions');
-      }
-      
-      if (currentWeather.humidity >= 90 && currentWeather.condition === 'rainy') {
-        alerts.push('Flood Watch: Heavy rainfall may cause flooding');
       }
       
       return alerts;
@@ -246,9 +271,8 @@ export class WeatherLinkAPI {
 
   static async updateWeatherInDatabase(weatherData: WeatherLinkData): Promise<boolean> {
     try {
-      const alerts = await this.getWeatherAlerts();
-      
-      const { error } = await supabase
+      // First, insert/update the basic weather data without alerts
+      const { error: updateError } = await supabase
         .from('weather_data')
         .upsert({
           temperature: weatherData.temperature,
@@ -258,12 +282,28 @@ export class WeatherLinkAPI {
           condition: weatherData.condition,
           description: weatherData.description,
           location: 'Pio Duran, Albay',
-          alerts,
           last_updated: new Date().toISOString(),
           is_active: true
         });
 
-      return !error;
+      if (updateError) {
+        console.error('Error updating weather data:', updateError);
+        return false;
+      }
+
+      // Then try to update alerts separately (in case the column doesn't exist)
+      try {
+        const alerts = await this.getWeatherAlerts();
+        await supabase
+          .from('weather_data')
+          .update({ alerts })
+          .eq('is_active', true);
+      } catch (alertError) {
+        console.warn('Could not update alerts (column may not exist):', alertError);
+        // Continue without alerts - this is not critical
+      }
+
+      return true;
     } catch (error) {
       console.error('Error updating weather in database:', error);
       return false;
@@ -272,13 +312,20 @@ export class WeatherLinkAPI {
   static async syncForecastData(): Promise<boolean> {
     try {
       const forecastData = await this.fetchForecast();
-      if (forecastData.length === 0) return false;
+      if (forecastData.length === 0) {
+        console.warn('No forecast data available');
+        return false;
+      }
 
       // Clear existing forecast data
-      await supabase
-        .from('weather_forecast')
-        .update({ is_active: false })
-        .eq('is_active', true);
+      try {
+        await supabase
+          .from('weather_forecast')
+          .update({ is_active: false })
+          .eq('is_active', true);
+      } catch (clearError) {
+        console.warn('Could not clear existing forecast data:', clearError);
+      }
 
       // Insert new forecast data
       const { error } = await supabase

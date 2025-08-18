@@ -36,36 +36,50 @@ const WeatherForecastWidget: React.FC = () => {
       setIsRefreshing(true);
       
       // Try to sync forecast from WeatherLink API
-      const success = await weatherAPI.syncForecastData();
-      if (success) {
-        console.log('Forecast synced from WeatherLink API');
+      try {
+        const success = await weatherAPI.syncForecastData();
+        if (success) {
+          console.log('Forecast synced from WeatherLink API');
+        }
+      } catch (syncError) {
+        console.warn('Failed to sync forecast from API:', syncError);
       }
       
       // Fetch forecast data from database
-      const { data, error } = await supabase
-        .from('weather_forecast')
-        .select('*')
-        .eq('is_active', true)
-        .gte('date', new Date().toISOString().split('T')[0])
-        .order('date', { ascending: true })
-        .limit(7);
+      try {
+        const { data, error } = await supabase
+          .from('weather_forecast')
+          .select('*')
+          .eq('is_active', true)
+          .gte('date', new Date().toISOString().split('T')[0])
+          .order('date', { ascending: true })
+          .limit(7);
 
-      if (error && !error.message.includes('relation "weather_forecast" does not exist')) {
-        throw error;
-      }
-      
-      if (data && data.length > 0) {
-        setForecast(data);
-      } else {
-        // Generate default forecast if no data available
+        if (error && !error.message.includes('relation "weather_forecast" does not exist')) {
+          console.warn('Database forecast error:', error);
+        }
+        
+        if (data && data.length > 0) {
+          setForecast(data);
+        } else {
+          // Generate default forecast if no data available
+          const defaultForecast = await generateDefaultForecast();
+          setForecast(defaultForecast);
+        }
+      } catch (dbError) {
+        console.warn('Database forecast fetch failed:', dbError);
         const defaultForecast = await generateDefaultForecast();
         setForecast(defaultForecast);
       }
     } catch (error) {
       console.error('Error fetching weather forecast:', error);
-      // Use default forecast on error
-      const defaultForecast = await generateDefaultForecast();
-      setForecast(defaultForecast);
+      try {
+        const defaultForecast = await generateDefaultForecast();
+        setForecast(defaultForecast);
+      } catch (fallbackError) {
+        console.error('Failed to generate default forecast:', fallbackError);
+        setForecast([]);
+      }
     } finally {
       setLoading(false);
       setIsRefreshing(false);

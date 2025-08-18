@@ -69,52 +69,91 @@ const WeatherTickerWidget: React.FC = () => {
       
       // Try to fetch fresh data from WeatherLink API
       if (isOnline) {
-        const freshData = await weatherAPI.fetchCurrentWeather();
-        if (freshData) {
-          setWeatherData({
-            temperature: freshData.temperature,
-            humidity: freshData.humidity,
-            wind_speed: freshData.wind_speed,
-            condition: freshData.condition,
-            description: freshData.description,
-            location: 'Pio Duran, Albay',
-            alerts: await weatherAPI.getWeatherAlerts(),
-            last_updated: new Date().toISOString()
-          });
-          
-          // Update database with fresh data
-          await weatherAPI.updateWeatherInDatabase(freshData);
-          setLastRefresh(new Date());
-          return;
+        try {
+          const freshData = await weatherAPI.fetchCurrentWeather();
+          if (freshData) {
+            // Get alerts separately to avoid circular dependency
+            let alerts: string[] = [];
+            try {
+              alerts = await weatherAPI.getWeatherAlerts();
+            } catch (alertError) {
+              console.warn('Could not fetch weather alerts:', alertError);
+            }
+
+            setWeatherData({
+              temperature: freshData.temperature,
+              humidity: freshData.humidity,
+              wind_speed: freshData.wind_speed,
+              condition: freshData.condition,
+              description: freshData.description,
+              location: 'Pio Duran, Albay',
+              alerts,
+              last_updated: new Date().toISOString()
+            });
+            
+            // Update database with fresh data
+            await weatherAPI.updateWeatherInDatabase(freshData);
+            setLastRefresh(new Date());
+            return;
+          }
+        } catch (apiError) {
+          console.warn('WeatherLink API failed, falling back to database:', apiError);
         }
       }
       
       // Fallback to database data if API fails or offline
-      const { data: dbData, error: dbError } = await supabase
-        .from('weather_data')
-        .select('*')
-        .eq('is_active', true)
-        .order('last_updated', { ascending: false })
-        .limit(1)
-        .single();
+      try {
+        const { data: dbData, error: dbError } = await supabase
+          .from('weather_data')
+          .select('temperature, humidity, wind_speed, visibility, condition, description, location, last_updated')
+          .eq('is_active', true)
+          .order('last_updated', { ascending: false })
+          .limit(1)
+          .maybeSingle();
 
-      if (dbData && !dbError) {
-        setWeatherData({
-          temperature: dbData.temperature,
-          humidity: dbData.humidity,
-          wind_speed: dbData.wind_speed,
-          condition: dbData.condition,
-          description: dbData.description,
-          location: dbData.location,
-          alerts: dbData.alerts || [],
-          last_updated: dbData.last_updated
-        });
+        if (dbData && !dbError) {
+          // Try to get alerts separately
+          let alerts: string[] = [];
+          try {
+            const { data: alertData } = await supabase
+              .from('weather_data')
+              .select('alerts')
+              .eq('is_active', true)
+              .order('last_updated', { ascending: false })
+              .limit(1)
+              .maybeSingle();
+            
+            alerts = alertData?.alerts || [];
+          } catch (alertError) {
+            console.warn('Could not fetch alerts from database:', alertError);
+          }
 
-        setLastRefresh(new Date());
+          setWeatherData({
+            temperature: dbData.temperature,
+            humidity: dbData.humidity,
+            wind_speed: dbData.wind_speed,
+            condition: dbData.condition,
+            description: dbData.description,
+            location: dbData.location || 'Pio Duran, Albay',
+            alerts,
+            last_updated: dbData.last_updated
+          });
+
+          setLastRefresh(new Date());
+          return;
+        }
+      } catch (dbError) {
+        console.warn('Database fallback failed:', dbError);
       }
+      
+      // Final fallback to default data
+      console.warn('Using default weather data');
+      setWeatherData(prev => ({
+        ...prev,
+        last_updated: new Date().toISOString()
+      }));
     } catch (error) {
       console.error('Error fetching weather data:', error);
-      // Use default data if everything fails
       setWeatherData(prev => ({
         ...prev,
         last_updated: new Date().toISOString()
