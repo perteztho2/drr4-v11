@@ -159,7 +159,7 @@ const VideoGallery: React.FC = () => {
         keywords="MDRRMO videos, Pio Duran training, disaster management videos, emergency drills, community activities"
       />
       
-      <div className="bg-gradient-to-br from-blue-950 to-blue-900 min-h-screen flex pt-20">
+      <div className="bg-gradient-to-br from-blue-950 to-blue-900 min-h-screen flex">
         {/* Video Albums Sidebar */}
         <div className="w-80 bg-blue-950 shadow-xl border-r border-yellow-500/20 overflow-y-auto">
           <div className="p-6 border-b border-yellow-500/20">
