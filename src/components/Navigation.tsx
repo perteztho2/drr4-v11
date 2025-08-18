@@ -203,7 +203,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
               className="flex items-center px-4 py-2 rounded-lg text-sm font-medium text-yellow-500 hover:bg-blue-800 hover:text-yellow-400 transition-all duration-200"
             >
               <Search size={16} className="mr-2" />
-              Search
+              S
             </button>
           </div>
 
