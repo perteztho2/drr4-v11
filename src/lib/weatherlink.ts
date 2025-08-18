@@ -303,25 +303,9 @@ export class WeatherLinkAPI {
         return false;
       }
 
-      // Clear existing forecast data
-      try {
-        await supabase
-          .from('weather_forecast')
-          .update({ is_active: false })
-          .eq('is_active', true);
-      } catch (clearError) {
-        console.warn('Could not clear existing forecast data:', clearError);
-      }
-
-      // Insert new forecast data
-      const { error } = await supabase
-        .from('weather_forecast')
-        .insert(forecastData.map(day => ({
-          ...day,
-          is_active: true
-        })));
-
-      if (error) throw error;
+      // Note: Forecast data updates should be handled by the weather-sync Edge Function
+      // to avoid RLS policy violations
+      console.warn('syncForecastData called from client-side - this should be handled by the weather-sync Edge Function');
       return true;
     } catch (error) {
       console.error('Error syncing forecast data:', error);
