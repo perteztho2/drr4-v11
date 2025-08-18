@@ -429,28 +429,16 @@ const EmergencyProcedures: React.FC = () => {
           </div>
         </div>
 
-        {/* Call to Action */}
+        {/* Emergency Contact */}
         <div className="text-center">
-          <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-2xl p-8 shadow-2xl">
-            <h3 className="text-2xl font-bold text-blue-950 mb-4">Ready to Learn More?</h3>
-            <p className="text-blue-900 mb-6 max-w-2xl mx-auto">
-              Download our comprehensive emergency procedures guide or contact us for training sessions
+          <div className="bg-red-600 rounded-xl p-8 shadow-xl">
+            <h3 className="text-2xl font-bold text-white mb-4">Emergency Contact</h3>
+            <p className="text-red-100 mb-6">
+              For immediate emergency assistance, call our 24/7 hotline:
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                to="/resources"
-                className="inline-flex items-center px-6 py-3 bg-blue-950 text-white rounded-full font-bold hover:bg-blue-900 transition-all duration-300 transform hover:scale-105"
-              >
-                <Calendar className="mr-2" size={18} />
-                Download Guides
-              </Link>
-              <Link 
-                to="/contact"
-                className="inline-flex items-center px-6 py-3 bg-white text-blue-950 rounded-full font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105"
-              >
-                <Home className="mr-2" size={18} />
-                Request Training
-              </Link>
+            <div className="bg-white text-red-600 font-bold py-4 px-8 rounded-lg shadow-lg inline-flex items-center text-2xl">
+              <AlertTriangle className="mr-3" size={28} />
+              <span>911</span>
             </div>
           </div>
         </div>
