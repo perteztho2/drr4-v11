@@ -17,94 +17,43 @@ interface ForecastDay {
 const WeatherForecastWidget: React.FC = () => {
   const [forecast, setForecast] = useState<ForecastDay[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Mock data for demonstration
   useEffect(() => {
-    const mockForecast: ForecastDay[] = [
-      {
-        id: '1',
-        date: new Date().toISOString().split('T')[0],
-        temperature_high: 28,
-        temperature_low: 18,
-        condition: 'Sunny',
-        humidity: 45,
-        wind_speed: 12,
-        precipitation: 0,
-        icon: 'sunny'
-      },
-      {
-        id: '2',
-        date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
-        temperature_high: 26,
-        temperature_low: 17,
-        condition: 'Partly Cloudy',
-        humidity: 52,
-        wind_speed: 10,
-        precipitation: 10,
-        icon: 'partly-cloudy'
-      },
-      {
-        id: '3',
-        date: new Date(Date.now() + 2 * 86400000).toISOString().split('T')[0],
-        temperature_high: 24,
-        temperature_low: 16,
-        condition: 'Cloudy',
-        humidity: 65,
-        wind_speed: 8,
-        precipitation: 20,
-        icon: 'cloudy'
-      },
-      {
-        id: '4',
-        date: new Date(Date.now() + 3 * 86400000).toISOString().split('T')[0],
-        temperature_high: 22,
-        temperature_low: 15,
-        condition: 'Light Rain',
-        humidity: 78,
-        wind_speed: 15,
-        precipitation: 60,
-        icon: 'rainy'
-      },
-      {
-        id: '5',
-        date: new Date(Date.now() + 4 * 86400000).toISOString().split('T')[0],
-        temperature_high: 25,
-        temperature_low: 17,
-        condition: 'Rainy',
-        humidity: 82,
-        wind_speed: 18,
-        precipitation: 80,
-        icon: 'rainy'
-      },
-      {
-        id: '6',
-        date: new Date(Date.now() + 5 * 86400000).toISOString().split('T')[0],
-        temperature_high: 27,
-        temperature_low: 19,
-        condition: 'Thunderstorms',
-        humidity: 85,
-        wind_speed: 22,
-        precipitation: 90,
-        icon: 'stormy'
-      },
-      {
-        id: '7',
-        date: new Date(Date.now() + 6 * 86400000).toISOString().split('T')[0],
-        temperature_high: 29,
-        temperature_low: 20,
-        condition: 'Sunny',
-        humidity: 40,
-        wind_speed: 10,
-        precipitation: 0,
-        icon: 'sunny'
-      }
-    ];
+    fetchForecast();
+    
+    // Auto refresh every 30 minutes
+    const interval = setInterval(() => {
+      fetchForecast();
+    }, 30 * 60 * 1000);
 
-    setTimeout(() => {
-      setForecast(mockForecast);
-      setLoading(false);
-    }, 800);
+    return () => clearInterval(interval);
   }, []);
+
+  const fetchForecast = async () => {
+    try {
+      setIsRefreshing(true);
+      
+      const { data, error } = await supabase
+        .from('weather_forecast')
+        .select('*')
+        .eq('is_active', true)
+        .gte('date', new Date().toISOString().split('T')[0])
+        .order('date', { ascending: true })
+        .limit(7);
+
+      if (error && !error.message.includes('relation "weather_forecast" does not exist')) {
+        throw error;
+      }
+      
+      setForecast(data || []);
+    } catch (error) {
+      console.error('Error fetching weather forecast:', error);
+    } finally {
+      setLoading(false);
+      setIsRefreshing(false);
+    }
+  };
 
   const getWeatherIcon = (icon: string) => {
     switch (icon) {
@@ -138,40 +87,22 @@ const WeatherForecastWidget: React.FC = () => {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-  };
-
   const getTemperatureColor = (temp: number) => {
-    if (temp >= 35) return 'text-red-600';
-    if (temp >= 30) return 'text-orange-600';
-    if (temp >= 25) return 'text-yellow-600';
-    if (temp >= 20) return 'text-green-600';
-    return 'text-blue-600';
+    if (temp >= 35) return 'text-red-600'; // Very hot
+    if (temp >= 30) return 'text-orange-600'; // Hot
+    if (temp >= 25) return 'text-yellow-600'; // Warm
+    if (temp >= 20) return 'text-green-600'; // Mild
+    return 'text-blue-600'; // Cool
   };
 
   if (loading) {
     return (
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-4 border border-white/50">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-2">
-            <Calendar className="text-indigo-600" size={18} />
-            <h3 className="text-lg font-bold text-gray-800">7-Day Forecast</h3>
+      <div className="bg-white border-t border-gray-200 py-4">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-center">
+            <RefreshCw className="animate-spin h-5 w-5 text-blue-600 mr-2" />
+            <span className="text-gray-600">Loading 7-day forecast...</span>
           </div>
-          <div className="h-4 w-4 bg-gray-200 rounded-full animate-pulse"></div>
-        </div>
-        
-        <div className="grid grid-cols-7 gap-2">
-          {[...Array(7)].map((_, i) => (
-            <div key={i} className="bg-white/80 rounded-xl p-3 shadow-sm">
-              <div className="h-4 bg-gray-200 rounded mb-2 animate-pulse"></div>
-              <div className="h-4 bg-gray-200 rounded mb-2 animate-pulse"></div>
-              <div className="h-6 bg-gray-200 rounded mb-2 animate-pulse"></div>
-              <div className="h-3 bg-gray-200 rounded mb-1 animate-pulse"></div>
-              <div className="h-3 bg-gray-200 rounded animate-pulse"></div>
-            </div>
-          ))}
         </div>
       </div>
     );
@@ -179,56 +110,84 @@ const WeatherForecastWidget: React.FC = () => {
 
   if (forecast.length === 0) {
     return (
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-6 border border-white/50">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-2">
-            <Calendar className="text-indigo-600" size={18} />
-            <h3 className="text-lg font-bold text-gray-800">7-Day Forecast</h3>
+      <div className="bg-white border-t border-gray-700 py-4">
+        <div className="container mx-auto px-4">
+          <div className="text-center text-gray-500">
+            <Cloud className="mx-auto h-4 w-8 mb-2" />
+            <p className="text-sm">7-day forecast not available</p>
           </div>
-        </div>
-        <div className="text-center py-8">
-          <Cloud className="mx-auto h-12 w-12 text-gray-300 mb-3" />
-          <p className="text-gray-500">Forecast data unavailable</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-4 border border-white/50 backdrop-blur-sm">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-2">
-          <Calendar className="text-indigo-600" size={18} />
-          <h3 className="text-lg font-bold text-gray-800">7-Day Forecast</h3>
+    <div className="bg-white border-t border-gray-200 py-4 shadow-sm">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center space-x-2">
+            <Calendar className="text-blue-600" size={16} />
+            <h3 className="text-sm font-semibold text-gray-900">7-Day Weather Forecast</h3>
+          </div>
+          <button
+            onClick={fetchForecast}
+            disabled={isRefreshing}
+            className="text-blue-600 hover:text-blue-800 transition-colors disabled:opacity-50"
+            title="Refresh forecast"
+          >
+            <RefreshCw size={14} className={isRefreshing ? 'animate-spin' : ''} />
+          </button>
         </div>
-        <div className="text-xs text-gray-500 bg-white/60 px-2 py-1 rounded-full">
-          Updated now
+        
+        <div className="grid grid-cols-7 gap-2 md:gap-4">
+          {forecast.map((day, index) => (
+            <div
+              key={day.id}
+              className={`text-center p-3 rounded-lg transition-all duration-200 hover:shadow-md ${
+                index === 0 
+                  ? 'bg-blue-50 border-2 border-blue-200' 
+                  : 'bg-gray-50 hover:bg-gray-100'
+              }`}
+            >
+              <div className="text-xs font-medium text-gray-700 mb-2">
+                {getDayName(day.date)}
+              </div>
+              
+              <div className="flex justify-center mb-2">
+                {getWeatherIcon(day.icon)}
+              </div>
+              
+              <div className="space-y-1">
+                <div className={`text-sm font-bold ${getTemperatureColor(day.temperature_high)}`}>
+                  {day.temperature_high}°
+                </div>
+                <div className="text-xs text-gray-500">
+                  {day.temperature_low}°
+                </div>
+              </div>
+              
+              <div className="mt-2 space-y-1">
+                <div className="flex items-center justify-center space-x-1">
+                  <Droplets size={10} className="text-blue-400" />
+                  <span className="text-xs text-gray-600">{day.humidity}%</span>
+                </div>
+                
+                {day.precipitation > 0 && (
+                  <div className="text-xs text-blue-600">
+                    {day.precipitation}% rain
+                  </div>
+                )}
+              </div>
+              
+              <div className="text-xs text-gray-500 mt-1 truncate" title={day.condition}>
+                {day.condition}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-      
-      <div className="grid grid-cols-7 gap-2">
-        {forecast.map((day, index) => (
-          <div
-            key={day.id}
-            className={`flex flex-col items-center justify-between bg-white/80 rounded-xl p-3 transition-all duration-300 hover:shadow-md hover:bg-white/90 ${
-              index === 0 ? 'ring-2 ring-indigo-300' : ''
-            }`}
-          >
-            
+    </div>
+  );
+};
 
-              
-
-                {getDayName(day.date)}
-              
-
-              
-
-                {formatDate(day.date)}
-              
-
-            
-
-            
-            
-
-              {getWeatherIcon(day.icon)}
+export default WeatherForecastWidget;
