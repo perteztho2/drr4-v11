@@ -233,16 +233,26 @@ const WeatherManagement: React.FC = () => {
     try {
       setSaving(true);
       
-      const success = await weatherAPI.syncWeatherData();
-      if (success) {
+      // Call the edge function to sync weather data
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/weather-sync`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
         await fetchWeatherData();
-        alert('Weather data synced successfully!');
+        alert('Weather data synced successfully from WeatherLink API!');
       } else {
-        alert('Failed to sync weather data. Please check your API settings.');
+        alert(`Failed to sync weather data: ${result.error || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('Error syncing weather data:', error);
-      alert('Error syncing weather data. Please try again.');
+      alert('Error syncing weather data. Please check your API configuration.');
     } finally {
       setSaving(false);
     }

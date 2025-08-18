@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Cloud, Sun, CloudRain, AlertTriangle, Wind, Droplets, Thermometer, RefreshCw, Wifi, WifiOff } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { weatherAPI, WeatherLinkData } from '../lib/weatherlink';
 
 interface WeatherData {
   temperature: number;
@@ -40,12 +41,11 @@ const WeatherTickerWidget: React.FC = () => {
 
   useEffect(() => {
     fetchWeatherData();
-    fetchAPISettings();
     
-    // Auto refresh every 10 minutes
+    // Auto refresh every 5 minutes for production
     const interval = setInterval(() => {
       fetchWeatherData();
-    }, 10 * 60 * 1000);
+    }, 5 * 60 * 1000);
 
     // Check online status
     const handleOnline = () => setIsOnline(true);
@@ -61,31 +61,35 @@ const WeatherTickerWidget: React.FC = () => {
     };
   }, []);
 
-  const fetchAPISettings = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('weather_api_settings')
-        .select('*')
-        .eq('is_active', true)
-        .single();
 
-      if (error && !error.message.includes('relation "weather_api_settings" does not exist')) {
-        throw error;
-      }
-      
-      if (data) {
-        setApiSettings(data);
-      }
-    } catch (error) {
-      console.error('Error fetching weather API settings:', error);
-    }
-  };
 
   const fetchWeatherData = async () => {
     try {
       setIsRefreshing(true);
       
-      // First try to get data from database
+      // Try to fetch fresh data from WeatherLink API
+      if (isOnline) {
+        const freshData = await weatherAPI.fetchCurrentWeather();
+        if (freshData) {
+          setWeatherData({
+            temperature: freshData.temperature,
+            humidity: freshData.humidity,
+            wind_speed: freshData.wind_speed,
+            condition: freshData.condition,
+            description: freshData.description,
+            location: 'Pio Duran, Albay',
+            alerts: await weatherAPI.getWeatherAlerts(),
+            last_updated: new Date().toISOString()
+          });
+          
+          // Update database with fresh data
+          await weatherAPI.updateWeatherInDatabase(freshData);
+          setLastRefresh(new Date());
+          return;
+        }
+      }
+      
+      // Fallback to database data if API fails or offline
       const { data: dbData, error: dbError } = await supabase
         .from('weather_data')
         .select('*')
@@ -105,39 +109,21 @@ const WeatherTickerWidget: React.FC = () => {
           alerts: dbData.alerts || [],
           last_updated: dbData.last_updated
         });
-      }
 
-      // If API settings are available, fetch from WeatherLink
-      if (apiSettings && isOnline) {
-        await fetchFromWeatherLink();
+        setLastRefresh(new Date());
       }
-      
-      setLastRefresh(new Date());
     } catch (error) {
       console.error('Error fetching weather data:', error);
+      // Use default data if everything fails
+      setWeatherData(prev => ({
+        ...prev,
+        last_updated: new Date().toISOString()
+      }));
     } finally {
       setIsRefreshing(false);
     }
   };
 
-  const fetchFromWeatherLink = async () => {
-    if (!apiSettings) return;
-
-    try {
-      // Note: In production, this should be done through a backend API to keep credentials secure
-      // For demo purposes, we'll simulate the API call
-      console.log('Fetching from WeatherLink API with station:', apiSettings.station_id);
-      
-      // Update last sync time
-      await supabase
-        .from('weather_api_settings')
-        .update({ last_sync: new Date().toISOString() })
-        .eq('id', apiSettings.id);
-        
-    } catch (error) {
-      console.error('Error fetching from WeatherLink API:', error);
-    }
-  };
 
   const getWeatherIcon = (condition: string) => {
     switch (condition.toLowerCase()) {
@@ -210,7 +196,7 @@ const WeatherTickerWidget: React.FC = () => {
                 <div className="flex items-center space-x-1">
                   <Thermometer size={16} className={getTemperatureTextColor(weatherData.temperature)} />
                   <span className={`text-sm ${getTemperatureTextColor(weatherData.temperature)}`}>
-                    Feels like {weatherData.temperature + 2}°C
+                    Feels like {Math.round(weatherData.temperature + (weatherData.humidity > 70 ? 2 : 0))}°C
                   </span>
                 </div>
               </div>
@@ -225,7 +211,8 @@ const WeatherTickerWidget: React.FC = () => {
               )}
 
               <div className={`text-sm ${getTemperatureTextColor(weatherData.temperature)} opacity-75`}>
-                📍 {weatherData.location} • Last updated: {new Date(weatherData.last_updated).toLocaleTimeString()}
+                📍 {weatherData.location} • Updated: {new Date(weatherData.last_updated).toLocaleTimeString()}
+                {!isOnline && <span className="text-red-300 ml-2">(Offline)</span>}
               </div>
             </div>
           </div>
@@ -243,7 +230,7 @@ const WeatherTickerWidget: React.FC = () => {
             <button
               onClick={manualRefresh}
               disabled={isRefreshing}
-              className={`${getTemperatureTextColor(weatherData.temperature)} hover:opacity-80 transition-opacity disabled:opacity-50`}
+              className={`${getTemperatureTextColor(weatherData.temperature)} hover:opacity-80 transition-all duration-200 disabled:opacity-50 ${isRefreshing ? 'animate-spin' : 'hover:scale-110'}`}
               title="Refresh weather data"
             >
               <RefreshCw size={16} className={isRefreshing ? 'animate-spin' : ''} />

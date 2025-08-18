@@ -3,6 +3,7 @@ import { Calendar, ArrowRight, Newspaper } from 'lucide-react';
 import { useData } from '../contexts/DataContext';
 import { Link } from 'react-router-dom';
 import SocialShareButtons from './SocialShareButtons';
+import SocialMediaFeed from './SocialMediaFeed';
 
 const News: React.FC = () => {
   const { news } = useData();
@@ -89,6 +90,19 @@ const News: React.FC = () => {
             <Newspaper className="mr-2" size={20} />
             View All News & Updates
           </Link>
+        </div>
+        
+        {/* Social Media Feed Integration */}
+        <div className="mt-16">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-yellow-500 mb-4">Stay Connected</h3>
+            <p className="text-white max-w-2xl mx-auto">
+              Follow our latest updates and community activities on social media
+            </p>
+          </div>
+          <div className="max-w-4xl mx-auto">
+            <SocialMediaFeed maxPosts={3} showEngagement={true} />
+          </div>
         </div>
       </div>
     </section>

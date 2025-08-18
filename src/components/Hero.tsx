@@ -3,6 +3,7 @@ import { Phone, AlertTriangle, ChevronDown } from 'lucide-react';
 import Navigation from './Navigation';
 import WeatherTickerWidget from './WeatherTickerWidget';
 import WeatherForecastWidget from './WeatherForecastWidget';
+import SmoothScroll from './SmoothScroll';
 
 interface HeroProps {
   onEmergencyClick: () => void;
@@ -11,6 +12,7 @@ interface HeroProps {
 
 const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
   const rainContainerRef = useRef<HTMLDivElement>(null);
+  const [isScrolling, setIsScrolling] = useState(false);
 
   useEffect(() => {
     // Create rain effect
@@ -71,6 +73,26 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
     };
   }, []);
 
+  const handleScrollClick = () => {
+    if (isScrolling) {
+      setIsScrolling(false);
+      return;
+    }
+    
+    setIsScrolling(true);
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+      
+      // Stop scrolling after reaching the target
+      setTimeout(() => {
+        setIsScrolling(false);
+      }, 1000);
+    }
+  };
   return (
     <section id="home" className="relative h-screen flex flex-col overflow-hidden">
       {/* Header */}
@@ -124,7 +146,13 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
 
         {/* Scroll Indicator */}
         <div className="absolute bottom-2 left-0 right-0 flex justify-center z-30">
-          <ChevronDown className="text-white animate-bounce" size={32} />
+          <button
+            onClick={handleScrollClick}
+            className="text-white hover:text-yellow-500 transition-colors focus:outline-none"
+            aria-label="Scroll to next section"
+          >
+            <ChevronDown className={`animate-bounce ${isScrolling ? 'animate-pulse' : ''}`} size={32} />
+          </button>
         </div>
       </div>
       
@@ -133,6 +161,8 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
         <WeatherTickerWidget />
         <WeatherForecastWidget />
       </div>
+      
+      <SmoothScroll isActive={isScrolling} onStop={() => setIsScrolling(false)} />
     </section>
   );
 };

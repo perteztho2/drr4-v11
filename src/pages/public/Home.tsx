@@ -54,24 +54,7 @@ const Home: React.FC = () => {
       <Services />
       <News />
       <EmergencyProcedures />
-       <Planning />
-      
-      {/* Social Media Feed Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-blue-900 mb-4">Stay Connected</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Follow our latest updates and community activities on social media
-            </p>
-          </div>
-          <div className="max-w-4xl mx-auto">
-            <SocialMediaFeed maxPosts={4} showEngagement={true} />
-          </div>
-        </div>
-      </section>
-      
-      <FAQ />
+      <Planning />
       <Resources />
       <ImageGallery />
 

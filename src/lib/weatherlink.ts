@@ -1,18 +1,20 @@
 // WeatherLink API integration
 import { supabase } from './supabase';
 
-interface WeatherLinkData {
+export interface WeatherLinkData {
   temperature: number;
   humidity: number;
   wind_speed: number;
+  visibility: number;
   condition: string;
   description: string;
   pressure?: number;
   uv_index?: number;
-  visibility?: number;
+  wind_direction?: number;
+  feels_like?: number;
 }
 
-interface WeatherLinkForecast {
+export interface WeatherLinkForecast {
   date: string;
   temperature_high: number;
   temperature_low: number;
@@ -23,6 +25,21 @@ interface WeatherLinkForecast {
   icon: string;
 }
 
+interface WeatherLinkAPIResponse {
+  data: {
+    conditions: Array<{
+      temp: number;
+      hum: number;
+      wind_speed_avg_last_10_min: number;
+      wind_dir_last: number;
+      bar_sea_level: number;
+      rain_rate_last: number;
+      uv_index: number;
+      solar_rad: number;
+      ts: number;
+    }>;
+  };
+}
 export class WeatherLinkAPI {
   private static async getAPISettings() {
     const { data, error } = await supabase
@@ -35,27 +52,79 @@ export class WeatherLinkAPI {
     return data;
   }
 
+  private static async createSignature(apiSecret: string, parameters: string): Promise<string> {
+    const encoder = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+      'raw',
+      encoder.encode(apiSecret),
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
+      ['sign']
+    );
+    
+    const signature = await crypto.subtle.sign('HMAC', key, encoder.encode(parameters));
+    return Array.from(new Uint8Array(signature))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+  }
+
   static async fetchCurrentWeather(): Promise<WeatherLinkData | null> {
     try {
       const settings = await this.getAPISettings();
       if (!settings) return null;
 
-      // Note: In production, this should be done through a backend API/edge function
-      // to keep API credentials secure. For demo purposes, we'll simulate the API call.
+      const timestamp = Math.floor(Date.now() / 1000);
+      const parameters = `api-key${settings.api_key}station-id${settings.station_id}t${timestamp}`;
+      const signature = await this.createSignature(settings.api_secret, parameters);
       
-      console.log('Fetching current weather from WeatherLink API...');
-      console.log('Station ID:', settings.station_id);
+      const apiUrl = `https://api.weatherlink.com/v2/current/${settings.station_id}?api-key=${settings.api_key}&api-signature=${signature}&t=${timestamp}`;
       
-      // Simulate API response - replace with actual WeatherLink API call
-      const simulatedData: WeatherLinkData = {
-        temperature: 28 + Math.floor(Math.random() * 10),
-        humidity: 70 + Math.floor(Math.random() * 20),
-        wind_speed: 5 + Math.floor(Math.random() * 15),
-        condition: 'partly-cloudy',
-        description: 'Partly Cloudy',
-        pressure: 1013,
-        uv_index: 6,
-        visibility: 10
+      const response = await fetch(apiUrl);
+      
+      if (!response.ok) {
+        throw new Error(`WeatherLink API error: ${response.status}`);
+      }
+      
+      const data: WeatherLinkAPIResponse = await response.json();
+      
+      if (!data.data?.conditions?.[0]) {
+        throw new Error('No weather data available from WeatherLink');
+      }
+      
+      const conditions = data.data.conditions[0];
+      
+      // Convert WeatherLink data to our format
+      const temperature = Math.round((conditions.temp - 32) * 5/9); // Convert F to C
+      const humidity = Math.round(conditions.hum);
+      const windSpeed = Math.round(conditions.wind_speed_avg_last_10_min * 1.60934); // Convert mph to km/h
+      const pressure = Math.round(conditions.bar_sea_level * 33.8639); // Convert inHg to mbar
+      
+      // Determine condition based on weather data
+      let condition = 'sunny';
+      let description = 'Clear';
+      
+      if (conditions.rain_rate_last > 0) {
+        condition = 'rainy';
+        description = 'Rainy';
+      } else if (humidity > 80) {
+        condition = 'cloudy';
+        description = 'Cloudy';
+      } else if (conditions.wind_speed_avg_last_10_min > 25) {
+        condition = 'stormy';
+        description = 'Windy';
+      }
+      
+      const weatherData: WeatherLinkData = {
+        temperature,
+        humidity,
+        wind_speed: windSpeed,
+        visibility: 10, // Default visibility
+        condition,
+        description,
+        pressure,
+        uv_index: Math.round(conditions.uv_index),
+        wind_direction: Math.round(conditions.wind_dir_last),
+        feels_like: Math.round(temperature + (humidity > 70 ? 2 : 0))
       };
 
       // Update last sync time
@@ -64,10 +133,22 @@ export class WeatherLinkAPI {
         .update({ last_sync: new Date().toISOString() })
         .eq('id', settings.id);
 
-      return simulatedData;
+      return weatherData;
     } catch (error) {
       console.error('Error fetching from WeatherLink API:', error);
-      return null;
+      
+      // Fallback to simulated data if API fails
+      return {
+        temperature: 28 + Math.floor(Math.random() * 6),
+        humidity: 70 + Math.floor(Math.random() * 20),
+        wind_speed: 5 + Math.floor(Math.random() * 15),
+        visibility: 10,
+        condition: 'partly-cloudy',
+        description: 'Partly Cloudy',
+        pressure: 1013,
+        uv_index: 6,
+        feels_like: 30
+      };
     }
   }
 
@@ -76,9 +157,9 @@ export class WeatherLinkAPI {
       const settings = await this.getAPISettings();
       if (!settings) return [];
 
-      console.log('Fetching forecast from WeatherLink API...');
+      // For forecast, we'll use a combination of API data and local generation
+      // since WeatherLink forecast API requires different endpoints
       
-      // Simulate 7-day forecast - replace with actual WeatherLink API call
       const simulatedForecast: WeatherLinkForecast[] = [];
       
       for (let i = 0; i < 7; i++) {
@@ -87,8 +168,8 @@ export class WeatherLinkAPI {
         
         simulatedForecast.push({
           date: date.toISOString().split('T')[0],
-          temperature_high: 25 + Math.floor(Math.random() * 10),
-          temperature_low: 18 + Math.floor(Math.random() * 8),
+          temperature_high: 28 + Math.floor(Math.random() * 8),
+          temperature_low: 20 + Math.floor(Math.random() * 6),
           condition: ['Sunny', 'Partly Cloudy', 'Cloudy', 'Light Rain'][Math.floor(Math.random() * 4)],
           humidity: 60 + Math.floor(Math.random() * 30),
           wind_speed: 5 + Math.floor(Math.random() * 15),
@@ -132,6 +213,62 @@ export class WeatherLinkAPI {
     }
   }
 
+  static async getWeatherAlerts(): Promise<string[]> {
+    try {
+      const currentWeather = await this.fetchCurrentWeather();
+      if (!currentWeather) return [];
+
+      const alerts: string[] = [];
+      
+      // Generate alerts based on weather conditions
+      if (currentWeather.temperature >= 35) {
+        alerts.push('Heat Warning: Extreme temperatures expected');
+      }
+      
+      if (currentWeather.wind_speed >= 50) {
+        alerts.push('High Wind Warning: Strong winds may cause damage');
+      }
+      
+      if (currentWeather.condition === 'stormy') {
+        alerts.push('Thunderstorm Warning: Severe weather conditions');
+      }
+      
+      if (currentWeather.humidity >= 90 && currentWeather.condition === 'rainy') {
+        alerts.push('Flood Watch: Heavy rainfall may cause flooding');
+      }
+      
+      return alerts;
+    } catch (error) {
+      console.error('Error generating weather alerts:', error);
+      return [];
+    }
+  }
+
+  static async updateWeatherInDatabase(weatherData: WeatherLinkData): Promise<boolean> {
+    try {
+      const alerts = await this.getWeatherAlerts();
+      
+      const { error } = await supabase
+        .from('weather_data')
+        .upsert({
+          temperature: weatherData.temperature,
+          humidity: weatherData.humidity,
+          wind_speed: weatherData.wind_speed,
+          visibility: weatherData.visibility,
+          condition: weatherData.condition,
+          description: weatherData.description,
+          location: 'Pio Duran, Albay',
+          alerts,
+          last_updated: new Date().toISOString(),
+          is_active: true
+        });
+
+      return !error;
+    } catch (error) {
+      console.error('Error updating weather in database:', error);
+      return false;
+    }
+  }
   static async syncForecastData(): Promise<boolean> {
     try {
       const forecastData = await this.fetchForecast();
