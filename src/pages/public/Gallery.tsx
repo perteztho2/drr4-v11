@@ -144,7 +144,7 @@ const Gallery: React.FC = () => {
         keywords="MDRRMO gallery, Pio Duran photos, disaster management activities, training photos, community events"
       />
       
-      <div className="bg-gradient-to-br from-blue-950 to-blue-900 min-h-screen flex pt-2">
+      <div className="bg-gradient-to-br from-blue-950 to-blue-900 min-h-screen flex">
         {/* Photo Albums Sidebar */}
         <div className="w-80 bg-blue-950 shadow-xl border-r border-yellow-500/20 overflow-y-auto">
           <div className="p-6 border-b border-yellow-500/20">
