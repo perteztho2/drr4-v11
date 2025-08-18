@@ -113,7 +113,7 @@ const Gallery: React.FC = () => {
           title="Photo Gallery - MDRRMO Pio Duran"
           description="Browse photos from MDRRMO activities, training sessions, and community events in Pio Duran, Albay."
         />
-        <div className="min-h-screen bg-gray-50 py-20">
+        <div className="min-h-screen bg-gray-50 py-3">
           <div className="container mx-auto px-6">
             <div className="text-center">
               <h1 className="text-4xl font-bold text-blue-900 mb-8">Photo Gallery</h1>
