@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Sun, Cloud, CloudRain, AlertTriangle, Droplets, Wind } from 'lucide-react';
+import { Calendar, Sun, Cloud, CloudRain, AlertTriangle, Thermometer, Droplets, Wind, RefreshCw } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 interface ForecastDay {
   id: string;
