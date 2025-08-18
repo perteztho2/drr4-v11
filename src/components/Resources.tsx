@@ -40,53 +40,47 @@ const Resources: React.FC = () => {
   ];
 
   return (
-    <section id="resources" className="py-24 bg-gradient-to-br from-white to-gray-50 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-20 right-10 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-        <div className="absolute bottom-20 left-10 w-64 h-64 bg-yellow-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
-      </div>
-      
+    <section id="resources" className="py-16 bg-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-blue-950 mb-6 relative">
-            <span className="relative z-10">RESOURCES & DOWNLOADS</span>
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-40 h-1 bg-gradient-to-r from-blue-600 to-blue-800 rounded-full"></div>
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-extrabold text-blue-900 mb-4 relative inline-block">
+            <span className="relative z-10 px-4">RESOURCES & DOWNLOADS</span>
+            <span className="absolute bottom-0 left-0 right-0 h-2 bg-yellow-400 z-0"></span>
           </h2>
-          <p className="text-xl text-gray-700 mb-4 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-gray-700 mb-2">
             Essential disaster preparedness and response materials for the community
           </p>
-          <p className="text-sm text-gray-600 max-w-3xl mx-auto italic">
+          <p className="font-light italic max-w-2xl mx-auto text-sm">
             <strong>Note:</strong> All the information materials here are for public consumption. Request for high-resolution copies for printing and/or reproduction can be requested through the Public Information Unit
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 mx-auto border border-gray-200">
+        <div className="bg-white rounded-xl shadow-lg p-8 mx-auto">
           <div className="flex flex-col md:flex-row gap-8">
             
             {/* Left Side - Description */}
             <div className="md:w-1/3">
               <div className="sticky top-8">
-                <h3 className="text-2xl font-bold text-blue-950 mb-6">
+                <h2 className="text-2xl font-semibold text-blue-600 mb-4">
                   Resources Available
-                </h3>
+                </h2>
                 <div className="space-y-4">
                   {resourceTypes.map((resource, index) => (
-                    <div key={index} className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                      <div className={`${resource.bgColor} p-3 rounded-xl`}>
+                    <div key={index} className="flex items-start gap-3">
+                      <div className={`${resource.bgColor} p-2 rounded-lg`}>
                         <resource.icon className={`h-6 w-6 ${resource.color}`} />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-gray-900 mb-1">{resource.title}</h4>
-                        <p className="text-sm text-gray-600">{resource.description}</p>
+                        <h3 className="font-medium">{resource.title}</h3>
+                        <p className="text-sm text-gray-500">{resource.description}</p>
                       </div>
                     </div>
                   ))}
                 </div>
                 
-                <div className="mt-8 pt-6 border-t border-gray-200">
-                  <h4 className="font-semibold text-gray-900 mb-4">How to Access Files</h4>
-                  <ol className="text-sm text-gray-600 space-y-3 list-decimal pl-5">
+                <div className="mt-8 border-t pt-6">
+                  <h3 className="font-medium mb-3">How to Access Files</h3>
+                  <ol className="text-sm text-gray-600 space-y-2 list-decimal pl-5">
                     {accessSteps.map((step, index) => (
                       <li key={index}>{step}</li>
                     ))}
@@ -96,9 +90,9 @@ const Resources: React.FC = () => {
                 <div className="mt-8">
                   <Link
                     to="/resources"
-                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-6 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 flex items-center justify-center font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
+                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
                   >
-                    <FileText className="mr-3" size={18} />
+                    <FileText className="mr-2" size={16} />
                     Browse All Resources
                   </Link>
                 </div>
@@ -108,13 +102,13 @@ const Resources: React.FC = () => {
             {/* Right Side - Google Drive Embed */}
             <div className="md:w-2/3">
               {featuredResources.length > 0 ? (
-                <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
-                  <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-6">
-                    <h3 className="text-xl font-bold text-white mb-2">Featured Resources</h3>
-                    <p className="text-blue-100">Most popular downloads</p>
+                <div className="space-y-6">
+                  <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-4 rounded-t-lg">
+                    <h3 className="text-white font-medium">Featured Resources</h3>
+                    <p className="text-blue-100 text-sm">Most popular downloads</p>
                   </div>
                   
-                  <div className="space-y-4 p-6">
+                  <div className="space-y-4 p-4">
                     {featuredResources.map((resource) => (
                       <ResourceDownloadCard 
                         key={resource.id} 
@@ -125,45 +119,42 @@ const Resources: React.FC = () => {
                     ))}
                   </div>
                   
-                  <div className="p-6 bg-gray-50 text-center border-t border-gray-200">
+                  <div className="p-4 bg-gray-50 text-center border-t">
                     <Link
                       to="/resources"
-                      className="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold transition-colors"
+                      className="text-blue-600 hover:text-blue-800 font-medium"
                     >
-                      View All {publishedResources.length} Resources
-                      <ArrowRight size={16} className="ml-2" />
+                      View All {publishedResources.length} Resources →
                     </Link>
                   </div>
                 </div>
               ) : (
-                <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-xl">
-                  <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-6">
+                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                  <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-xl font-bold text-white mb-2">Public Resources</h3>
-                        <p className="text-blue-100">Download & View Only</p>
+                        <h3 className="text-white font-medium">Public Resources</h3>
+                        <p className="text-blue-100 text-sm">Download & View Only</p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="p-12 text-center">
-                    <FileText className="mx-auto h-20 w-20 text-gray-400 mb-6" />
-                    <h4 className="text-xl font-bold text-gray-900 mb-4">No resources available yet</h4>
-                    <p className="text-gray-600 mb-6">Resources will appear here once uploaded</p>
+                  <div className="p-8 text-center">
+                    <FileText className="mx-auto h-16 w-16 text-gray-400 mb-4" />
+                    <p className="text-gray-600 mb-4">No resources available yet</p>
                     <Link
                       to="/admin/resources"
-                      className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-semibold"
+                      className="text-blue-600 hover:text-blue-800 font-medium"
                     >
-                      <FileText className="mr-2" size={16} />
                       Add Resources in Admin Panel
                     </Link>
                   </div>
                 </div>
               )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
      
     </section>
   );
