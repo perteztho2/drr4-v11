@@ -14,7 +14,32 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
   const rainContainerRef = useRef<HTMLDivElement>(null);
   const [isScrolling, setIsScrolling] = useState(false);
 
- 
+  useEffect(() => {
+    // Create rain effect
+    const createRain = () => {
+      const rainContainer = rainContainerRef.current;
+      if (!rainContainer) return;
+
+      const rainCount = 50;
+      rainContainer.innerHTML = '';
+
+      for (let i = 0; i < rainCount; i++) {
+        const drop = document.createElement('div');
+        drop.className = 'absolute w-px bg-gradient-to-b from-white/30 to-transparent';
+        
+        const left = Math.random() * 100;
+        const height = 20 + Math.random() * 40;
+        const duration = 1 + Math.random() * 2;
+        const delay = Math.random() * 2;
+
+        drop.style.left = `${left}%`;
+        drop.style.height = `${height}px`;
+        drop.style.animation = `rainDrop ${duration}s linear infinite`;
+        drop.style.animationDelay = `${delay}s`;
+
+        rainContainer.appendChild(drop);
+      }
+    };
 
     // Create lightning effect
     const createLightning = () => {
