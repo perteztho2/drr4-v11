@@ -62,43 +62,53 @@ const About: React.FC = () => {
       }))
     : cards;
   return (
-    <section id="about" className="py-20 bg-blue-900">
+    <section id="about" className="py-24 bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4000"></div>
+      </div>
+      
       <div className="container mx-auto px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-extrabold text-yellow-500 mb-4 relative inline-block">
-            <span className="relative z-10 px-4">About DRRM Pio Duran</span>
-            <span className="absolute bottom-0 left-0 right-0 h-2 bg-gray-400 z-0"></span>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-yellow-500 mb-6 relative">
+            <span className="relative z-10">About DRRM Pio Duran</span>
+            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-40 h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"></div>
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">MDRRMO Pio Duran is the central hub for all disaster risk reduction and management activities, ensuring coordinated responses and sustainable preparedness measures.
+          <p className="text-xl text-blue-100 max-w-4xl mx-auto leading-relaxed">
+            MDRRMO Pio Duran is the central hub for all disaster risk reduction and management activities, ensuring coordinated responses and sustainable preparedness measures.
           </p>
         </div>
 
-        <div className={`grid grid-cols-1 ${displayCards.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2 lg:grid-cols-3'} gap-8`}>
+        <div className={`grid grid-cols-1 ${displayCards.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2 lg:grid-cols-3'} gap-8 mb-16`}>
           {displayCards.map((card, index) => (
             <div
               key={index}
-              className="bg-white p-8 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-t-4 border-blue-600"
+              className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-3 border border-white/20 hover:border-yellow-500/50 group"
             >
-              <div className={`${card.color} text-5xl mb-4 text-center`}>
-                <card.icon size={48} className="mx-auto" />
+              <div className="text-center mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <card.icon size={40} className="text-blue-950" />
+                </div>
               </div>
-              <h3 className="text-xl font-semibold text-center mb-4 text-blue-900">
+              <h3 className="text-2xl font-bold text-center mb-4 text-white">
                 {card.title}
               </h3>
-              <p className="text-gray-600 text-center">
+              <p className="text-blue-100 text-center leading-relaxed">
                 {card.description}
               </p>
             </div>
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        <div className="text-center">
           <Link 
             to="/about"
-            className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden font-bold text-white hover:text-blue-900 rounded-full bg-gradient-to-r from-blue-600 to-blue-600 hover:from-yellow-400 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105"
+            className="group relative inline-flex items-center justify-center px-10 py-4 overflow-hidden font-bold text-blue-950 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-3xl"
           >
-            <Users className="mr-2" size={20} />
-            <span className="text-lg tracking-wide">Meet the DRRM Staff</span>
+            <Users className="mr-3" size={22} />
+            <span className="text-xl tracking-wide">Meet the DRRM Team</span>
           </Link>
         </div>
       </div>

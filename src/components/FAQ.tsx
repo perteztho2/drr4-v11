@@ -54,37 +54,47 @@ const FAQ: React.FC = () => {
   };
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                           radial-gradient(circle at 80% 20%, rgba(234, 179, 8, 0.1) 0%, transparent 50%)`
+        }}></div>
+      </div>
+      
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-blue-900 mb-4">Frequently Asked Questions</h2>
-          <div className="w-24 h-1 bg-yellow-500 mx-auto mb-6"></div>
-          <p className="text-gray-600 max-w-3xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-blue-950 mb-6 relative">
+            <span className="relative z-10">Frequently Asked Questions</span>
+            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full"></div>
+          </h2>
+          <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
             Find answers to common questions about MDRRMO services and emergency procedures
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white rounded-xl p-6 md:p-8 shadow-lg border-4 border-blue-900">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white rounded-2xl p-8 md:p-12 shadow-2xl border border-gray-200">
           
           {/* FAQ Section */}
           <div>
-            <h3 className="text-2xl font-bold text-blue-900 mb-6">Common Questions</h3>
-            <div className="space-y-4">
+            <h3 className="text-2xl font-bold text-blue-950 mb-8">Common Questions</h3>
+            <div className="space-y-6">
               {faqs.map((faq, index) => (
-                <div key={index} className="border border-blue-900 rounded-lg overflow-hidden">
+                <div key={index} className="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                   <button
                     onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
-                    className="w-full p-4 text-left font-medium flex justify-between items-center hover:bg-blue-50 transition-colors"
+                    className="w-full p-6 text-left font-semibold flex justify-between items-center hover:bg-gray-50 transition-colors"
                   >
-                    <span className="text-gray-900">{faq.question}</span>
+                    <span className="text-gray-900 text-lg">{faq.question}</span>
                     {openFAQ === index ? (
-                      <ChevronUp size={20} className="text-blue-600" />
+                      <ChevronUp size={24} className="text-blue-600" />
                     ) : (
-                      <ChevronDown size={20} className="text-blue-600" />
+                      <ChevronDown size={24} className="text-blue-600" />
                     )}
                   </button>
                   {openFAQ === index && (
-                    <div className="p-4 pt-0 text-gray-700 bg-blue-50">
+                    <div className="p-6 pt-0 text-gray-700 bg-gray-50 leading-relaxed">
                       {faq.answer}
                     </div>
                   )}
@@ -92,10 +102,10 @@ const FAQ: React.FC = () => {
               ))}
             </div>
             
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-              <p className="text-sm text-blue-800">
+            <div className="mt-8 p-6 bg-blue-50 rounded-xl border border-blue-200">
+              <p className="text-blue-800">
                 <strong>Still have questions?</strong> Visit our{' '}
-                <Link to="/contact" className="underline hover:text-blue-900">
+                <Link to="/contact" className="underline hover:text-blue-900 font-semibold">
                   contact page
                 </Link>{' '}
                 or call our office at (052) 234-5678.
@@ -105,10 +115,10 @@ const FAQ: React.FC = () => {
 
           {/* Contact Form Section */}
           <div>
-            <h3 className="text-2xl font-bold text-blue-900 mb-6">Quick Contact</h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <h3 className="text-2xl font-bold text-blue-950 mb-8">Quick Contact</h3>
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block font-semibold mb-1 text-blue-950">
+                <label className="block font-semibold mb-2 text-blue-950">
                   Your Name
                 </label>
                 <input
@@ -117,11 +127,11 @@ const FAQ: React.FC = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="w-full p-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
                 />
               </div>
               <div>
-                <label className="block font-semibold mb-1 text-blue-950">
+                <label className="block font-semibold mb-2 text-blue-950">
                   Email Address
                 </label>
                 <input
@@ -130,35 +140,35 @@ const FAQ: React.FC = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="w-full p-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
                 />
               </div>
               <div>
-                <label className="block font-semibold mb-1 text-blue-950">
+                <label className="block font-semibold mb-2 text-blue-950">
                   Message
                 </label>
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  rows={5}
+                  rows={6}
                   required
-                  className="w-full p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="w-full p-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 resize-none"
                 />
               </div>
               <button
                 type="submit"
-                className="bg-yellow-500 hover:bg-yellow-400 text-blue-950 font-bold py-3 px-6 rounded shadow-lg transition-all duration-300 flex items-center"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-8 rounded-xl shadow-xl transition-all duration-300 flex items-center justify-center transform hover:scale-105"
               >
-                <Send className="mr-2" size={16} />
+                <Send className="mr-3" size={20} />
                 Send Message
               </button>
             </form>
             
-            <div className="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-              <p className="text-sm text-yellow-800">
+            <div className="mt-8 p-6 bg-yellow-50 rounded-xl border border-yellow-200">
+              <p className="text-yellow-800">
                 <strong>For detailed inquiries,</strong> visit our{' '}
-                <Link to="/contact" className="underline hover:text-yellow-900">
+                <Link to="/contact" className="underline hover:text-yellow-900 font-semibold">
                   full contact page
                 </Link>{' '}
                 with office hours and location details.
