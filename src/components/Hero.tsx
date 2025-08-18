@@ -124,7 +124,7 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
 
         {/* Scroll Indicator */}
         <div className="absolute bottom-2 left-0 right-0 flex justify-center z-30">
-          <a href="https://github.com/copilot">
+          <a href="#Footer">
           <ChevronDown className="text-white animate-bounce" size={32} /></a>
         </div>
       </div>
