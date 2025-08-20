@@ -1,5 +1,5 @@
 import React from 'react';
-import WeatherManagement from '../../components/WeatherManagement';
+#import WeatherManagement from '../../components/WeatherManagement';
 
 const WeatherManagementPage: React.FC = () => {
   return (
