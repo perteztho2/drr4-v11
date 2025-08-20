@@ -154,7 +154,7 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
             className="text-white hover:text-yellow-400 transition-all duration-300 focus:outline-none transform hover:scale-110"
             aria-label="Scroll to next section"
           >
-            <div className="bg-white/20 backdrop-blur-sm rounded-full p-1 border border-white/30">
+            <div className="bg-white/20 rounded-full p-3 border border-white/30">
               <ChevronDown className={`animate-bounce ${isScrolling ? 'animate-pulse' : ''}`} size={28} />
             </div>
           </button>
