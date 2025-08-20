@@ -325,5 +325,5 @@ export class DatabaseManager {
     }
   }
 }
-
+}
 export const databaseManager = new DatabaseManager();
