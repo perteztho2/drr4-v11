@@ -186,36 +186,7 @@ const News: React.FC = () => {
                 </div>
               </div>
 
-              {/* Quick Links */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl md:rounded-2xl shadow-lg border border-white/20 p-4 md:p-6">
-                <h3 className="text-base md:text-lg font-bold text-white mb-3 md:mb-4">Quick Access</h3>
-                <div className="space-y-3">
-                  <Link 
-                    to="/resources"
-                    className="block p-2 md:p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-colors text-white hover:text-yellow-400 text-sm md:text-base"
-                  >
-                    📄 Emergency Resources
-                  </Link>
-                  <Link 
-                    to="/disaster-planning"
-                    className="block p-2 md:p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-colors text-white hover:text-yellow-400 text-sm md:text-base"
-                  >
-                    🗺️ Disaster Planning
-                  </Link>
-                  <Link 
-                    to="/gallery"
-                    className="block p-2 md:p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-colors text-white hover:text-yellow-400 text-sm md:text-base"
-                  >
-                    📸 Photo Gallery
-                  </Link>
-                  <Link 
-                    to="/contact"
-                    className="block p-2 md:p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-colors text-white hover:text-yellow-400 text-sm md:text-base"
-                  >
-                    📞 Contact Us
-                  </Link>
-                </div>
-              </div>
+
             </div>
           </div>
         </div>
