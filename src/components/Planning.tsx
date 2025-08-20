@@ -106,30 +106,30 @@ const Planning: React.FC = () => {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+    <section className="py-12 md:py-24 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-          <div className="absolute top-40 right-10 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-yellow-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+          <div className="absolute top-10 left-5 w-48 md:w-96 h-48 md:h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+          <div className="absolute top-20 right-5 w-48 md:w-96 h-48 md:h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute -bottom-4 left-10 w-48 md:w-96 h-48 md:h-96 bg-yellow-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
         </div>
       </div>
       
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Header */}
-        <div className={`text-center mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`}>
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl mb-8 shadow-2xl">
-            <Shield className="text-white" size={40} />
+        <div className={`text-center mb-10 md:mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`}>
+          <div className="inline-flex items-center justify-center w-12 h-12 md:w-20 md:h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl md:rounded-3xl mb-4 md:mb-8 shadow-lg md:shadow-2xl">
+            <Shield className="text-white" size={24} />
           </div>
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4 md:mb-6">
             Disaster Risk Reduction &
-            <span className="block bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent mt-1 md:mt-0">
               Management Planning
             </span>
           </h2>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto rounded-full mb-8"></div>
-          <p className="text-xl text-blue-100 max-w-4xl mx-auto leading-relaxed">
+          <div className="w-20 md:w-32 h-1 md:h-1.5 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto rounded-full mb-4 md:mb-8"></div>
+          <p className="text-sm md:text-lg lg:text-xl text-blue-100 max-w-4xl mx-auto leading-relaxed px-4">
             Building resilient communities through comprehensive planning, innovative strategies, and collaborative partnerships
           </p>
         </div>

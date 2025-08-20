@@ -54,7 +54,7 @@ const FAQ: React.FC = () => {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
+    <section className="py-12 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute inset-0" style={{
@@ -63,38 +63,38 @@ const FAQ: React.FC = () => {
         }}></div>
       </div>
       
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-blue-950 mb-6 relative">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="text-center mb-8 md:mb-16">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-blue-950 mb-4 md:mb-6 relative">
             <span className="relative z-10">Frequently Asked Questions</span>
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full"></div>
+            <div className="absolute -bottom-1 md:-bottom-2 left-1/2 transform -translate-x-1/2 w-20 md:w-32 h-0.5 md:h-1 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full"></div>
           </h2>
-          <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-sm md:text-lg lg:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed px-4">
             Find answers to common questions about MDRRMO services and emergency procedures
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white rounded-2xl p-8 md:p-12 shadow-2xl border border-gray-200">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 bg-white rounded-xl md:rounded-2xl p-4 md:p-8 lg:p-12 shadow-lg md:shadow-2xl border border-gray-200">
           
           {/* FAQ Section */}
           <div>
-            <h3 className="text-2xl font-bold text-blue-950 mb-8">Common Questions</h3>
-            <div className="space-y-6">
+            <h3 className="text-lg md:text-2xl font-bold text-blue-950 mb-4 md:mb-8">Common Questions</h3>
+            <div className="space-y-3 md:space-y-6">
               {faqs.map((faq, index) => (
-                <div key={index} className="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <div key={index} className="border border-gray-200 rounded-lg md:rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                   <button
                     onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
-                    className="w-full p-6 text-left font-semibold flex justify-between items-center hover:bg-gray-50 transition-colors"
+                    className="w-full p-4 md:p-6 text-left font-semibold flex justify-between items-center hover:bg-gray-50 transition-colors"
                   >
-                    <span className="text-gray-900 text-lg">{faq.question}</span>
+                    <span className="text-gray-900 text-sm md:text-lg">{faq.question}</span>
                     {openFAQ === index ? (
-                      <ChevronUp size={24} className="text-blue-600" />
+                      <ChevronUp size={20} className="text-blue-600" />
                     ) : (
-                      <ChevronDown size={24} className="text-blue-600" />
+                      <ChevronDown size={20} className="text-blue-600" />
                     )}
                   </button>
                   {openFAQ === index && (
-                    <div className="p-6 pt-0 text-gray-700 bg-gray-50 leading-relaxed">
+                    <div className="p-4 md:p-6 pt-0 text-gray-700 bg-gray-50 leading-relaxed text-sm md:text-base">
                       {faq.answer}
                     </div>
                   )}
@@ -102,8 +102,8 @@ const FAQ: React.FC = () => {
               ))}
             </div>
             
-            <div className="mt-8 p-6 bg-blue-50 rounded-xl border border-blue-200">
-              <p className="text-blue-800">
+            <div className="mt-6 md:mt-8 p-4 md:p-6 bg-blue-50 rounded-xl border border-blue-200">
+              <p className="text-blue-800 text-sm md:text-base">
                 <strong>Still have questions?</strong> Visit our{' '}
                 <Link to="/contact" className="underline hover:text-blue-900 font-semibold">
                   contact page
@@ -115,10 +115,10 @@ const FAQ: React.FC = () => {
 
           {/* Contact Form Section */}
           <div>
-            <h3 className="text-2xl font-bold text-blue-950 mb-8">Quick Contact</h3>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <h3 className="text-lg md:text-2xl font-bold text-blue-950 mb-4 md:mb-8">Quick Contact</h3>
+            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
               <div>
-                <label className="block font-semibold mb-2 text-blue-950">
+                <label className="block font-semibold mb-1 md:mb-2 text-blue-950 text-sm md:text-base">
                   Your Name
                 </label>
                 <input
@@ -127,11 +127,11 @@ const FAQ: React.FC = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+                  className="w-full p-3 md:p-4 rounded-lg md:rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-sm md:text-base"
                 />
               </div>
               <div>
-                <label className="block font-semibold mb-2 text-blue-950">
+                <label className="block font-semibold mb-1 md:mb-2 text-blue-950 text-sm md:text-base">
                   Email Address
                 </label>
                 <input
@@ -140,33 +140,33 @@ const FAQ: React.FC = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+                  className="w-full p-3 md:p-4 rounded-lg md:rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 text-sm md:text-base"
                 />
               </div>
               <div>
-                <label className="block font-semibold mb-2 text-blue-950">
+                <label className="block font-semibold mb-1 md:mb-2 text-blue-950 text-sm md:text-base">
                   Message
                 </label>
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  rows={6}
+                  rows={4}
                   required
-                  className="w-full p-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 resize-none"
+                  className="w-full p-3 md:p-4 rounded-lg md:rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 resize-none text-sm md:text-base"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-8 rounded-xl shadow-xl transition-all duration-300 flex items-center justify-center transform hover:scale-105"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 md:py-4 px-6 md:px-8 rounded-lg md:rounded-xl shadow-lg md:shadow-xl transition-all duration-300 flex items-center justify-center transform hover:scale-105 text-sm md:text-base"
               >
-                <Send className="mr-3" size={20} />
+                <Send className="mr-2 md:mr-3" size={16} />
                 Send Message
               </button>
             </form>
             
-            <div className="mt-8 p-6 bg-yellow-50 rounded-xl border border-yellow-200">
-              <p className="text-yellow-800">
+            <div className="mt-6 md:mt-8 p-4 md:p-6 bg-yellow-50 rounded-xl border border-yellow-200">
+              <p className="text-yellow-800 text-sm md:text-base">
                 <strong>For detailed inquiries,</strong> visit our{' '}
                 <Link to="/contact" className="underline hover:text-yellow-900 font-semibold">
                   full contact page

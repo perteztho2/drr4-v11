@@ -119,28 +119,28 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
         {/* Hero Content */}
         <div className="container mx-auto px-4 z-30 text-center">
           <div className="max-w-5xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-5 leading-tight">
+            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-5 leading-tight px-4">
             <span className="text-yellow-400 drop-shadow-2xl">Resilient Pio Duran:</span>
             <br />
             <span className="drop-shadow-2xl">Prepared for Tomorrow</span>
             </h1>
-          <p className="text-xl md:text-2xl text-white max-w-3xl mx-auto mb-9 drop-shadow-lg leading-relaxed">
+          <p className="text-sm md:text-lg lg:text-xl text-white max-w-3xl mx-auto mb-6 md:mb-9 drop-shadow-lg leading-relaxed px-4">
             Building stronger communities through comprehensive disaster preparedness, innovative response strategies, and unwavering commitment to public safety.
           </p>
           
-          <div className="flex flex-col sm:flex-row justify-center gap-6 mb-9">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 md:gap-6 mb-6 md:mb-9 px-4">
             <button
               onClick={onEmergencyClick}
-              className="inline-flex items-center px-10 py-5 bg-gradient-to-r from-red-600 to-red-700 text-white font-bold rounded-full shadow-2xl hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105 hover:shadow-3xl active:scale-95 text-lg"
+              className="inline-flex items-center px-6 md:px-10 py-3 md:py-5 bg-gradient-to-r from-red-600 to-red-700 text-white font-bold rounded-full shadow-xl md:shadow-2xl hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl md:hover:shadow-3xl active:scale-95 text-sm md:text-lg"
             >
-              <Phone className="mr-3" size={24} />
+              <Phone className="mr-2 md:mr-3" size={18} />
               Emergency Hotline
             </button>
             <button
               onClick={onIncidentClick}
-              className="inline-flex items-center px-10 py-5 width-50 bg-gradient-to-r from-yellow-500 to-yellow-600 text-blue-950 font-bold rounded-full shadow-2xl hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 hover:shadow-3xl active:scale-95 text-lg"
+              className="inline-flex items-center px-6 md:px-10 py-3 md:py-5 bg-gradient-to-r from-yellow-500 to-yellow-600 text-blue-950 font-bold rounded-full shadow-xl md:shadow-2xl hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl md:hover:shadow-3xl active:scale-95 text-sm md:text-lg"
             >
-              <AlertTriangle className="mr-3" size={24} />
+              <AlertTriangle className="mr-2 md:mr-3" size={18} />
               Report Incident
             </button>
           </div>
@@ -148,14 +148,14 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-4 left-0 right-0 flex justify-center z-30">
+        <div className="absolute bottom-2 md:bottom-4 left-0 right-0 flex justify-center z-30">
           <button
             onClick={handleScrollClick}
             className="text-white hover:text-yellow-400 transition-all duration-300 focus:outline-none transform hover:scale-110"
             aria-label="Scroll to next section"
           >
             <div className="bg-white/20 backdrop-blur-sm rounded-full p-3 border border-white/30">
-              <ChevronDown className={`animate-bounce ${isScrolling ? 'animate-pulse' : ''}`} size={28} />
+              <ChevronDown className={`animate-bounce ${isScrolling ? 'animate-pulse' : ''}`} size={20} />
             </div>
           </button>
         </div>

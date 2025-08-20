@@ -1,4 +1,4 @@
-// OpenWeatherMap API integration
+// OpenWeatherMap API integration - Removed WeatherLink dependencies
 import { supabase } from './supabase';
 
 export interface OpenWeatherMapCurrentData {

@@ -69,7 +69,7 @@ const ImageGallery: React.FC = () => {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 overflow-hidden relative">
+    <section className="py-12 md:py-24 bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 overflow-hidden relative">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -78,13 +78,13 @@ const ImageGallery: React.FC = () => {
         }}></div>
       </div>
       
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-yellow-500 mb-6 relative">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="text-center mb-8 md:mb-16">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-yellow-500 mb-4 md:mb-6 relative">
             <span className="relative z-10">Our Activities & Events</span>
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"></div>
+            <div className="absolute -bottom-1 md:-bottom-2 left-1/2 transform -translate-x-1/2 w-20 md:w-32 h-0.5 md:h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"></div>
           </h2>
-          <p className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-sm md:text-lg lg:text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed px-4">
             Capturing moments from our disaster preparedness activities and community engagement events
           </p>
         </div>
@@ -94,42 +94,42 @@ const ImageGallery: React.FC = () => {
           <div className="absolute inset-y-0 left-0 flex items-center z-10">
             <button
               onClick={() => scroll('left')}
-              className="bg-white/90 hover:bg-white p-3 rounded-full shadow-xl ml-4 transition-all duration-300 transform hover:scale-110 backdrop-blur-sm"
+              className="bg-white/90 hover:bg-white p-2 md:p-3 rounded-full shadow-lg md:shadow-xl ml-2 md:ml-4 transition-all duration-300 transform hover:scale-110 backdrop-blur-sm"
             >
-              <ChevronLeft className="text-blue-950" size={24} />
+              <ChevronLeft className="text-blue-950" size={18} />
             </button>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center z-10">
             <button
               onClick={() => scroll('right')}
-              className="bg-white/90 hover:bg-white p-3 rounded-full shadow-xl mr-4 transition-all duration-300 transform hover:scale-110 backdrop-blur-sm"
+              className="bg-white/90 hover:bg-white p-2 md:p-3 rounded-full shadow-lg md:shadow-xl mr-2 md:mr-4 transition-all duration-300 transform hover:scale-110 backdrop-blur-sm"
             >
-              <ChevronRight className="text-blue-950" size={24} />
+              <ChevronRight className="text-blue-950" size={18} />
             </button>
           </div>
           
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 py-6 overflow-hidden shadow-2xl">
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl md:rounded-2xl border border-white/20 py-3 md:py-6 overflow-hidden shadow-lg md:shadow-2xl">
             <div
               ref={galleryRef}
-              className="flex space-x-6 px-6 overflow-x-auto scrollbar-hide"
+              className="flex space-x-3 md:space-x-6 px-3 md:px-6 overflow-x-auto scrollbar-hide"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className="flex-shrink-0 w-72 h-72 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 relative group border border-white/20"
+                  className="flex-shrink-0 w-48 h-48 md:w-72 md:h-72 rounded-xl md:rounded-2xl overflow-hidden shadow-lg md:shadow-xl hover:shadow-xl md:hover:shadow-2xl transition-all duration-500 transform hover:scale-105 relative group border border-white/20"
                 >
                   <LazyImage
                     src={image.url}
                     alt={image.title}
                     className="w-full h-full"
-                    width={288}
-                    height={288}
+                    width={192}
+                    height={192}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end">
-                    <div className="p-6 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                      <h4 className="font-bold text-lg mb-2">{image.title}</h4>
-                      <p className="text-sm opacity-90 leading-relaxed">{image.description}</p>
+                    <div className="p-3 md:p-6 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                      <h4 className="font-bold text-sm md:text-lg mb-1 md:mb-2">{image.title}</h4>
+                      <p className="text-xs md:text-sm opacity-90 leading-relaxed">{image.description}</p>
                     </div>
                   </div>
                 </div>
@@ -138,19 +138,19 @@ const ImageGallery: React.FC = () => {
           </div>
         </div>
         
-        <div className="text-center mt-16">
+        <div className="text-center mt-8 md:mt-16">
           <Link
             to="/gallery"
-            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-blue-950 rounded-full hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 font-bold shadow-xl hover:shadow-2xl transform hover:scale-105 mr-4"
+            className="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-blue-950 rounded-full hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 font-bold shadow-lg md:shadow-xl hover:shadow-xl md:hover:shadow-2xl transform hover:scale-105 mr-2 md:mr-4 mb-2 md:mb-0 text-sm md:text-base"
           >
-            <Camera className="mr-3" size={20} />
+            <Camera className="mr-2 md:mr-3" size={16} />
             View Full Gallery
           </Link>
           <Link
             to="/video-gallery"
-            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full hover:from-red-400 hover:to-red-500 transition-all duration-300 font-bold shadow-xl hover:shadow-2xl transform hover:scale-105"
+            className="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full hover:from-red-400 hover:to-red-500 transition-all duration-300 font-bold shadow-lg md:shadow-xl hover:shadow-xl md:hover:shadow-2xl transform hover:scale-105 text-sm md:text-base"
           >
-            <Play className="mr-3" size={20} />
+            <Play className="mr-2 md:mr-3" size={16} />
             Watch Videos
           </Link>
         </div>

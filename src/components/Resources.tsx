@@ -94,7 +94,7 @@ const Resources: React.FC = () => {
   ];
 
   return (
-    <section id="resources" className="py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden">
+    <section id="resources" className="py-12 md:py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-40">
         <div className="absolute inset-0" style={{
@@ -104,29 +104,29 @@ const Resources: React.FC = () => {
         }}></div>
       </div>
       
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Header Section */}
-        <div className={`text-center mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`}>
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl mb-8 shadow-2xl">
-            <FolderOpen className="text-white" size={40} />
+        <div className={`text-center mb-10 md:mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`}>
+          <div className="inline-flex items-center justify-center w-12 h-12 md:w-20 md:h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl md:rounded-3xl mb-4 md:mb-8 shadow-lg md:shadow-2xl">
+            <FolderOpen className="text-white" size={24} />
           </div>
-          <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent mb-6">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent mb-4 md:mb-6">
             Resources & Downloads
           </h2>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto rounded-full mb-8"></div>
-          <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
+          <div className="w-20 md:w-32 h-1 md:h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto rounded-full mb-4 md:mb-8"></div>
+          <p className="text-sm md:text-lg lg:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed px-4">
             Essential disaster preparedness materials, official documents, and community resources
           </p>
           
           {/* Public Notice */}
-          <div className="mt-8 max-w-4xl mx-auto">
-            <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl p-6 shadow-lg">
+          <div className="mt-6 md:mt-8 max-w-4xl mx-auto">
+            <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl p-4 md:p-6 shadow-lg">
               <div className="flex items-start">
                 <div className="flex-shrink-0">
-                  <FileText className="h-6 w-6 text-blue-600" />
+                  <FileText className="h-5 w-5 md:h-6 md:w-6 text-blue-600" />
                 </div>
-                <div className="ml-3">
-                  <p className="text-sm text-blue-800">
+                <div className="ml-2 md:ml-3">
+                  <p className="text-xs md:text-sm text-blue-800">
                     <span className="font-semibold">Public Access Notice:</span> All materials are freely available for public use. 
                     For high-resolution copies for printing or reproduction, please contact our Public Information Unit.
                   </p>
@@ -137,19 +137,19 @@ const Resources: React.FC = () => {
         </div>
 
         {/* Resource Statistics */}
-        <div className={`mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '200ms' }}>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className={`mb-10 md:mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '200ms' }}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {resourceStats.map((stat, index) => (
-              <div key={index} className="group relative bg-white rounded-2xl p-8 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-500 hover:transform hover:-translate-y-2">
+              <div key={index} className="group relative bg-white rounded-xl md:rounded-2xl p-4 md:p-8 shadow-lg md:shadow-xl border border-gray-100 hover:shadow-xl md:hover:shadow-2xl transition-all duration-500 hover:transform hover:-translate-y-1 md:hover:-translate-y-2">
                 <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-500`}></div>
                 
                 <div className="relative z-10 text-center">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${stat.color} rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    <stat.icon className="text-white" size={32} />
+                  <div className={`w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br ${stat.color} rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-3 md:mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <stat.icon className="text-white" size={20} />
                   </div>
-                  <div className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</div>
-                  <div className="text-lg font-semibold text-gray-800 mb-1">{stat.label}</div>
-                  <div className="text-sm text-gray-600">{stat.description}</div>
+                  <div className="text-xl md:text-3xl font-bold text-gray-900 mb-1 md:mb-2">{stat.value}</div>
+                  <div className="text-sm md:text-lg font-semibold text-gray-800 mb-1">{stat.label}</div>
+                  <div className="text-xs md:text-sm text-gray-600">{stat.description}</div>
                 </div>
               </div>
             ))}

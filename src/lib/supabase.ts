@@ -512,8 +512,8 @@ export interface Database {
         Row: {
           id: string
           api_key: string
-          api_secret: string
-          station_id: string
+          api_secret?: string
+          station_id?: string
           is_active: boolean
           last_sync: string | null
           created_at: string
@@ -522,8 +522,8 @@ export interface Database {
         Insert: {
           id?: string
           api_key: string
-          api_secret: string
-          station_id: string
+          api_secret?: string
+          station_id?: string
           is_active?: boolean
           last_sync?: string | null
           created_at?: string
@@ -579,6 +579,53 @@ export interface Database {
           wind_speed?: number
           precipitation?: number
           icon?: string
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      weather_data: {
+        Row: {
+          id: string
+          temperature: number
+          humidity: number
+          wind_speed: number
+          visibility: number
+          condition: string
+          description: string
+          location: string
+          alerts: string[]
+          last_updated: string
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          temperature: number
+          humidity: number
+          wind_speed: number
+          visibility?: number
+          condition: string
+          description: string
+          location?: string
+          alerts?: string[]
+          last_updated?: string
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          temperature?: number
+          humidity?: number
+          wind_speed?: number
+          visibility?: number
+          condition?: string
+          description?: string
+          location?: string
+          alerts?: string[]
+          last_updated?: string
           is_active?: boolean
           created_at?: string
           updated_at?: string

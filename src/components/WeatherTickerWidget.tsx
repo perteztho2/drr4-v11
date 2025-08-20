@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Cloud, Sun, CloudRain, AlertTriangle, Wind, Droplets, Thermometer, RefreshCw, Wifi, WifiOff } from 'lucide-react';
+import { Cloud, Sun, CloudRain, AlertTriangle, Wind, Droplets, Thermometer, RefreshCw, Wifi, WifiOff, ExternalLink } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { openWeatherAPI, OpenWeatherMapCurrentData } from '../lib/openweathermap';
 
@@ -34,10 +34,10 @@ const WeatherTickerWidget: React.FC = () => {
   useEffect(() => {
     fetchWeatherData();
     
-    // Auto refresh every 10 minutes for production
+    // Auto refresh every 15 minutes for production
     const interval = setInterval(() => {
       fetchWeatherData();
-    }, 10 * 60 * 1000);
+    }, 15 * 60 * 1000);
 
     // Check online status
     const handleOnline = () => setIsOnline(true);
@@ -227,7 +227,16 @@ const WeatherTickerWidget: React.FC = () => {
               )}
 
               <div className={`text-sm ${getTemperatureTextColor(weatherData.temperature)} opacity-75`}>
-                📍 {weatherData.location} • Updated: {new Date(weatherData.last_updated).toLocaleTimeString()} • OpenWeatherMap
+                📍 {weatherData.location} • Updated: {new Date(weatherData.last_updated).toLocaleTimeString()} •{' '}
+                <a 
+                  href="https://openweathermap.org" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className={`${getTemperatureTextColor(weatherData.temperature)} hover:opacity-90 underline inline-flex items-center`}
+                >
+                  OpenWeatherMap
+                  <ExternalLink size={12} className="ml-1" />
+                </a>
                 {!isOnline && <span className="text-red-300 ml-2">(Offline)</span>}
               </div>
             </div>

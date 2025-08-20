@@ -168,20 +168,20 @@ const WeatherManagement: React.FC = () => {
     try {
       setSaving(true);
       
-      // Sync directly from OpenWeatherMap API
+      // Sync from OpenWeatherMap API (removed WeatherLink dependencies)
       const freshData = await openWeatherAPI.fetchCurrentWeather();
       if (freshData) {
         await openWeatherAPI.updateWeatherInDatabase(freshData);
         await fetchWeatherData();
         await openWeatherAPI.syncForecastData();
         await fetchForecast();
-        alert('Weather data synced successfully from OpenWeatherMap API!');
+        alert('Weather data synced successfully from OpenWeatherMap!');
       } else {
-        alert('Failed to sync weather data from OpenWeatherMap API');
+        alert('Failed to sync weather data from OpenWeatherMap');
       }
     } catch (error) {
       console.error('Error syncing weather data:', error);
-      alert('Error syncing weather data from OpenWeatherMap API.');
+      alert('Error syncing weather data from OpenWeatherMap.');
     } finally {
       setSaving(false);
     }

@@ -345,42 +345,42 @@ const EmergencyProcedures: React.FC = () => {
     const currentProcedure = procedures[activeTab as keyof typeof procedures];
     
     return (
-      <div className={`group relative bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} 
+      <div className={`group relative bg-white/95 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-8 shadow-lg md:shadow-xl border border-white/20 hover:shadow-xl md:hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 md:hover:-translate-y-2 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} 
            style={{ animationDelay: `${index * 150}ms` }}>
         
         {/* Download Button */}
         <button
           onClick={() => downloadPDF(activeTab, phase)}
-          className={`absolute top-4 right-4 bg-gradient-to-r ${currentProcedure.color} text-white px-4 py-2 rounded-xl text-sm font-medium hover:shadow-lg transition-all duration-300 flex items-center space-x-2 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0`}
+          className={`absolute top-2 md:top-4 right-2 md:right-4 bg-gradient-to-r ${currentProcedure.color} text-white px-3 md:px-4 py-1 md:py-2 rounded-lg md:rounded-xl text-xs md:text-sm font-medium hover:shadow-lg transition-all duration-300 flex items-center space-x-1 md:space-x-2 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0`}
         >
-          <Download size={14} />
+          <Download size={12} />
           <span>PDF</span>
         </button>
         
         {/* Phase Header */}
-        <div className="flex items-center space-x-4 mb-8">
-          <div className={`p-4 rounded-2xl bg-gradient-to-br ${currentProcedure.color} shadow-lg`}>
+        <div className="flex items-center space-x-3 md:space-x-4 mb-4 md:mb-8">
+          <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl bg-gradient-to-br ${currentProcedure.color} shadow-lg`}>
             {icon}
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-gray-900">{title}</h3>
-            <p className="text-gray-600 text-sm">Essential steps to follow</p>
+            <h3 className="text-lg md:text-2xl font-bold text-gray-900">{title}</h3>
+            <p className="text-gray-600 text-xs md:text-sm">Essential steps to follow</p>
           </div>
         </div>
 
         {/* Procedure Steps */}
-        <div className="space-y-6">
+        <div className="space-y-3 md:space-y-6">
           {items.map((item, stepIndex) => (
             <div key={stepIndex} className="group/item relative">
-              <div className="flex items-start space-x-4">
-                <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-r ${currentProcedure.color} flex items-center justify-center text-white font-bold text-sm shadow-md`}>
+              <div className="flex items-start space-x-3 md:space-x-4">
+                <div className={`flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full bg-gradient-to-r ${currentProcedure.color} flex items-center justify-center text-white font-bold text-xs md:text-sm shadow-md`}>
                   {stepIndex + 1}
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-bold text-gray-900 mb-2 group-hover/item:text-blue-600 transition-colors">
+                  <h4 className="font-bold text-gray-900 mb-1 md:mb-2 group-hover/item:text-blue-600 transition-colors text-sm md:text-base">
                     {item.title}
                   </h4>
-                  <p className="text-gray-700 leading-relaxed text-sm">
+                  <p className="text-gray-700 leading-relaxed text-xs md:text-sm">
                     {item.description}
                   </p>
                 </div>
@@ -388,15 +388,15 @@ const EmergencyProcedures: React.FC = () => {
               
               {/* Connector Line */}
               {stepIndex < items.length - 1 && (
-                <div className={`absolute left-4 top-8 w-px h-6 bg-gradient-to-b ${currentProcedure.color} opacity-30`}></div>
+                <div className={`absolute left-3 md:left-4 top-6 md:top-8 w-px h-4 md:h-6 bg-gradient-to-b ${currentProcedure.color} opacity-30`}></div>
               )}
             </div>
           ))}
         </div>
 
         {/* Phase Indicator */}
-        <div className="absolute -left-2 top-8">
-          <div className={`w-4 h-16 rounded-r-full bg-gradient-to-b ${currentProcedure.color} shadow-lg`}></div>
+        <div className="absolute -left-1 md:-left-2 top-6 md:top-8">
+          <div className={`w-2 md:w-4 h-12 md:h-16 rounded-r-full bg-gradient-to-b ${currentProcedure.color} shadow-lg`}></div>
         </div>
       </div>
     );
@@ -405,7 +405,7 @@ const EmergencyProcedures: React.FC = () => {
   const currentProcedure = procedures[activeTab as keyof typeof procedures] || procedures['storm-surge'];
 
   return (
-    <section id="emergency-procedures" className="py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden">
+    <section id="emergency-procedures" className="py-12 md:py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute inset-0" style={{
@@ -415,42 +415,42 @@ const EmergencyProcedures: React.FC = () => {
         }}></div>
       </div>
       
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Header Section */}
-        <div className={`text-center mb-16 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`}>
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-red-500 to-orange-600 rounded-3xl mb-8 shadow-2xl">
-            <AlertTriangle className="text-white" size={40} />
+        <div className={`text-center mb-8 md:mb-16 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`}>
+          <div className="inline-flex items-center justify-center w-12 h-12 md:w-20 md:h-20 bg-gradient-to-br from-red-500 to-orange-600 rounded-2xl md:rounded-3xl mb-4 md:mb-8 shadow-lg md:shadow-2xl">
+            <AlertTriangle className="text-white" size={24} />
           </div>
-          <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent mb-6">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent mb-4 md:mb-6">
             Emergency Procedures
           </h2>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-red-500 to-orange-500 mx-auto rounded-full mb-8"></div>
-          <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
+          <div className="w-20 md:w-32 h-1 md:h-1.5 bg-gradient-to-r from-red-500 to-orange-500 mx-auto rounded-full mb-4 md:mb-8"></div>
+          <p className="text-sm md:text-lg lg:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed px-4">
             Comprehensive step-by-step procedures for before, during, and after emergency situations
           </p>
         </div>
 
         {/* Modern Tab Navigation */}
-        <div className={`bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 mb-16 overflow-hidden ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '200ms' }}>
-          <div className="p-6">
-            <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-3">
+        <div className={`bg-white/80 backdrop-blur-xl rounded-2xl md:rounded-3xl shadow-lg md:shadow-2xl border border-white/20 mb-8 md:mb-16 overflow-hidden ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '200ms' }}>
+          <div className="p-3 md:p-6">
+            <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2 md:gap-3">
               {tabs.map((tab, index) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`group relative flex flex-col items-center gap-3 p-4 rounded-2xl text-sm font-semibold transition-all duration-300 hover:scale-105 ${
+                  className={`group relative flex flex-col items-center gap-2 md:gap-3 p-2 md:p-4 rounded-xl md:rounded-2xl text-xs md:text-sm font-semibold transition-all duration-300 hover:scale-105 ${
                     activeTab === tab.id
                       ? `bg-gradient-to-br ${procedures[tab.id as keyof typeof procedures]?.color || 'from-blue-500 to-blue-600'} text-white shadow-xl scale-105`
                       : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
                   }`}
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <tab.icon size={24} className="transition-transform duration-300 group-hover:scale-110" />
+                  <tab.icon size={18} className="transition-transform duration-300 group-hover:scale-110" />
                   <span className="text-center leading-tight text-xs">{tab.name}</span>
                   
                   {/* Active indicator */}
                   {activeTab === tab.id && (
-                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full shadow-lg"></div>
+                    <div className="absolute -bottom-0.5 md:-bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 md:w-2 h-1.5 md:h-2 bg-white rounded-full shadow-lg"></div>
                   )}
                 </button>
               ))}
@@ -459,40 +459,40 @@ const EmergencyProcedures: React.FC = () => {
         </div>
 
         {/* Procedure Content */}
-        <div className={`${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '400ms' }}>
+        <div className={`${isVisible ? 'animate-fadeIn' : 'opacity-0'} mobile-compact`} style={{ animationDelay: '400ms' }}>
           {/* Current Procedure Header */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-6 md:mb-12">
             <div className="flex items-center justify-center mb-6">
-              <div className={`p-6 rounded-3xl bg-gradient-to-br ${currentProcedure.color} shadow-2xl`}>
-                <currentProcedure.icon className="text-white" size={48} />
+              <div className={`p-4 md:p-6 rounded-2xl md:rounded-3xl bg-gradient-to-br ${currentProcedure.color} shadow-lg md:shadow-2xl`}>
+                <currentProcedure.icon className="text-white" size={32} />
               </div>
             </div>
-            <h3 className="text-4xl font-bold text-gray-900 mb-4">{currentProcedure.name} Emergency Procedures</h3>
-            <p className="text-gray-600 max-w-3xl mx-auto text-lg">
+            <h3 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">{currentProcedure.name} Emergency Procedures</h3>
+            <p className="text-sm md:text-base lg:text-lg text-gray-600 max-w-3xl mx-auto px-4">
               Follow these comprehensive procedures to stay safe during {currentProcedure.name.toLowerCase()} emergencies
             </p>
           </div>
 
           {/* Procedure Cards Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-16">
             {renderProcedureCard(
               'Before',
               currentProcedure.before,
-              <Calendar size={28} className="text-white" />,
+              <Calendar size={20} className="text-white" />,
               'before',
               0
             )}
             {renderProcedureCard(
               'During',
               currentProcedure.during,
-              <AlertTriangle size={28} className="text-white" />,
+              <AlertTriangle size={20} className="text-white" />,
               'during',
               1
             )}
             {renderProcedureCard(
               'After',
               currentProcedure.after,
-              <CheckCircle size={28} className="text-white" />,
+              <CheckCircle size={20} className="text-white" />,
               'after',
               2
             )}
@@ -500,8 +500,8 @@ const EmergencyProcedures: React.FC = () => {
         </div>
 
         {/* Emergency Contact Section */}
-        <div className={`${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '600ms' }}>
-          <div className="bg-gradient-to-r from-red-600 via-red-700 to-red-800 rounded-3xl p-12 shadow-2xl border border-red-500/20 relative overflow-hidden">
+        <div className={`${isVisible ? 'animate-fadeIn' : 'opacity-0'} mobile-compact`} style={{ animationDelay: '600ms' }}>
+          <div className="bg-gradient-to-r from-red-600 via-red-700 to-red-800 rounded-2xl md:rounded-3xl p-6 md:p-12 shadow-lg md:shadow-2xl border border-red-500/20 relative overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 opacity-10">
               <div className="absolute inset-0" style={{
@@ -511,22 +511,22 @@ const EmergencyProcedures: React.FC = () => {
             </div>
             
             <div className="relative z-10 text-center">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-6">
-                <AlertTriangle className="text-white animate-pulse" size={40} />
+              <div className="inline-flex items-center justify-center w-12 h-12 md:w-20 md:h-20 bg-white/20 backdrop-blur-sm rounded-full mb-4 md:mb-6">
+                <AlertTriangle className="text-white animate-pulse" size={24} />
               </div>
-              <h3 className="text-3xl font-bold text-white mb-4">Emergency Contact</h3>
-              <p className="text-red-100 mb-8 text-lg max-w-2xl mx-auto">
+              <h3 className="text-xl md:text-3xl font-bold text-white mb-3 md:mb-4">Emergency Contact</h3>
+              <p className="text-sm md:text-base lg:text-lg text-red-100 mb-6 md:mb-8 max-w-2xl mx-auto px-4">
                 For immediate emergency assistance, call our 24/7 hotline. Help is always available.
               </p>
-              <div className="inline-flex items-center bg-white text-red-600 font-bold py-6 px-12 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 text-3xl">
+              <div className="inline-flex items-center bg-white text-red-600 font-bold py-4 md:py-6 px-8 md:px-12 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl md:hover:shadow-3xl transition-all duration-300 transform hover:scale-105 text-xl md:text-3xl">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                    <AlertTriangle size={24} />
+                  <div className="w-8 h-8 md:w-12 md:h-12 bg-red-100 rounded-full flex items-center justify-center">
+                    <AlertTriangle size={16} />
                   </div>
                   <span>911</span>
                 </div>
               </div>
-              <p className="text-red-200 mt-6 text-sm">
+              <p className="text-red-200 mt-4 md:mt-6 text-xs md:text-sm">
                 Available 24/7 • Multilingual Support • Immediate Response
               </p>
             </div>

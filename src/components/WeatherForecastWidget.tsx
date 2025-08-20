@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Sun, Cloud, CloudRain, AlertTriangle, Thermometer, Droplets, Wind, RefreshCw } from 'lucide-react';
+import { Calendar, Sun, Cloud, CloudRain, AlertTriangle, Thermometer, Droplets, Wind, RefreshCw, ExternalLink } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { openWeatherAPI } from '../lib/openweathermap';
 
@@ -19,30 +19,43 @@ const WeatherForecastWidget: React.FC = () => {
   const [forecast, setForecast] = useState<ForecastDay[]>([]);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     fetchForecast();
     
-    // Auto refresh every 3 hours for forecast data
+    // Auto refresh every 6 hours for forecast data
     const interval = setInterval(() => {
       fetchForecast();
-    }, 3 * 60 * 60 * 1000);
+    }, 6 * 60 * 60 * 1000);
 
     return () => clearInterval(interval);
+  }, []);
+
+  // Ensure forecast remains visible
+  useEffect(() => {
+    const checkVisibility = () => {
+      setIsVisible(true);
+    };
+    
+    // Check visibility every 30 seconds
+    const visibilityInterval = setInterval(checkVisibility, 30000);
+    
+    return () => clearInterval(visibilityInterval);
   }, []);
 
   const fetchForecast = async () => {
     try {
       setIsRefreshing(true);
       
-      // Try to sync forecast from OpenWeatherMap API
+      // Sync forecast from OpenWeatherMap API
       try {
         const success = await openWeatherAPI.syncForecastData();
         if (success) {
           console.log('Forecast synced from OpenWeatherMap API');
         }
       } catch (syncError) {
-        console.warn('Failed to sync forecast from API:', syncError);
+        console.warn('Failed to sync forecast from OpenWeatherMap API:', syncError);
       }
       
       // Fetch forecast data from database
@@ -150,7 +163,7 @@ const WeatherForecastWidget: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="bg-white border-t border-gray-200 py-6">
+      <div className="bg-white border-t border-gray-200 py-3">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center">
             <RefreshCw className="animate-spin h-5 w-5 text-blue-600 mr-2" />
@@ -163,7 +176,7 @@ const WeatherForecastWidget: React.FC = () => {
 
   if (forecast.length === 0) {
     return (
-      <div className="bg-white border-t border-gray-200 py-6">
+      <div className="bg-white border-t border-gray-200 py-3">
         <div className="container mx-auto px-4">
           <div className="text-center text-gray-500">
             <Cloud className="mx-auto h-8 w-8 mb-2" />
@@ -181,14 +194,14 @@ const WeatherForecastWidget: React.FC = () => {
   }
 
   return (
-    <div className="bg-white border-t border-gray-200 py-4 shadow-sm">
+    <div className={`bg-white border-t border-gray-200 py-2 md:py-4 shadow-sm transition-all duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center space-x-2">
             <Calendar className="text-blue-600" size={16} />
             <h3 className="text-base font-semibold text-gray-900">5-Day Weather Forecast</h3>
             <span className="text-xs text-gray-500">
-              (Updated every 3 hours)
+              (Updated every 6 hours)
             </span>
           </div>
           <button
@@ -201,7 +214,7 @@ const WeatherForecastWidget: React.FC = () => {
           </button>
         </div>
         
-        <div className="grid grid-cols-5 gap-3 md:gap-4">
+        <div className="grid grid-cols-5 gap-1 md:gap-3">
           {forecast.map((day, index) => (
             <div
               key={day.id}
@@ -209,7 +222,7 @@ const WeatherForecastWidget: React.FC = () => {
                 index === 0 
                   ? 'bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-900 shadow-md' 
                   : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
-              }`}
+              } min-h-0`}
             >
               <div className={`text-xs font-semibold mb-1 ${index === 0 ? 'text-blue-800' : 'text-gray-700'}`}>
                 {getDayName(day.date)}
@@ -220,7 +233,7 @@ const WeatherForecastWidget: React.FC = () => {
               </div>
               
               <div className="space-y-1">
-                <div className={`text-sm md:text-base font-bold ${getTemperatureColor(day.temperature_high)}`}>
+                <div className={`text-xs md:text-sm font-bold ${getTemperatureColor(day.temperature_high)}`}>
                   {day.temperature_high}°
                 </div>
                 <div className={`text-xs ${index === 0 ? 'text-blue-600' : 'text-gray-500'}`}>
@@ -228,7 +241,7 @@ const WeatherForecastWidget: React.FC = () => {
                 </div>
               </div>
               
-              <div className="mt-2 space-y-1">
+              <div className="mt-1 space-y-1">
                 <div className="flex items-center justify-center space-x-1">
                   <Droplets size={10} className={index === 0 ? 'text-blue-600' : 'text-blue-400'} />
                   <span className={`text-xs ${index === 0 ? 'text-blue-700' : 'text-gray-600'}`}>
@@ -259,7 +272,17 @@ const WeatherForecastWidget: React.FC = () => {
         
         <div className="text-center mt-3">
           <p className="text-xs text-gray-500">
-            Weather data provided by OpenWeatherMap • Last updated: {new Date().toLocaleTimeString()}
+            Weather data provided by{' '}
+            <a 
+              href="https://openweathermap.org" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 underline inline-flex items-center"
+            >
+              OpenWeatherMap
+              <ExternalLink size={10} className="ml-1" />
+            </a>
+            {' '}• Last updated: {new Date().toLocaleTimeString()}
           </p>
         </div>
       </div>

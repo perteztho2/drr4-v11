@@ -47,7 +47,7 @@ const Services: React.FC = () => {
   ];
 
   return (
-    <section id="services" className="py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
+    <section id="services" className="py-12 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute inset-0" style={{
@@ -57,13 +57,13 @@ const Services: React.FC = () => {
         }}></div>
       </div>
       
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-blue-950 mb-6 relative">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="text-center mb-8 md:mb-16">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-blue-950 mb-4 md:mb-6 relative">
             <span className="relative z-10">OUR SERVICES</span>
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-blue-600 to-blue-800 rounded-full"></div>
+            <div className="absolute -bottom-1 md:-bottom-2 left-1/2 transform -translate-x-1/2 w-20 md:w-32 h-0.5 md:h-1 bg-gradient-to-r from-blue-600 to-blue-800 rounded-full"></div>
           </h2>
-          <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-sm md:text-lg lg:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed px-4">
             Comprehensive disaster risk reduction and management services for the Pio Duran community
           </p>
         </div>
@@ -71,30 +71,30 @@ const Services: React.FC = () => {
         {/* Dynamic Services from Admin */}
         {activeServices.length > 0 && (
           <div className="mb-16">
-            <h3 className="text-3xl font-bold text-center text-blue-950 mb-12">Current Services</h3>
-            <div className="grid md:grid-cols-2 gap-10 mb-12">
+            <h3 className="text-xl md:text-3xl font-bold text-center text-blue-950 mb-6 md:mb-12">Current Services</h3>
+            <div className="grid md:grid-cols-2 gap-6 md:gap-10 mb-8 md:mb-12">
               {activeServices.slice(0, 4).map((service) => (
                 <div
                   key={service.id}
-                  className="flex bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-gray-200 hover:border-blue-300 group"
+                  className="flex bg-white p-4 md:p-8 rounded-xl md:rounded-2xl shadow-lg md:shadow-xl hover:shadow-xl md:hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 md:hover:-translate-y-3 border border-gray-200 hover:border-blue-300 group"
                 >
-                  <div className="mr-5 self-start">
-                    <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300">
-                      <Shield className="text-white" size={28} />
+                  <div className="mr-3 md:mr-5 self-start">
+                    <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-3 md:p-4 rounded-xl md:rounded-2xl group-hover:scale-110 transition-transform duration-300">
+                      <Shield className="text-white" size={20} />
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold mb-4 text-blue-950">
+                    <h3 className="text-lg md:text-2xl font-bold mb-2 md:mb-4 text-blue-950">
                       {service.title}
                     </h3>
-                    <p className="text-gray-700 mb-6 leading-relaxed">
+                    <p className="text-sm md:text-base text-gray-700 mb-4 md:mb-6 leading-relaxed">
                       {service.description}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {service.tags.map((tag, tagIndex) => (
                         <span
                           key={tagIndex}
-                          className="bg-blue-50 text-blue-700 text-sm px-3 py-1 rounded-full border border-blue-200 hover:bg-blue-100 transition-colors"
+                          className="bg-blue-50 text-blue-700 text-xs md:text-sm px-2 md:px-3 py-1 rounded-full border border-blue-200 hover:bg-blue-100 transition-colors"
                         >
                           {tag}
                         </span>
@@ -107,29 +107,29 @@ const Services: React.FC = () => {
           </div>
         )}
 
-        <div className="grid md:grid-cols-2 gap-10 mb-16">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-10 mb-8 md:mb-16">
           {defaultServices.map((service, index) => (
             <div
               key={index}
-              className={`flex bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-gray-200 hover:border-blue-300 group`}
+              className={`flex bg-white p-4 md:p-8 rounded-xl md:rounded-2xl shadow-lg md:shadow-xl hover:shadow-xl md:hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 md:hover:-translate-y-3 border border-gray-200 hover:border-blue-300 group`}
             >
-              <div className="mr-5 self-start">
-                <div className={`bg-gradient-to-br ${service.color.replace('border-', 'from-').replace('-500', '-500')} to-${service.color.replace('border-', '').replace('-500', '-600')} p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300`}>
-                  <service.icon className="text-white" size={28} />
+              <div className="mr-3 md:mr-5 self-start">
+                <div className={`bg-gradient-to-br ${service.color.replace('border-', 'from-').replace('-500', '-500')} to-${service.color.replace('border-', '').replace('-500', '-600')} p-3 md:p-4 rounded-xl md:rounded-2xl group-hover:scale-110 transition-transform duration-300`}>
+                  <service.icon className="text-white" size={20} />
                 </div>
               </div>
               <div>
-                <h3 className="text-2xl font-bold mb-4 text-blue-950">
+                <h3 className="text-lg md:text-2xl font-bold mb-2 md:mb-4 text-blue-950">
                   {service.title}
                 </h3>
-                <p className="text-gray-700 mb-6 leading-relaxed">
+                <p className="text-sm md:text-base text-gray-700 mb-4 md:mb-6 leading-relaxed">
                   {service.description}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {service.tags.map((tag, tagIndex) => (
                     <span
                       key={tagIndex}
-                      className="bg-blue-50 text-blue-700 text-sm px-3 py-1 rounded-full border border-blue-200 hover:bg-blue-100 transition-colors"
+                      className="bg-blue-50 text-blue-700 text-xs md:text-sm px-2 md:px-3 py-1 rounded-full border border-blue-200 hover:bg-blue-100 transition-colors"
                     >
                       {tag}
                     </span>
@@ -143,17 +143,17 @@ const Services: React.FC = () => {
         <div className="text-center">
           <Link 
             to="/services-detail"
-            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-bold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl mr-4"
+            className="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-bold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg md:shadow-xl hover:shadow-xl md:hover:shadow-2xl mr-2 md:mr-4 mb-2 md:mb-0"
           >
-            <Shield className="mr-3" size={20} />
-            View All Services
+            <Shield className="mr-2 md:mr-3" size={16} />
+            <span className="text-sm md:text-base">View All Services</span>
           </Link>
           <Link 
             to="/resources"
-            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-blue-950 rounded-full font-bold hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+            className="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-blue-950 rounded-full font-bold hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 shadow-lg md:shadow-xl hover:shadow-xl md:hover:shadow-2xl"
           >
-            <FolderOpen className="mr-3" size={20} />
-            Browse Resources
+            <FolderOpen className="mr-2 md:mr-3" size={16} />
+            <span className="text-sm md:text-base">Browse Resources</span>
           </Link>
         </div>
       </div>
