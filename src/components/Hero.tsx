@@ -128,7 +128,7 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
             Building stronger communities through comprehensive disaster preparedness, innovative response strategies, and unwavering commitment to public safety.
           </p>
           
-          <div className="flex flex-col sm:flex-row justify-center gap-6 mb-16">
+          <div className="flex flex-col sm:flex-row justify-center gap-6 mb-25">
             <button
               onClick={onEmergencyClick}
               className="inline-flex items-center px-10 py-5 bg-gradient-to-r from-red-600 to-red-700 text-white font-bold rounded-full shadow-2xl hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105 hover:shadow-3xl active:scale-95 text-lg"
