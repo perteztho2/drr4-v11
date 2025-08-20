@@ -119,16 +119,16 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
         {/* Hero Content */}
         <div className="container mx-auto px-4 z-30 text-center">
           <div className="max-w-5xl mx-auto">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-5 leading-tight">
             <span className="text-yellow-400 drop-shadow-2xl">Resilient Pio Duran:</span>
             <br />
             <span className="drop-shadow-2xl">Prepared for Tomorrow</span>
             </h1>
-          <p className="text-xl md:text-2xl text-white max-w-3xl mx-auto mb-12 drop-shadow-lg leading-relaxed">
+          <p className="text-xl md:text-2xl text-white max-w-3xl mx-auto mb-5 drop-shadow-lg leading-relaxed">
             Building stronger communities through comprehensive disaster preparedness, innovative response strategies, and unwavering commitment to public safety.
           </p>
           
-          <div className="flex flex-col sm:flex-row justify-center gap-6">
+          <div className="flex flex-col sm:flex-row justify-center gap-6 mb-5">
             <button
               onClick={onEmergencyClick}
               className="inline-flex items-center px-10 py-5 bg-gradient-to-r from-red-600 to-red-700 text-white font-bold rounded-full shadow-2xl hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105 hover:shadow-3xl active:scale-95 text-lg"
