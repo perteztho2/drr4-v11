@@ -310,7 +310,7 @@ export class DatabaseManager {
 
   // Weather alerts operations
   async getWeatherAlerts(): Promise<AlertRow[]> {
-
+  }
   // Health check
   async healthCheck(): Promise<{ status: 'healthy' | 'unhealthy'; message: string }> {
     try {
@@ -325,5 +325,5 @@ export class DatabaseManager {
     }
   }
 }
-}
+
 export const databaseManager = new DatabaseManager();
