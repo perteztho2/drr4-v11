@@ -259,7 +259,7 @@ const WeatherForecastWidget: React.FC = () => {
         
         <div className="text-center mt-4">
           <p className="text-xs text-gray-500">
-            Weather data provided by WeatherLink • Last updated: {new Date().toLocaleTimeString()}
+            Weather data provided by Pio Duran Automated Weather Station • Last updated: {new Date().toLocaleTimeString()}
           </p>
         </div>
       </div>
