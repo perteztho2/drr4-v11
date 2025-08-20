@@ -293,7 +293,7 @@ export class DatabaseManager {
     return data || [];
   }
 
-  class DatabaseManager {
+
   async updateSetting(key: string, value: any, type: string = 'string', isPublic: boolean = false): Promise<void> {
     const { error } = await supabase
       .from('system_settings')
