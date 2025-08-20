@@ -97,12 +97,15 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
   ];
 
   // Use dynamic navigation items if available, otherwise use default
-  const navigationTree = dynamicNavItems.length > 0 
-    ? buildNavigationTree(dynamicNavItems.map(item => ({
+  const navigationTree = React.useMemo(() => {
+    if (dynamicNavItems.length > 0) {
+      return buildNavigationTree(dynamicNavItems.map(item => ({
         ...item,
         icon: getIconComponent(item.icon)
-      })))
-    : publicNavItems.map(item => ({ ...item, children: [] }));
+      })));
+    }
+    return publicNavItems.map(item => ({ ...item, children: [], id: item.path }));
+  }, [dynamicNavItems]);
 
   function getIconComponent(iconName: string) {
     const icons: Record<string, any> = {

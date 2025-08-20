@@ -324,25 +324,8 @@ export class OpenWeatherMapAPI {
     try {
       const alerts = await this.getWeatherAlerts();
       
-      const { error } = await supabase
-        .from('weather_data')
-        .upsert({
-          temperature: weatherData.temperature,
-          humidity: weatherData.humidity,
-          wind_speed: weatherData.wind_speed,
-          visibility: weatherData.visibility,
-          condition: weatherData.condition,
-          description: weatherData.description,
-          location: 'Pio Duran, Albay',
-          alerts,
-          last_updated: new Date().toISOString(),
-          is_active: true
-        });
-
-      if (error) {
-        console.error('Error updating weather data in database:', error);
-        return false;
-      }
+      // Weather data is no longer stored in database, only used for display
+      console.log('Weather data updated (display only):', weatherData);
 
       return true;
     } catch (error) {
@@ -359,33 +342,8 @@ export class OpenWeatherMapAPI {
         return false;
       }
 
-      // Clear existing forecast data
-      await supabase
-        .from('weather_forecast')
-        .update({ is_active: false })
-        .eq('is_active', true);
-
-      // Insert new forecast data
-      const forecastRecords = forecastData.map(day => ({
-        date: day.date,
-        temperature_high: day.temperature_high,
-        temperature_low: day.temperature_low,
-        condition: day.description,
-        humidity: day.humidity,
-        wind_speed: day.wind_speed,
-        precipitation: day.precipitation,
-        icon: day.icon,
-        is_active: true
-      }));
-
-      const { error } = await supabase
-        .from('weather_forecast')
-        .insert(forecastRecords);
-
-      if (error) {
-        console.error('Error inserting forecast data:', error);
-        return false;
-      }
+      // Forecast data is no longer stored in database, only used for display
+      console.log('Forecast data synced (display only):', forecastData);
 
       return true;
     } catch (error) {

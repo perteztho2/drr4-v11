@@ -308,6 +308,9 @@ export class DatabaseManager {
     if (error) throw error;
   }
 
+  // Weather alerts operations
+  async getWeatherAlerts(): Promise<AlertRow[]> {
+
   // Health check
   async healthCheck(): Promise<{ status: 'healthy' | 'unhealthy'; message: string }> {
     try {

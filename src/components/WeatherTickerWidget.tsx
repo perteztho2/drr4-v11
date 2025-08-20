@@ -83,44 +83,12 @@ const WeatherTickerWidget: React.FC = () => {
               last_updated: new Date().toISOString()
             });
             
-            // Update database with fresh data
-            await openWeatherAPI.updateWeatherInDatabase(freshData);
             setLastRefresh(new Date());
             return;
           }
         } catch (apiError) {
           console.warn('OpenWeatherMap API failed, falling back to database:', apiError);
         }
-      }
-      
-      // Fallback to database data if API fails or offline
-      try {
-        const { data: dbData, error: dbError } = await supabase
-          .from('weather_data')
-          .select('temperature, humidity, wind_speed, visibility, condition, description, last_updated')
-          .eq('is_active', true)
-          .order('last_updated', { ascending: false })
-          .limit(1)
-          .maybeSingle();
-
-        if (dbData && !dbError) {
-
-          setWeatherData({
-            temperature: dbData.temperature,
-            humidity: dbData.humidity,
-            wind_speed: dbData.wind_speed,
-            condition: dbData.condition,
-            description: dbData.description,
-            location: 'Pio Duran, Albay',
-            alerts: [],
-            last_updated: dbData.last_updated
-          });
-
-          setLastRefresh(new Date());
-          return;
-        }
-      } catch (dbError) {
-        console.warn('Database fallback failed:', dbError);
       }
       
       // Final fallback to default data
@@ -178,7 +146,7 @@ const WeatherTickerWidget: React.FC = () => {
   };
 
   return (
-    <div className={`bg-gradient-to-r ${getTemperatureColor(weatherData.temperature)} text-white py-3 px-4 shadow-lg border-t-4 border-yellow-500`}>
+    <div className={`bg-gradient-to-r ${getTemperatureColor(weatherData.temperature)} text-white py-3 px-4 shadow-lg border-t-4 border-yellow-500 border-b-2 border-yellow-400`}>
       <div className="container mx-auto">
         <div className="flex items-center justify-between">
           {/* Weather Info - Scrolling Ticker */}

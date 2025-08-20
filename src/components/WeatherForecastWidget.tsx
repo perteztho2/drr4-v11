@@ -58,32 +58,9 @@ const WeatherForecastWidget: React.FC = () => {
         console.warn('Failed to sync forecast from OpenWeatherMap API:', syncError);
       }
       
-      // Fetch forecast data from database
-      try {
-        const { data, error } = await supabase
-          .from('weather_forecast')
-          .select('*')
-          .eq('is_active', true)
-          .gte('date', new Date().toISOString().split('T')[0])
-          .order('date', { ascending: true })
-          .limit(5);
-
-        if (error && !error.message.includes('relation "weather_forecast" does not exist')) {
-          console.warn('Database forecast error:', error);
-        }
-        
-        if (data && data.length > 0) {
-          setForecast(data);
-        } else {
-          // Generate default forecast if no data available
-          const defaultForecast = await generateDefaultForecast();
-          setForecast(defaultForecast);
-        }
-      } catch (dbError) {
-        console.warn('Database forecast fetch failed:', dbError);
-        const defaultForecast = await generateDefaultForecast();
-        setForecast(defaultForecast);
-      }
+      // Generate default forecast if no data available
+      const defaultForecast = await generateDefaultForecast();
+      setForecast(defaultForecast);
     } catch (error) {
       console.error('Error fetching weather forecast:', error);
       try {
@@ -194,7 +171,7 @@ const WeatherForecastWidget: React.FC = () => {
   }
 
   return (
-    <div className={`bg-white border-t border-gray-200 py-2 md:py-4 shadow-sm transition-all duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+    <div className={`bg-white border-t-2 border-gray-300 border-b-2 border-gray-300 py-2 md:py-4 shadow-sm transition-all duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center space-x-2">

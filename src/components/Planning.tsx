@@ -300,26 +300,21 @@ const Planning: React.FC = () => {
             
             <div className="relative">
               <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 shadow-2xl">
-                <div className="aspect-video bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center relative overflow-hidden">
-                  {/* Map Preview */}
-                  <div className="absolute inset-0 opacity-30">
-                    <div className="absolute inset-0" style={{
-                      backgroundImage: `radial-gradient(circle at 30% 30%, rgba(34, 197, 94, 0.3) 0%, transparent 50%),
-                                       radial-gradient(circle at 70% 70%, rgba(239, 68, 68, 0.3) 0%, transparent 50%),
-                                       radial-gradient(circle at 50% 80%, rgba(234, 179, 8, 0.3) 0%, transparent 50%)`
-                    }}></div>
-                  </div>
+                <div className="aspect-video rounded-2xl overflow-hidden relative">
+                  <iframe 
+                    src="https://www.google.com/maps/d/embed?mid=12eKHRMUMYnO5lZOiaJQOA9cJD-xjXU8&hl=en&ehbc=2E312F" 
+                    width="100%" 
+                    height="100%"
+                    style={{ border: 0, borderRadius: '1rem' }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Interactive Hazard Map - Pio Duran"
+                    className="w-full h-full"
+                  />
                   
-                  <div className="text-center relative z-10">
-                    <MapPin className="mx-auto h-16 w-16 text-white mb-4 animate-pulse" />
-                    <h4 className="text-xl font-bold text-white mb-2">Interactive Hazard Map</h4>
-                    <p className="text-blue-200 text-sm">Click to access full mapping system</p>
-                  </div>
-                  
-                  {/* Floating Elements */}
-                  <div className="absolute top-4 left-4 bg-red-500 w-3 h-3 rounded-full animate-ping"></div>
-                  <div className="absolute top-8 right-8 bg-yellow-500 w-2 h-2 rounded-full animate-ping" style={{ animationDelay: '1s' }}></div>
-                  <div className="absolute bottom-6 left-8 bg-green-500 w-2 h-2 rounded-full animate-ping" style={{ animationDelay: '2s' }}></div>
+                  {/* Overlay for better integration */}
+                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/10 via-transparent to-black/10 rounded-2xl"></div>
                 </div>
               </div>
             </div>

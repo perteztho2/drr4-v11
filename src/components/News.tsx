@@ -185,8 +185,6 @@ const News: React.FC = () => {
                   <SocialMediaFeed maxPosts={4} showEngagement={true} />
                 </div>
               </div>
-
-
             </div>
           </div>
         </div>

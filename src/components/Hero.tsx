@@ -148,7 +148,7 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-2 md:bottom-4 left-0 right-0 flex justify-center z-30">
+        <div className="absolute bottom-16 md:bottom-20 left-0 right-0 flex justify-center z-30">
           <button
             onClick={handleScrollClick}
             className="text-white hover:text-yellow-400 transition-all duration-300 focus:outline-none transform hover:scale-110"
