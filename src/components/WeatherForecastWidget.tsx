@@ -207,7 +207,7 @@ const WeatherForecastWidget: React.FC = () => {
               key={day.id}
               className={`text-center p-2 md:p-3 rounded-xl transition-all duration-200 hover:shadow-lg hover:scale-105 ${
                 index === 0 
-                  ? 'bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-300 shadow-md' 
+                  ? 'bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-900 shadow-md' 
                   : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
               }`}
             >
