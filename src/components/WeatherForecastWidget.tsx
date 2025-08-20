@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Sun, Cloud, CloudRain, AlertTriangle, Thermometer, Droplets, Wind, RefreshCw } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { weatherAPI } from '../lib/weatherlink';
+import { openWeatherAPI } from '../lib/openweathermap';
 
 interface ForecastDay {
   id: string;
@@ -23,10 +23,10 @@ const WeatherForecastWidget: React.FC = () => {
   useEffect(() => {
     fetchForecast();
     
-    // Auto refresh every 2 hours for forecast data
+    // Auto refresh every 3 hours for forecast data
     const interval = setInterval(() => {
       fetchForecast();
-    }, 2 * 60 * 60 * 1000);
+    }, 3 * 60 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -35,11 +35,11 @@ const WeatherForecastWidget: React.FC = () => {
     try {
       setIsRefreshing(true);
       
-      // Try to sync forecast from WeatherLink API
+      // Try to sync forecast from OpenWeatherMap API
       try {
-        const success = await weatherAPI.syncForecastData();
+        const success = await openWeatherAPI.syncForecastData();
         if (success) {
-          console.log('Forecast synced from WeatherLink API');
+          console.log('Forecast synced from OpenWeatherMap API');
         }
       } catch (syncError) {
         console.warn('Failed to sync forecast from API:', syncError);
@@ -53,7 +53,7 @@ const WeatherForecastWidget: React.FC = () => {
           .eq('is_active', true)
           .gte('date', new Date().toISOString().split('T')[0])
           .order('date', { ascending: true })
-          .limit(7);
+          .limit(5);
 
         if (error && !error.message.includes('relation "weather_forecast" does not exist')) {
           console.warn('Database forecast error:', error);
@@ -89,7 +89,7 @@ const WeatherForecastWidget: React.FC = () => {
   const generateDefaultForecast = async (): Promise<ForecastDay[]> => {
     const forecast: ForecastDay[] = [];
     
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 5; i++) {
       const date = new Date();
       date.setDate(date.getDate() + i);
       
@@ -154,7 +154,7 @@ const WeatherForecastWidget: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center">
             <RefreshCw className="animate-spin h-5 w-5 text-blue-600 mr-2" />
-            <span className="text-gray-600 font-medium">Loading 7-day forecast...</span>
+            <span className="text-gray-600 font-medium">Loading 5-day forecast...</span>
           </div>
         </div>
       </div>
@@ -167,7 +167,7 @@ const WeatherForecastWidget: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="text-center text-gray-500">
             <Cloud className="mx-auto h-8 w-8 mb-2" />
-            <p className="text-sm">7-day forecast not available</p>
+            <p className="text-sm">5-day forecast not available</p>
             <button
               onClick={fetchForecast}
               className="text-blue-600 hover:text-blue-800 text-sm mt-2"
@@ -181,14 +181,14 @@ const WeatherForecastWidget: React.FC = () => {
   }
 
   return (
-    <div className="bg-white border-t border-gray-200 py-6 shadow-sm">
+    <div className="bg-white border-t border-gray-200 py-4 shadow-sm">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
             <Calendar className="text-blue-600" size={16} />
-            <h3 className="text-base font-semibold text-gray-900">7-Day Weather Forecast</h3>
+            <h3 className="text-base font-semibold text-gray-900">5-Day Weather Forecast</h3>
             <span className="text-xs text-gray-500">
-              (Updated every 2 hours)
+              (Updated every 3 hours)
             </span>
           </div>
           <button
@@ -201,26 +201,26 @@ const WeatherForecastWidget: React.FC = () => {
           </button>
         </div>
         
-        <div className="grid grid-cols-7 gap-2 md:gap-4">
+        <div className="grid grid-cols-5 gap-3 md:gap-4">
           {forecast.map((day, index) => (
             <div
               key={day.id}
-              className={`text-center p-3 rounded-xl transition-all duration-200 hover:shadow-lg hover:scale-105 ${
+              className={`text-center p-2 md:p-3 rounded-xl transition-all duration-200 hover:shadow-lg hover:scale-105 ${
                 index === 0 
                   ? 'bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-300 shadow-md' 
                   : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
               }`}
             >
-              <div className={`text-xs font-semibold mb-2 ${index === 0 ? 'text-blue-800' : 'text-gray-700'}`}>
+              <div className={`text-xs font-semibold mb-1 ${index === 0 ? 'text-blue-800' : 'text-gray-700'}`}>
                 {getDayName(day.date)}
               </div>
               
-              <div className="flex justify-center mb-3">
+              <div className="flex justify-center mb-2">
                 {getWeatherIcon(day.icon)}
               </div>
               
               <div className="space-y-1">
-                <div className={`text-base font-bold ${getTemperatureColor(day.temperature_high)}`}>
+                <div className={`text-sm md:text-base font-bold ${getTemperatureColor(day.temperature_high)}`}>
                   {day.temperature_high}°
                 </div>
                 <div className={`text-xs ${index === 0 ? 'text-blue-600' : 'text-gray-500'}`}>
@@ -228,7 +228,7 @@ const WeatherForecastWidget: React.FC = () => {
                 </div>
               </div>
               
-              <div className="mt-3 space-y-1">
+              <div className="mt-2 space-y-1">
                 <div className="flex items-center justify-center space-x-1">
                   <Droplets size={10} className={index === 0 ? 'text-blue-600' : 'text-blue-400'} />
                   <span className={`text-xs ${index === 0 ? 'text-blue-700' : 'text-gray-600'}`}>
@@ -250,16 +250,16 @@ const WeatherForecastWidget: React.FC = () => {
                 )}
               </div>
               
-              <div className={`text-xs mt-2 truncate ${index === 0 ? 'text-blue-700 font-medium' : 'text-gray-500'}`} title={day.condition}>
+              <div className={`text-xs mt-1 truncate ${index === 0 ? 'text-blue-700 font-medium' : 'text-gray-500'}`} title={day.condition}>
                 {day.condition}
               </div>
             </div>
           ))}
         </div>
         
-        <div className="text-center mt-4">
+        <div className="text-center mt-3">
           <p className="text-xs text-gray-500">
-            Weather data provided by Pio Duran Automated Weather Station • Last updated: {new Date().toLocaleTimeString()}
+            Weather data provided by OpenWeatherMap • Last updated: {new Date().toLocaleTimeString()}
           </p>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Save, RefreshCw, Cloud, Sun, CloudRain, AlertTriangle, Thermometer, Wind, Droplets, Eye, Key, Database, Calendar, Plus, Edit, Trash2, X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { weatherAPI } from '../lib/weatherlink';
+import { openWeatherAPI } from '../lib/openweathermap';
 
 interface WeatherData {
   id?: string;
@@ -17,14 +17,6 @@ interface WeatherData {
   is_active: boolean;
 }
 
-interface WeatherAPISettings {
-  id?: string;
-  api_key: string;
-  api_secret: string;
-  station_id: string;
-  is_active: boolean;
-  last_sync?: string;
-}
 
 interface ForecastDay {
   id?: string;
@@ -40,7 +32,7 @@ interface ForecastDay {
 }
 
 const WeatherManagement: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'current' | 'api' | 'forecast'>('current');
+  const [activeTab, setActiveTab] = useState<'current' | 'forecast'>('current');
   const [weatherData, setWeatherData] = useState<WeatherData>({
     temperature: 28,
     humidity: 75,
@@ -51,13 +43,6 @@ const WeatherManagement: React.FC = () => {
     location: 'Pio Duran, Albay',
     alerts: [],
     last_updated: new Date().toISOString(),
-    is_active: true
-  });
-  
-  const [apiSettings, setApiSettings] = useState<WeatherAPISettings>({
-    api_key: '',
-    api_secret: '',
-    station_id: '',
     is_active: true
   });
   
@@ -82,7 +67,6 @@ const WeatherManagement: React.FC = () => {
 
   useEffect(() => {
     fetchWeatherData();
-    fetchAPISettings();
     fetchForecast();
   }, []);
 
@@ -122,25 +106,6 @@ const WeatherManagement: React.FC = () => {
     }
   };
 
-  const fetchAPISettings = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('weather_api_settings')
-        .select('*')
-        .eq('is_active', true)
-        .single();
-
-      if (error && !error.message.includes('relation "weather_api_settings" does not exist')) {
-        throw error;
-      }
-      
-      if (data) {
-        setApiSettings(data);
-      }
-    } catch (error) {
-      console.error('Error fetching API settings:', error);
-    }
-  };
 
   const fetchForecast = async () => {
     try {
@@ -150,7 +115,7 @@ const WeatherManagement: React.FC = () => {
         .eq('is_active', true)
         .gte('date', new Date().toISOString().split('T')[0])
         .order('date', { ascending: true })
-        .limit(7);
+        .limit(5);
 
       if (error && !error.message.includes('relation "weather_forecast" does not exist')) {
         throw error;
@@ -198,61 +163,25 @@ const WeatherManagement: React.FC = () => {
     }
   };
 
-  const handleSaveAPISettings = async () => {
-    try {
-      setSaving(true);
-      
-      if (apiSettings.id) {
-        const { error } = await supabase
-          .from('weather_api_settings')
-          .update(apiSettings)
-          .eq('id', apiSettings.id);
-
-        if (error) throw error;
-      } else {
-        const { data, error } = await supabase
-          .from('weather_api_settings')
-          .insert([apiSettings])
-          .select()
-          .single();
-
-        if (error) throw error;
-        setApiSettings(prev => ({ ...prev, id: data.id }));
-      }
-      
-      alert('API settings saved successfully!');
-    } catch (error) {
-      console.error('Error saving API settings:', error);
-      alert('Error saving API settings. Please try again.');
-    } finally {
-      setSaving(false);
-    }
-  };
 
   const handleSyncFromAPI = async () => {
     try {
       setSaving(true);
       
-      // Call the edge function to sync weather data
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/weather-sync`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      
-      const result = await response.json();
-      
-      if (result.success) {
+      // Sync directly from OpenWeatherMap API
+      const freshData = await openWeatherAPI.fetchCurrentWeather();
+      if (freshData) {
+        await openWeatherAPI.updateWeatherInDatabase(freshData);
         await fetchWeatherData();
-        alert('Weather data synced successfully from WeatherLink API!');
+        await openWeatherAPI.syncForecastData();
+        await fetchForecast();
+        alert('Weather data synced successfully from OpenWeatherMap API!');
       } else {
-        alert(`Failed to sync weather data: ${result.error || 'Unknown error'}`);
+        alert('Failed to sync weather data from OpenWeatherMap API');
       }
     } catch (error) {
       console.error('Error syncing weather data:', error);
-      alert('Error syncing weather data. Please check your API configuration.');
+      alert('Error syncing weather data from OpenWeatherMap API.');
     } finally {
       setSaving(false);
     }
@@ -389,7 +318,7 @@ const WeatherManagement: React.FC = () => {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Weather Management</h2>
-          <p className="text-gray-600">Manage weather data, API settings, and forecasts</p>
+          <p className="text-gray-600">Manage weather data and forecasts (OpenWeatherMap)</p>
         </div>
       </div>
 
@@ -398,8 +327,7 @@ const WeatherManagement: React.FC = () => {
         <nav className="flex space-x-8">
           {[
             { id: 'current', label: 'Current Weather', icon: Cloud },
-            { id: 'api', label: 'API Settings', icon: Key },
-            { id: 'forecast', label: '7-Day Forecast', icon: Calendar }
+            { id: 'forecast', label: '5-Day Forecast', icon: Calendar }
           ].map((tab) => (
             <button
               key={tab.id}
@@ -427,7 +355,7 @@ const WeatherManagement: React.FC = () => {
               className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 disabled:opacity-50"
             >
               <RefreshCw className={saving ? 'animate-spin' : ''} size={16} />
-              <span>Sync from API</span>
+              <span>Sync from OpenWeatherMap</span>
             </button>
             <button
               onClick={handleSave}
@@ -739,103 +667,12 @@ const WeatherManagement: React.FC = () => {
         </div>
       )}
 
-      {/* API Settings Tab */}
-      {activeTab === 'api' && (
-        <div className="space-y-6">
-          <div className="flex justify-end">
-            <button
-              onClick={handleSaveAPISettings}
-              disabled={saving}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 disabled:opacity-50"
-            >
-              {saving ? <RefreshCw className="animate-spin" size={16} /> : <Save size={16} />}
-              <span>{saving ? 'Saving...' : 'Save API Settings'}</span>
-            </button>
-          </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">WeatherLink API Configuration</h3>
-            
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <h4 className="font-medium text-blue-900 mb-2">Setup Instructions</h4>
-              <ol className="text-sm text-blue-800 space-y-1 list-decimal list-inside">
-                <li>Create an account at <a href="https://weatherlink.com" target="_blank" rel="noopener noreferrer" className="underline">weatherlink.com</a></li>
-                <li>Generate API Key and Secret in your account settings</li>
-                <li>Find your Station ID from your weather station</li>
-                <li>Enter the credentials below to enable real-time weather data</li>
-              </ol>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  API Key
-                </label>
-                <input
-                  type="text"
-                  value={apiSettings.api_key}
-                  onChange={(e) => setApiSettings(prev => ({ ...prev, api_key: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your WeatherLink API Key"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  API Secret
-                </label>
-                <input
-                  type="password"
-                  value={apiSettings.api_secret}
-                  onChange={(e) => setApiSettings(prev => ({ ...prev, api_secret: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your WeatherLink API Secret"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Station ID
-                </label>
-                <input
-                  type="text"
-                  value={apiSettings.station_id}
-                  onChange={(e) => setApiSettings(prev => ({ ...prev, station_id: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your Weather Station ID"
-                />
-              </div>
-
-              <div>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={apiSettings.is_active}
-                    onChange={(e) => setApiSettings(prev => ({ ...prev, is_active: e.target.checked }))}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                  />
-                  <span className="ml-2 text-sm font-medium text-gray-700">Enable API Integration</span>
-                </label>
-                <p className="text-xs text-gray-500 ml-6">Automatically fetch weather data from WeatherLink</p>
-              </div>
-
-              {apiSettings.last_sync && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                  <p className="text-sm text-green-800">
-                    <strong>Last Sync:</strong> {new Date(apiSettings.last_sync).toLocaleString()}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 7-Day Forecast Tab */}
+      {/* 5-Day Forecast Tab */}
       {activeTab === 'forecast' && (
         <div className="space-y-6">
           <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold text-gray-900">7-Day Weather Forecast</h3>
+            <h3 className="text-lg font-semibold text-gray-900">5-Day Weather Forecast</h3>
             <button
               onClick={() => setIsForecastModalOpen(true)}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
@@ -845,39 +682,39 @@ const WeatherManagement: React.FC = () => {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {forecast.map((day) => (
-              <div key={day.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div key={day.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h4 className="font-semibold text-gray-900">
+                    <h4 className="font-semibold text-gray-900 text-sm">
                       {new Date(day.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
                     </h4>
-                    <p className="text-sm text-gray-600">{day.condition}</p>
+                    <p className="text-xs text-gray-600">{day.condition}</p>
                   </div>
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => handleEditForecast(day)}
                       className="text-blue-600 hover:text-blue-800"
                     >
-                      <Edit size={16} />
+                      <Edit size={14} />
                     </button>
                     <button
                       onClick={() => handleDeleteForecast(day.id!)}
                       className="text-red-600 hover:text-red-800"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={14} />
                     </button>
                   </div>
                 </div>
                 
-                <div className="text-center mb-4">
-                  <div className="text-2xl font-bold text-gray-900">
+                <div className="text-center mb-3">
+                  <div className="text-lg font-bold text-gray-900">
                     {day.temperature_high}° / {day.temperature_low}°
                   </div>
                 </div>
                 
-                <div className="space-y-2 text-sm text-gray-600">
+                <div className="space-y-1 text-xs text-gray-600">
                   <div className="flex items-center justify-between">
                     <span>Humidity:</span>
                     <span>{day.humidity}%</span>

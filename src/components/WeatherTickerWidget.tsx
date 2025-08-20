@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Cloud, Sun, CloudRain, AlertTriangle, Wind, Droplets, Thermometer, RefreshCw, Wifi, WifiOff } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { weatherAPI, WeatherLinkData } from '../lib/weatherlink';
+import { openWeatherAPI, OpenWeatherMapCurrentData } from '../lib/openweathermap';
 
 interface WeatherData {
   temperature: number;
@@ -14,13 +14,6 @@ interface WeatherData {
   last_updated: string;
 }
 
-interface WeatherAPISettings {
-  api_key: string;
-  api_secret: string;
-  station_id: string;
-  is_active: boolean;
-  last_sync: string;
-}
 
 const WeatherTickerWidget: React.FC = () => {
   const [weatherData, setWeatherData] = useState<WeatherData>({
@@ -34,7 +27,6 @@ const WeatherTickerWidget: React.FC = () => {
     last_updated: new Date().toISOString()
   });
 
-  const [apiSettings, setApiSettings] = useState<WeatherAPISettings | null>(null);
   const [isOnline, setIsOnline] = useState(true);
   const [lastRefresh, setLastRefresh] = useState(new Date());
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -42,10 +34,10 @@ const WeatherTickerWidget: React.FC = () => {
   useEffect(() => {
     fetchWeatherData();
     
-    // Auto refresh every 5 minutes for production
+    // Auto refresh every 10 minutes for production
     const interval = setInterval(() => {
       fetchWeatherData();
-    }, 5 * 60 * 1000);
+    }, 10 * 60 * 1000);
 
     // Check online status
     const handleOnline = () => setIsOnline(true);
@@ -67,15 +59,15 @@ const WeatherTickerWidget: React.FC = () => {
     try {
       setIsRefreshing(true);
       
-      // Try to fetch fresh data from WeatherLink API
+      // Try to fetch fresh data from OpenWeatherMap API
       if (isOnline) {
         try {
-          const freshData = await weatherAPI.fetchCurrentWeather();
+          const freshData = await openWeatherAPI.fetchCurrentWeather();
           if (freshData) {
-            // Get alerts separately to avoid circular dependency
+            // Get alerts
             let alerts: string[] = [];
             try {
-              alerts = await weatherAPI.getWeatherAlerts();
+              alerts = await openWeatherAPI.getWeatherAlerts();
             } catch (alertError) {
               console.warn('Could not fetch weather alerts:', alertError);
             }
@@ -92,12 +84,12 @@ const WeatherTickerWidget: React.FC = () => {
             });
             
             // Update database with fresh data
-            await weatherAPI.updateWeatherInDatabase(freshData);
+            await openWeatherAPI.updateWeatherInDatabase(freshData);
             setLastRefresh(new Date());
             return;
           }
         } catch (apiError) {
-          console.warn('WeatherLink API failed, falling back to database:', apiError);
+          console.warn('OpenWeatherMap API failed, falling back to database:', apiError);
         }
       }
       
@@ -235,7 +227,7 @@ const WeatherTickerWidget: React.FC = () => {
               )}
 
               <div className={`text-sm ${getTemperatureTextColor(weatherData.temperature)} opacity-75`}>
-                📍 {weatherData.location} • Updated: {new Date(weatherData.last_updated).toLocaleTimeString()}
+                📍 {weatherData.location} • Updated: {new Date(weatherData.last_updated).toLocaleTimeString()} • OpenWeatherMap
                 {!isOnline && <span className="text-red-300 ml-2">(Offline)</span>}
               </div>
             </div>
