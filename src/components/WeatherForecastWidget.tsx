@@ -181,7 +181,7 @@ const WeatherForecastWidget: React.FC = () => {
   }
 
   return (
-    <div className="bg-white border-t border-gray-200 py-6 shadow-sm">
+    <div className="bg-black border-t border-gray-200 py-6 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
