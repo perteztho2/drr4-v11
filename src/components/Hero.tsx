@@ -140,7 +140,7 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
               onClick={onIncidentClick}
               className="inline-flex items-center px-10 py-5 bg-gradient-to-r from-yellow-500 to-yellow-600 text-blue-950 font-bold rounded-full shadow-2xl hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 hover:shadow-3xl active:scale-95 text-lg"
             >
-              <AlertTriangle className="mr-0" size={24} />
+              <AlertTriangle className="mr-3" size={24} />
               Report Incident
             </button>
           </div>
@@ -148,13 +148,13 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-5 left-0 right-0 flex justify-center z-30">
+        <div className="absolute bottom-1 left-0 right-0 flex justify-center z-30">
           <button
             onClick={handleScrollClick}
             className="text-white hover:text-yellow-400 transition-all duration-300 focus:outline-none transform hover:scale-110"
             aria-label="Scroll to next section"
           >
-            <div className="bg-white/20 rounded-full p-3 border border-white/30">
+            <div className="bg-white/20 backdrop-blur-sm rounded-full p-3 border border-white/30">
               <ChevronDown className={`animate-bounce ${isScrolling ? 'animate-pulse' : ''}`} size={28} />
             </div>
           </button>
