@@ -293,6 +293,7 @@ export class DatabaseManager {
     return data || [];
   }
 
+  class DatabaseManager {
   async updateSetting(key: string, value: any, type: string = 'string', isPublic: boolean = false): Promise<void> {
     const { error } = await supabase
       .from('system_settings')
@@ -304,13 +305,16 @@ export class DatabaseManager {
       }, {
         onConflict: 'setting_key'
       });
-    
+
     if (error) throw error;
   }
 
   // Weather alerts operations
-  async getWeatherAlerts(): Promise<AlertRow[]> 
-}
+  async getWeatherAlerts(): Promise<AlertRow[]> {
+    // You need to implement this method or remove it if not used
+    return []; // Placeholder
+  }
+
   // Health check
   async healthCheck(): Promise<{ status: 'healthy' | 'unhealthy'; message: string }> {
     try {
@@ -318,9 +322,9 @@ export class DatabaseManager {
       if (error) throw error;
       return { status: 'healthy', message: 'Database connection successful' };
     } catch (error) {
-      return { 
-        status: 'unhealthy', 
-        message: error instanceof Error ? error.message : 'Unknown error' 
+      return {
+        status: 'unhealthy',
+        message: error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
