@@ -128,7 +128,7 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
             Building stronger communities through comprehensive disaster preparedness, innovative response strategies, and unwavering commitment to public safety.
           </p>
           
-          <div className="flex flex-col sm:flex-row justify-center gap-6 mb-25">
+          <div className="flex flex-col sm:flex-row justify-center gap-6 mb-9">
             <button
               onClick={onEmergencyClick}
               className="inline-flex items-center px-10 py-5 bg-gradient-to-r from-red-600 to-red-700 text-white font-bold rounded-full shadow-2xl hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105 hover:shadow-3xl active:scale-95 text-lg"
@@ -148,7 +148,7 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute mb-9 bottom-4 left-0 right-0 flex justify-center z-30">
+        <div className="absolute mb-9  left-0 right-0 flex justify-center z-30">
           <button
             onClick={handleScrollClick}
             className="text-white hover:text-yellow-400 transition-all duration-300 focus:outline-none transform hover:scale-110"
