@@ -124,7 +124,7 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
             <br />
             <span className="drop-shadow-2xl">Prepared for Tomorrow</span>
             </h1>
-          <p className="text-xl md:text-2xl text-white max-w-3xl mx-auto mb-4 drop-shadow-lg leading-relaxed">
+          <p className="text-xl md:text-1xl text-white max-w-3xl mx-auto mb-4 drop-shadow-lg leading-relaxed">
             Building stronger communities through comprehensive disaster preparedness, innovative response strategies, and unwavering commitment to public safety.
           </p>
           
