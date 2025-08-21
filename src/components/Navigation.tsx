@@ -211,7 +211,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-4 group">
+            <Link to="/" className="flex items-center space-x-2 group">
               <div className="relative">
                 <img 
                   src="https://res.cloudinary.com/dedcmctqk/image/upload/v1750079276/logome_h9snnx.webp" 
