@@ -62,7 +62,7 @@ const About: React.FC = () => {
       }))
     : cards;
   return (
-    <section id="about" className="relative py-12 md:py-20 bg-gradient-to-br from-blue-500 via-blue-900 to-blue-800 overflow-hidden">
+    <section id="about" className="relative py-12 md:py-20 bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-10 left-5 w-32 md:w-72 h-32 md:h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
