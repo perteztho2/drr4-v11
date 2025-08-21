@@ -243,7 +243,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
                 onClick={() => setIsSearchOpen(true)}
                 className="flex items-center px-2 py-3 rounded-xl text-sm font-small text-yellow-500 hover:bg-white/10 hover:text-yellow-500 transition-all duration-300 hover:transform hover:scale-105 backdrop-blur-sm group"
               >
-                <Search size={18} className="mr-3 group-hover:animate-pulse" />
+                <Search size={18} className="mr-1 group-hover:animate-pulse" />
                 <span className="hidden xl:inline">Search</span>
               </button>
               
