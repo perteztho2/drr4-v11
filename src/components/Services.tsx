@@ -29,7 +29,7 @@ const Services: React.FC = () => {
       tags: ['First Aid Training', 'DRRM Workshops', 'Drills'],
       color: 'border-blue-500',
       bgColor: 'bg-blue-100',
-      iconColor: 'text-blue-600'
+      iconColor: 'text-yellow-500'
     },
     {
       icon: Truck,
@@ -47,7 +47,7 @@ const Services: React.FC = () => {
       tags: ['Barangay DRRM', 'School Programs', 'Volunteer Network'],
       color: 'border-yellow-500',
       bgColor: 'bg-yellow-100',
-      iconColor: 'text-yellow-600'
+      iconColor: 'text-blue-600'
     }
   ];
 
