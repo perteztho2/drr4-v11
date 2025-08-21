@@ -129,7 +129,7 @@ const AboutPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-blue-950 text-white py-20">
+      <section className="bg-blue-900 text-white py-20">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">About DRRM Pio Duran</h1>
