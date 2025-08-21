@@ -13,6 +13,70 @@ const NewsPage: React.FC = () => {
 
   const publishedNews = news.filter(article => article.status === 'published');
   
+  // Add sample news if none exist
+  const sampleNews = publishedNews.length === 0 ? [
+    {
+      id: 'sample-1',
+      title: 'MDRRMO Pio Duran Launches New Emergency Response System',
+      excerpt: 'Advanced emergency response protocols now in place to better serve our community during disasters.',
+      content: 'The Municipal Disaster Risk Reduction and Management Office of Pio Duran has successfully launched a comprehensive emergency response system designed to enhance our community\'s preparedness and response capabilities.',
+      image: 'https://images.pexels.com/photos/6146970/pexels-photo-6146970.jpeg',
+      author: 'MDRRMO Operations Team',
+      status: 'published' as const,
+      date: new Date().toISOString().split('T')[0],
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    },
+    {
+      id: 'sample-2',
+      title: 'Community Earthquake Drill Scheduled for Next Week',
+      excerpt: 'All residents are encouraged to participate in the municipality-wide earthquake preparedness drill.',
+      content: 'As part of our ongoing commitment to disaster preparedness, MDRRMO Pio Duran will conduct a comprehensive earthquake drill next week.',
+      image: 'https://images.pexels.com/photos/8566473/pexels-photo-8566473.jpeg',
+      author: 'Training Coordinator',
+      status: 'published' as const,
+      date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
+      created_at: new Date(Date.now() - 86400000).toISOString(),
+      updated_at: new Date(Date.now() - 86400000).toISOString()
+    },
+    {
+      id: 'sample-3',
+      title: 'Weather Monitoring System Upgrade Complete',
+      excerpt: 'Enhanced weather monitoring capabilities now provide more accurate forecasts and early warnings.',
+      content: 'MDRRMO Pio Duran has completed the upgrade of our weather monitoring system, featuring advanced sensors and real-time data collection.',
+      image: 'https://images.pexels.com/photos/1118873/pexels-photo-1118873.jpeg',
+      author: 'Weather Operations Team',
+      status: 'published' as const,
+      date: new Date(Date.now() - 432000000).toISOString().split('T')[0],
+      created_at: new Date(Date.now() - 432000000).toISOString(),
+      updated_at: new Date(Date.now() - 432000000).toISOString()
+    },
+    {
+      id: 'sample-4',
+      title: 'New Mobile Emergency App Now Available',
+      excerpt: 'Download the official MDRRMO mobile app for instant access to emergency services and real-time alerts.',
+      content: 'We are excited to announce the launch of the official MDRRMO Pio Duran mobile application.',
+      image: 'https://images.pexels.com/photos/147413/twitter-facebook-together-exchange-of-information-147413.jpeg',
+      author: 'Digital Services Team',
+      status: 'published' as const,
+      date: new Date(Date.now() - 604800000).toISOString().split('T')[0],
+      created_at: new Date(Date.now() - 604800000).toISOString(),
+      updated_at: new Date(Date.now() - 604800000).toISOString()
+    },
+    {
+      id: 'sample-5',
+      title: 'Flood Preparedness Workshop Successfully Completed',
+      excerpt: 'Over 200 community members attended the recent flood preparedness and response training.',
+      content: 'The recent flood preparedness workshop conducted by MDRRMO Pio Duran was a tremendous success.',
+      image: 'https://images.pexels.com/photos/73833/worm-s-eye-view-us-flag-low-angle-shot-flag-73833.jpeg',
+      author: 'Community Outreach Team',
+      status: 'published' as const,
+      date: new Date(Date.now() - 259200000).toISOString().split('T')[0],
+      created_at: new Date(Date.now() - 259200000).toISOString(),
+      updated_at: new Date(Date.now() - 259200000).toISOString()
+    }
+  ] : publishedNews;
+  
   const filteredNews = publishedNews.filter(article => {
     const matchesSearch = 
       article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -22,8 +86,8 @@ const NewsPage: React.FC = () => {
     return matchesSearch;
   });
 
-  const recentNews = filteredNews.slice(0, 8);
-  const featuredNews = filteredNews[0] || null;
+  const recentNews = (filteredNews.length > 0 ? filteredNews : sampleNews).slice(0, 8);
+  const featuredNews = (filteredNews.length > 0 ? filteredNews : sampleNews)[0] || null;
 
   useEffect(() => {
     if (featuredNews && !selectedNews) {
@@ -69,7 +133,7 @@ const NewsPage: React.FC = () => {
   };
 
   // If no news available, show placeholder
-  if (publishedNews.length === 0) {
+  if (publishedNews.length === 0 && sampleNews.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 py-20">
         <div className="container mx-auto px-6">

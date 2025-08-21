@@ -97,14 +97,32 @@ const ResourcesPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 pt-20 relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                           radial-gradient(circle at 75% 75%, rgba(234, 179, 8, 0.1) 0%, transparent 50%)`
+        }}></div>
+      </div>
+      
       {/* Header */}
-      <section className="bg-blue-950 text-white py-16">
+      <section className="relative bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 text-white py-24 overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-10 left-10 w-48 h-48 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
+          <div className="absolute top-20 right-10 w-48 h-48 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-float stagger-2"></div>
+          <div className="absolute -bottom-10 left-20 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl animate-float stagger-4"></div>
+        </div>
+        
         <div className="container mx-auto px-6">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Resources & Downloads</h1>
-            <div className="w-24 h-1 bg-yellow-500 mx-auto mb-6"></div>
-            <p className="text-xl text-blue-200 max-w-3xl mx-auto">
+          <div className="text-center relative z-10">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-yellow-500 rounded-full mb-8 animate-pulse-glow">
+              <FolderOpen className="text-blue-950" size={40} />
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-text-glow">Resources & Downloads</h1>
+            <div className="w-32 h-1.5 bg-gradient-to-r from-yellow-400 to-yellow-600 mx-auto rounded-full mb-8"></div>
+            <p className="text-xl md:text-2xl text-blue-200 max-w-4xl mx-auto leading-relaxed">
               Essential documents, forms, and maps to help residents prepare for and respond to various hazards
             </p>
           </div>
@@ -114,35 +132,35 @@ const ResourcesPage: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="py-16">
           {/* Notice */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-12">
-            <p className="text-sm text-blue-800 text-center">
+          <div className="glass-modern border border-blue-200 rounded-2xl p-6 mb-16 shadow-modern-lg">
+            <p className="text-blue-800 text-center text-lg leading-relaxed">
               <strong>Note:</strong> All information materials here are for public consumption. 
               Request for high-resolution copies for printing and/or reproduction can be requested through the Public Information Unit.
             </p>
           </div>
 
           {/* Resource Categories */}
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">Resource Categories</h2>
-            <div className="w-24 h-1 bg-red-500 mx-auto mb-6"></div>
-            <p className="text-gray-600 max-w-3xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">Resource Categories</h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-red-500 to-pink-600 mx-auto rounded-full mb-8"></div>
+            <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
               Browse our comprehensive collection of disaster management resources organized by category
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {resourceCategories.map((category) => (
               <button 
                 key={category.id} 
                 onClick={() => setSelectedCategory(category.id === 'guides' ? 'guide' : category.id)}
-                className="bg-white rounded-lg p-6 shadow-lg text-center hover:shadow-xl transition-shadow group cursor-pointer w-full"
+                className={`card-modern interactive-card shadow-modern-lg hover:shadow-modern-xl text-center group cursor-pointer w-full p-8 stagger-${resourceCategories.indexOf(category) + 1}`}
               >
-                <div className={`w-16 h-16 ${category.bgColor} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
-                  <category.icon className={`${category.color} text-2xl`} size={32} />
+                <div className={`w-20 h-20 ${category.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:shadow-xl transition-all duration-300`}>
+                  <category.icon className={`${category.color}`} size={36} />
                 </div>
-                <h3 className="text-lg font-bold text-gray-800 mb-2">{category.name}</h3>
-                <p className="text-gray-600 text-sm mb-4">{category.description}</p>
-                <span className={`${category.color} text-sm font-medium`}>{category.count} Documents</span>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">{category.name}</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed group-hover:text-gray-800 transition-colors">{category.description}</p>
+                <span className={`${category.color} font-bold text-lg`}>{category.count} Documents</span>
               </button>
             ))}
           </div>

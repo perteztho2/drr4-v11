@@ -10,6 +10,7 @@ import FAQ from '../../components/FAQ';
 import Resources from '../../components/Resources';
 import ImageGallery from '../../components/ImageGallery';
 import SocialMediaFeed from '../../components/SocialMediaFeed';
+import ProductionFeatures from '../../components/ProductionFeatures';
 import IncidentModal from '../../components/modals/IncidentModal';
 import HotlineModal from '../../components/modals/HotlineModal';
 import SuccessModal from '../../components/modals/SuccessModal';
@@ -57,6 +58,7 @@ const Home: React.FC = () => {
       <Planning />
       <Resources />
       <ImageGallery />
+      <ProductionFeatures />
 
       <IncidentModal
         isOpen={isIncidentModalOpen}

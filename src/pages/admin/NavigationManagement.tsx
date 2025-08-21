@@ -33,7 +33,18 @@ const NavigationManagement: React.FC = () => {
   const iconOptions = [
     'Home', 'Info', 'Wrench', 'Newspaper', 'FolderOpen', 
     'Calendar', 'Camera', 'Phone', 'Shield', 'Users', 
-    'Settings', 'FileText', 'Download', 'MapPin'
+    'Settings', 'FileText', 'Download', 'MapPin', 'AlertTriangle',
+    'Bell', 'Cloud', 'Database', 'Globe', 'Heart', 'Lock',
+    'Mail', 'Monitor', 'Navigation', 'Palette', 'Play',
+    'Radio', 'Search', 'Share2', 'Star', 'Target', 'Tool',
+    'Truck', 'Video', 'Wifi', 'Zap', 'Activity', 'Archive',
+    'Award', 'Bookmark', 'Building', 'CheckCircle', 'Clock',
+    'Code', 'Compass', 'CreditCard', 'Edit', 'Eye', 'Filter',
+    'Flag', 'Gift', 'Grid', 'HelpCircle', 'Image', 'Key',
+    'Layers', 'Link', 'List', 'MessageCircle', 'Mic', 'Move',
+    'Package', 'PieChart', 'Plus', 'Power', 'Printer', 'Refresh',
+    'Save', 'Send', 'Server', 'Sliders', 'Smartphone', 'Tag',
+    'Terminal', 'Trash2', 'TrendingUp', 'Upload', 'Volume2', 'Wifi'
   ];
 
   useEffect(() => {

@@ -127,20 +127,23 @@ const AboutPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white py-20">
+      <section className="relative bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white py-20 overflow-hidden">
         {/* Background Elements */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-3 left-3 w-20 md:w-30 h-32 md:h-30 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-        <div className="absolute top-5 right-5 w-20 md:w-30 h-32 md:h-30 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
-        <div className="absolute -bottom-4 left-10 w-25 md:w-40 h-25 md:h-30 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4000"></div>
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-10 left-10 w-32 md:w-48 h-32 md:h-48 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
+        <div className="absolute top-20 right-10 w-32 md:w-48 h-32 md:h-48 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl animate-float stagger-2"></div>
+        <div className="absolute -bottom-10 left-20 w-40 md:w-64 h-40 md:h-64 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-float stagger-4"></div>
       </div>
+      
+      {/* Animated particles */}
+      <div className="absolute inset-0 particle-bg"></div>
         
         <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl text-yellow-500 md:text-5xl font-bold mb-6">About DRRM Pio Duran</h1>
-            <div className="w-24 h-1 bg-yellow-500 mx-auto mb-8"></div>
+          <div className="text-center mb-12 relative z-10">
+            <h1 className="text-4xl text-yellow-500 md:text-6xl font-bold mb-6 animate-text-glow">About DRRM Pio Duran</h1>
+            <div className="w-32 h-1.5 bg-gradient-to-r from-yellow-400 to-yellow-600 mx-auto mb-8 rounded-full animate-pulse-glow"></div>
           </div>
           
          

@@ -134,20 +134,35 @@ const DisasterPlanPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 pt-20 relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                           radial-gradient(circle at 75% 75%, rgba(234, 179, 8, 0.1) 0%, transparent 50%)`
+        }}></div>
+      </div>
+      
       {/* Header */}
-      <section className="bg-blue-950 text-white py-20">
+      <section className="relative bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 text-white py-24 overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-10 left-10 w-48 h-48 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
+          <div className="absolute top-20 right-10 w-48 h-48 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-float stagger-2"></div>
+          <div className="absolute -bottom-10 left-20 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl animate-float stagger-4"></div>
+        </div>
+        
         <div className="container mx-auto px-6">
         {/* Header Section */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-500 rounded-full mb-6">
-            <Shield className="text-white text-2xl" size={32} />
+        <div className="text-center mb-16 relative z-10">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-yellow-500 rounded-full mb-8 animate-pulse-glow">
+            <Shield className="text-blue-950" size={40} />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-text-glow">
             Disaster Risk Reduction & Management Planning
           </h1>
-            <div className="w-24 h-1 bg-yellow-500 mx-auto mb-6"></div>
-          <p className="text-xl text-blue-200 max-w-3xl mx-auto">
+            <div className="w-32 h-1.5 bg-gradient-to-r from-yellow-400 to-yellow-600 mx-auto rounded-full mb-8"></div>
+          <p className="text-xl md:text-2xl text-blue-200 max-w-4xl mx-auto leading-relaxed">
             Comprehensive strategies for preparing, responding to, and recovering from disasters to build resilient communities
           </p>
         </div>
@@ -156,28 +171,28 @@ const DisasterPlanPage: React.FC = () => {
 
       <div className="container mx-auto px-6 py-16">
         {/* Introduction Section */}
-        <div className="bg-white rounded-xl shadow-xl p-8 mb-12">
+        <div className="card-modern shadow-modern-xl p-12 mb-16 relative z-10">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Building Resilient Communities</h2>
-              <p className="text-gray-600 mb-4">
+              <h2 className="text-3xl font-bold text-gray-900 mb-6 hover:text-blue-600 transition-colors">Building Resilient Communities</h2>
+              <p className="text-gray-700 mb-6 text-lg leading-relaxed">
                 Developing a comprehensive Disaster Risk Reduction and Management (DRRM) plan involves various components and strategies to effectively prepare for, respond to, and recover from disasters. These integrated approaches ensure communities can withstand and quickly recover from emergency situations.
               </p>
-              <p className="text-gray-600">
+              <p className="text-gray-700 text-lg leading-relaxed">
                 Each plan should be tailored to the specific needs and characteristics of the community or organization it serves. Regular updates, training, and drills are essential to ensure their effectiveness in real-world scenarios.
               </p>
             </div>
             <div className="flex-1">
-              <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl p-8 text-white">
+              <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-10 text-white shadow-modern-xl hover:shadow-modern-2xl transition-all duration-500 hover:transform hover:-translate-y-2">
                 <div className="flex items-center mb-4">
-                  <AlertTriangle className="text-yellow-300 text-2xl mr-3" size={24} />
-                  <h3 className="text-xl font-bold">Key Principles</h3>
+                  <AlertTriangle className="text-yellow-300 mr-4 animate-pulse" size={32} />
+                  <h3 className="text-2xl font-bold">Key Principles</h3>
                 </div>
-                <ul className="space-y-3">
+                <ul className="space-y-4">
                   {keyPrinciples.map((principle, index) => (
-                    <li key={index} className="flex items-start">
-                      <principle.icon className={`${principle.color} mt-1 mr-3`} size={16} />
-                      <span>{principle.title}</span>
+                    <li key={index} className={`flex items-start group stagger-${index + 1}`}>
+                      <principle.icon className={`${principle.color} mt-1 mr-3 group-hover:scale-110 transition-transform duration-200`} size={20} />
+                      <span className="group-hover:text-yellow-200 transition-colors text-lg">{principle.title}</span>
                     </li>
                   ))}
                 </ul>
@@ -187,28 +202,28 @@ const DisasterPlanPage: React.FC = () => {
         </div>
 
         {/* Planning Process Steps */}
-        <section className="mb-16">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">DRRM Planning Process</h2>
-            <div className="w-24 h-1 bg-blue-500 mx-auto mb-6"></div>
-            <p className="text-gray-600 max-w-3xl mx-auto">
+        <section className="mb-20 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">DRRM Planning Process</h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-600 mx-auto rounded-full mb-8"></div>
+            <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
               Our systematic approach to developing effective disaster risk reduction and management plans
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
             {planningSteps.map((step, index) => (
-              <div key={index} className="relative">
-                <div className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
-                  <div className={`w-16 h-16 ${step.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                    <span className="text-white font-bold text-xl">{step.step}</span>
+              <div key={index} className={`relative stagger-${index + 1}`}>
+                <div className="card-modern interactive-card shadow-modern-lg hover:shadow-modern-xl p-8 text-center">
+                  <div className={`w-20 h-20 ${step.color} rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg hover:scale-110 transition-transform duration-300`}>
+                    <span className="text-white font-bold text-2xl">{step.step}</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-3">{step.title}</h3>
-                  <p className="text-gray-600">{step.description}</p>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4 hover:text-blue-600 transition-colors">{step.title}</h3>
+                  <p className="text-gray-700 leading-relaxed">{step.description}</p>
                 </div>
                 {index < planningSteps.length - 1 && (
-                  <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2">
-                    <ArrowRight className="text-gray-400" size={24} />
+                  <div className="hidden lg:block absolute top-1/2 -right-5 transform -translate-y-1/2 z-10">
+                    <ArrowRight className="text-gray-400 hover:text-blue-500 transition-colors animate-pulse" size={28} />
                   </div>
                 )}
               </div>
@@ -217,29 +232,29 @@ const DisasterPlanPage: React.FC = () => {
         </section>
 
         {/* DRRM Plans Section */}
-        <div className="mb-12">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">Core DRRM Planning Components</h2>
-            <div className="w-24 h-1 bg-red-500 mx-auto mb-6"></div>
-            <p className="text-gray-600 max-w-3xl mx-auto">
+        <div className="mb-20 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">Core DRRM Planning Components</h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-red-500 to-pink-600 mx-auto rounded-full mb-8"></div>
+            <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
               Essential components that form the foundation of effective disaster management
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {planComponents.map((plan, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:transform hover:-translate-y-2">
-                <div className={`${plan.color} p-6`}>
+              <div key={index} className={`card-modern interactive-card shadow-modern-lg hover:shadow-modern-xl overflow-hidden stagger-${(index % 6) + 1}`}>
+                <div className={`${plan.color} p-8`}>
                   <div className="flex items-center">
-                    <plan.icon className="text-white text-2xl mr-4" size={24} />
-                    <h3 className="text-xl font-bold text-white">{plan.title}</h3>
+                    <plan.icon className="text-white mr-4 hover:scale-110 transition-transform duration-200" size={32} />
+                    <h3 className="text-2xl font-bold text-white">{plan.title}</h3>
                   </div>
                 </div>
-                <div className="p-6">
-                  <p className="text-gray-600 mb-4">{plan.description}</p>
-                  <div className={`flex items-center ${plan.textColor} font-medium`}>
+                <div className="p-8">
+                  <p className="text-gray-700 mb-6 text-lg leading-relaxed">{plan.description}</p>
+                  <div className={`flex items-center ${plan.textColor} font-bold text-lg`}>
                     <span>Essential for preparedness</span>
-                    <AlertTriangle className="ml-2" size={16} />
+                    <AlertTriangle className="ml-3 hover:animate-bounce" size={20} />
                   </div>
                 </div>
               </div>
@@ -375,27 +390,37 @@ const DisasterPlanPage: React.FC = () => {
         </section>
 
         {/* Call to Action */}
-        <section className="text-center">
-          <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-xl p-8 shadow-xl">
-            <h2 className="text-2xl font-bold text-white mb-4">Ready to Develop Your DRRM Plan?</h2>
-            <p className="text-yellow-100 mb-6 max-w-2xl mx-auto">
+        <section className="text-center relative z-10">
+          <div className="bg-gradient-to-br from-yellow-500 via-yellow-600 to-orange-500 rounded-3xl p-12 shadow-2xl relative overflow-hidden">
+            {/* Background animation */}
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute inset-0 animate-morph-bg bg-gradient-to-r from-white/10 to-transparent"></div>
+            </div>
+            
+            <div className="relative z-10">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-8 animate-pulse-glow">
+                <Shield className="text-white animate-pulse" size={40} />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 animate-text-glow">Ready to Develop Your DRRM Plan?</h2>
+              <p className="text-xl text-yellow-100 mb-10 max-w-3xl mx-auto leading-relaxed">
               Start building comprehensive disaster resilience for your community with our expert guidance and resources.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link 
                 to="/resources"
-                className="bg-white text-yellow-600 font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition duration-300 flex items-center justify-center"
+                className="bg-white text-yellow-600 font-bold py-4 px-10 rounded-2xl hover:bg-gray-100 transition-all duration-300 flex items-center justify-center hover:scale-105 shadow-xl hover:shadow-2xl"
               >
-                <Shield className="mr-2" size={20} />
+                <Shield className="mr-3 hover:animate-bounce" size={24} />
                 Download Planning Guide
               </Link>
               <Link 
                 to="/contact"
-                className="bg-blue-900 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-800 transition duration-300 flex items-center justify-center"
+                className="glass-modern text-white font-bold py-4 px-10 rounded-2xl hover:bg-white/20 transition-all duration-300 flex items-center justify-center hover:scale-105 border border-white/30"
               >
-                <AlertTriangle className="mr-2" size={20} />
+                <AlertTriangle className="mr-3 hover:animate-bounce" size={24} />
                 Contact Experts
               </Link>
+            </div>
             </div>
           </div>
         </section>

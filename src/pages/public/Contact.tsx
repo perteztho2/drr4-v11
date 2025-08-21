@@ -83,25 +83,39 @@ const Contact: React.FC = () => {
         keywords="MDRRMO contact, Pio Duran emergency, disaster management contact, Albay emergency services"
       />
       
-      <div className="bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 min-h-screen pt-20">
+      <div className="bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 min-h-screen pt-20 relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-10 left-10 w-48 h-48 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
+          <div className="absolute top-20 right-10 w-48 h-48 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-float stagger-2"></div>
+          <div className="absolute bottom-10 left-1/2 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl animate-float stagger-4"></div>
+        </div>
+        
         <div className="container mx-auto px-4 py-12">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto relative z-10">
             {/* Header Section */}
-            <div className="text-center mb-16">
-              <h1 className="text-5xl font-bold text-white mb-6">Get In Touch</h1>
-              <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+            <div className="text-center mb-20">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-yellow-500 rounded-full mb-8 animate-pulse-glow">
+                <Mail className="text-blue-950" size={40} />
+              </div>
+              <h1 className="text-5xl md:text-6xl font-bold text-white mb-8 animate-text-glow">Get In Touch</h1>
+              <div className="w-32 h-1.5 bg-gradient-to-r from-yellow-400 to-yellow-600 mx-auto rounded-full mb-8"></div>
+              <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
                 We'd love to hear from you. Send us a message and we'll respond as soon as possible.
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-12">
+            <div className="grid lg:grid-cols-2 gap-16">
               {/* Contact Form */}
-              <div className="backdrop-blur-sm bg-white/10 rounded-2xl p-8 border border-white/20">
-                <h2 className="text-3xl font-semibold text-white mb-8">Send Message</h2>
-                <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="glass-modern rounded-3xl p-10 border border-white/30 shadow-modern-xl hover:shadow-modern-2xl transition-all duration-500">
+                <h2 className="text-3xl font-bold text-white mb-10 flex items-center">
+                  <Send className="mr-4 text-yellow-500" size={32} />
+                  Send Message
+                </h2>
+                <form onSubmit={handleSubmit} className="space-y-8">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-blue-100 text-sm font-medium mb-2">
+                      <label className="block text-blue-100 font-medium mb-3">
                         First Name
                       </label>
                       <input
@@ -110,12 +124,12 @@ const Contact: React.FC = () => {
                         value={formData.firstName}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 focus:transform focus:-translate-y-1"
+                        className="w-full px-4 py-4 glass-modern border border-white/30 rounded-2xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 focus:transform focus:-translate-y-1 focus:shadow-lg"
                         placeholder="Juan"
                       />
                     </div>
                     <div>
-                      <label className="block text-blue-100 text-sm font-medium mb-2">
+                      <label className="block text-blue-100 font-medium mb-3">
                         Last Name
                       </label>
                       <input
@@ -124,14 +138,14 @@ const Contact: React.FC = () => {
                         value={formData.lastName}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 focus:transform focus:-translate-y-1"
+                        className="w-full px-4 py-4 glass-modern border border-white/30 rounded-2xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 focus:transform focus:-translate-y-1 focus:shadow-lg"
                         placeholder="Dela Cruz"
                       />
                     </div>
                   </div>
                   
                   <div>
-                    <label className="block text-blue-100 text-sm font-medium mb-2">
+                    <label className="block text-blue-100 font-medium mb-3">
                       Email Address
                     </label>
                     <input
@@ -140,13 +154,13 @@ const Contact: React.FC = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 focus:transform focus:-translate-y-1"
+                      className="w-full px-4 py-4 glass-modern border border-white/30 rounded-2xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 focus:transform focus:-translate-y-1 focus:shadow-lg"
                       placeholder="juandelacruz@gmail.com"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-blue-100 text-sm font-medium mb-2">
+                    <label className="block text-blue-100 font-medium mb-3">
                       Subject
                     </label>
                     <input
@@ -155,13 +169,13 @@ const Contact: React.FC = () => {
                       value={formData.subject}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 focus:transform focus:-translate-y-1"
+                      className="w-full px-4 py-4 glass-modern border border-white/30 rounded-2xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 focus:transform focus:-translate-y-1 focus:shadow-lg"
                       placeholder="How can we help?"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-blue-100 text-sm font-medium mb-2">
+                    <label className="block text-blue-100 font-medium mb-3">
                       Message
                     </label>
                     <textarea
@@ -170,7 +184,7 @@ const Contact: React.FC = () => {
                       onChange={handleInputChange}
                       required
                       rows={5}
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent resize-none transition-all duration-300 focus:transform focus:-translate-y-1"
+                      className="w-full px-4 py-4 glass-modern border border-white/30 rounded-2xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent resize-none transition-all duration-300 focus:transform focus:-translate-y-1 focus:shadow-lg"
                       placeholder="Tell us more about your inquiry..."
                     />
                   </div>
@@ -178,25 +192,25 @@ const Contact: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`w-full font-semibold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 ${
+                    className={`w-full font-bold py-5 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center justify-center gap-3 text-lg ${
                       isSubmitted 
-                        ? 'bg-green-500 hover:bg-green-400 text-white' 
-                        : 'bg-yellow-500 hover:bg-yellow-400 text-blue-950'
+                        ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white shadow-xl' 
+                        : 'bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-blue-950 shadow-xl'
                     } disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
                     {isSubmitting ? (
                       <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-950"></div>
+                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-950"></div>
                         Sending...
                       </>
                     ) : isSubmitted ? (
                       <>
-                        <Check size={20} />
+                        <Check size={24} className="animate-bounce" />
                         Message Sent!
                       </>
                     ) : (
                       <>
-                        <Send size={20} />
+                        <Send size={24} className="hover:animate-pulse" />
                         Send Message
                       </>
                     )}
@@ -206,21 +220,24 @@ const Contact: React.FC = () => {
 
               {/* Contact Information */}
               <div className="space-y-8">
-                <div className="backdrop-blur-sm bg-white/10 rounded-2xl p-8 border border-white/20">
-                  <h2 className="text-3xl font-semibold text-white mb-8">Contact Information</h2>
+                <div className="glass-modern rounded-3xl p-10 border border-white/30 shadow-modern-xl">
+                  <h2 className="text-3xl font-bold text-white mb-10 flex items-center">
+                    <MapPin className="mr-4 text-yellow-500" size={32} />
+                    Contact Information
+                  </h2>
                   
-                  <div className="space-y-6">
+                  <div className="space-y-8">
                     {contactInfo.map((info, index) => (
                       <div
                         key={index}
-                        className="flex items-start gap-4 p-4 rounded-lg hover:bg-white/5 cursor-pointer transition-all duration-300 hover:transform hover:-translate-y-1"
+                        className={`flex items-start gap-6 p-6 rounded-2xl hover:bg-white/10 cursor-pointer transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-lg stagger-${index + 1}`}
                       >
-                        <div className={`${info.color} p-3 rounded-lg`}>
-                          <info.icon className="w-6 h-6 text-blue-950" />
+                        <div className={`${info.color} p-4 rounded-2xl shadow-lg hover:scale-110 transition-transform duration-300`}>
+                          <info.icon className="w-7 h-7 text-blue-950" />
                         </div>
                         <div>
-                          <h3 className="text-white font-semibold text-lg mb-1">{info.title}</h3>
-                          <p className="text-blue-100 whitespace-pre-line">{info.content}</p>
+                          <h3 className="text-white font-bold text-xl mb-2 hover:text-yellow-300 transition-colors">{info.title}</h3>
+                          <p className="text-blue-100 whitespace-pre-line text-lg leading-relaxed">{info.content}</p>
                         </div>
                       </div>
                     ))}
@@ -228,32 +245,38 @@ const Contact: React.FC = () => {
                 </div>
 
                 {/* Social Media */}
-                <div className="backdrop-blur-sm bg-white/10 rounded-2xl p-8 border border-white/20">
-                  <h3 className="text-2xl font-semibold text-white mb-6">Follow Us</h3>
-                  <div className="flex gap-4">
+                <div className="glass-modern rounded-3xl p-10 border border-white/30 shadow-modern-xl">
+                  <h3 className="text-2xl font-bold text-white mb-8 flex items-center">
+                    <Share2 className="mr-4 text-yellow-500" size={28} />
+                    Follow Us
+                  </h3>
+                  <div className="flex gap-6">
                     {socialLinks.map((social, index) => (
                       <a
                         key={index}
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-white/10 hover:bg-yellow-500 p-3 rounded-lg transition-all duration-300 group"
+                        className={`glass-modern hover:bg-yellow-500 p-4 rounded-2xl transition-all duration-300 group hover:scale-110 hover:shadow-xl stagger-${index + 1}`}
                         title={social.label}
                       >
-                        <social.icon className="w-6 h-6 text-yellow-500 group-hover:text-blue-950" />
+                        <social.icon className="w-7 h-7 text-yellow-500 group-hover:text-blue-950 group-hover:animate-bounce" />
                       </a>
                     ))}
                   </div>
                 </div>
 
                 {/* Emergency Notice */}
-                <div className="backdrop-blur-sm bg-red-500/20 rounded-2xl p-8 border border-red-500/30">
-                  <h3 className="text-2xl font-semibold text-white mb-4">Emergency Contact</h3>
-                  <p className="text-red-100 mb-4">
+                <div className="glass-modern bg-red-500/20 rounded-3xl p-10 border border-red-500/40 shadow-modern-xl animate-pulse-glow">
+                  <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+                    <AlertTriangle className="mr-4 text-yellow-500 animate-pulse" size={32} />
+                    Emergency Contact
+                  </h3>
+                  <p className="text-red-100 mb-8 text-lg leading-relaxed">
                     For immediate emergency assistance, please call our 24/7 hotline:
                   </p>
-                  <div className="bg-red-600 text-white font-bold py-4 px-8 rounded-lg shadow-lg flex items-center text-xl justify-center">
-                    <Phone className="mr-3" size={24} />
+                  <div className="bg-gradient-to-r from-red-600 to-red-700 text-white font-bold py-6 px-12 rounded-2xl shadow-2xl flex items-center text-3xl justify-center hover:scale-105 transition-transform duration-300 hover:shadow-3xl">
+                    <Phone className="mr-4 animate-bounce" size={36} />
                     <span>911</span>
                   </div>
                 </div>

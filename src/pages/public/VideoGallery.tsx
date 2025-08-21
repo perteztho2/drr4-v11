@@ -159,15 +159,22 @@ const VideoGallery: React.FC = () => {
         keywords="MDRRMO videos, Pio Duran training, disaster management videos, emergency drills, community activities"
       />
       
-      <div className="bg-gradient-to-br from-blue-950 to-blue-900 min-h-screen flex">
+      <div className="bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 min-h-screen flex relative overflow-hidden">
+        {/* Animated background particles */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-yellow-500 rounded-full mix-blend-multiply filter blur-2xl animate-float"></div>
+          <div className="absolute top-20 right-20 w-40 h-40 bg-purple-400 rounded-full mix-blend-multiply filter blur-2xl animate-float stagger-2"></div>
+          <div className="absolute bottom-10 left-1/2 w-36 h-36 bg-blue-400 rounded-full mix-blend-multiply filter blur-2xl animate-float stagger-4"></div>
+        </div>
+        
         {/* Video Albums Sidebar */}
-        <div className="w-80 bg-blue-950 shadow-xl border-r border-yellow-500/20 overflow-y-auto">
-          <div className="p-6 border-b border-yellow-500/20">
+        <div className="w-80 glass-dark shadow-2xl border-r border-yellow-500/30 overflow-y-auto relative z-10">
+          <div className="p-6 border-b border-yellow-500/30">
             <div className="flex items-center gap-3 mb-4">
-              <Video className="w-6 h-6 text-yellow-500" />
-              <h2 className="text-2xl font-bold text-yellow-500">Video Albums</h2>
+              <Video className="w-6 h-6 text-yellow-500 animate-pulse" />
+              <h2 className="text-2xl font-bold text-yellow-500 animate-text-glow">Video Albums</h2>
             </div>
-            <p className="text-yellow-200 text-sm">Browse your video collections</p>
+            <p className="text-yellow-200">Browse your video collections</p>
           </div>
           
           <div className="p-4">
@@ -175,22 +182,22 @@ const VideoGallery: React.FC = () => {
               {/* All Videos Album */}
               <div
                 onClick={() => selectAlbum(null)}
-                className={`bg-blue-900 rounded-xl p-4 cursor-pointer border transition-all duration-200 hover:transform hover:translate-x-1 ${
+                className={`glass-dark rounded-2xl p-6 cursor-pointer border transition-all duration-300 hover:transform hover:translate-x-2 hover:shadow-xl ${
                   selectedAlbum === null 
-                    ? 'border-yellow-500 bg-yellow-500/10' 
-                    : 'border-yellow-500/20 hover:border-yellow-500/40 hover:bg-yellow-500/5'
+                    ? 'border-yellow-500 bg-yellow-500/20 shadow-lg' 
+                    : 'border-yellow-500/20 hover:border-yellow-500/50 hover:bg-yellow-500/10'
                 }`}
               >
                 <div className="flex items-center gap-4 mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center">
-                    <Play className="w-8 h-8 text-blue-950" />
+                  <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300">
+                    <Play className="w-8 h-8 text-blue-950 hover:animate-bounce" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-yellow-500 mb-1">All Videos</h3>
-                    <p className="text-sm text-yellow-200">{publishedVideos.length} videos</p>
+                    <h3 className="font-bold text-yellow-500 mb-1 text-lg">All Videos</h3>
+                    <p className="text-yellow-200">{publishedVideos.length} videos</p>
                   </div>
                 </div>
-                <p className="text-xs text-yellow-300">Complete collection</p>
+                <p className="text-yellow-300">Complete collection</p>
               </div>
 
               {/* Individual Albums */}
