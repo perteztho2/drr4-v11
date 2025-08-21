@@ -130,7 +130,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
         <div key={item.id || item.path} className="relative group">
           <button
             onClick={() => toggleSubmenu(item.id)}
-            className={`flex items-center justify-between w-full px-2 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:transform hover:scale-105 ${
+            className={`flex items-center justify-between w-full px-1 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:transform hover:scale-105 ${
               itemIsActive
                 ? 'bg-gradient-to-r from-yellow-500 to-yellow-500 text-blue-900 shadow-lg'
                 : 'text-white/90 hover:bg-white/10 hover:text-white backdrop-blur-sm'
