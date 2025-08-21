@@ -62,7 +62,13 @@ const About: React.FC = () => {
       }))
     : cards;
   return (
-\
+    <section id="about" className="relative py-3 md:py-3 bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-3 left-3 w-20 md:w-30 h-32 md:h-30 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+        <div className="absolute top-5 right-5 w-20 md:w-30 h-32 md:h-30 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
+        <div className="absolute -bottom-4 left-10 w-25 md:w-40 h-25 md:h-30 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4000"></div>
+      </div>
       
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-4 md:mb-6">
@@ -79,14 +85,14 @@ const About: React.FC = () => {
           {displayCards.map((card, index) => (
             <div
               key={index}
-              className="bg-white/10 backdrop-blur-sm p-3 md:p-3 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-2xl md:hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-1 md:hover:-translate-y-3 border border-white/20 hover:border-yellow-500/50 group"
+              className="bg-white/10 backdrop-blur-sm p-2 md:p-2 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-2xl md:hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-1 md:hover:-translate-y-3 border border-white/20 hover:border-yellow-500/50 group"
             >
               <div className="text-center mb-6">
                 <div className="w-12 h-12 md:w-15 md:h-15 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-1 md:mb-1 group-hover:scale-110 transition-transform duration-300">
                   <card.icon size={24} className="text-blue-950 md:w-15 md:h-15" />
                 </div>
               </div>
-              <h3 className="text-lg md:text-xl font-bold text-center mb-2 md:mb-3 text-yellow-500">
+              <h3 className="text-lg md:text-xl font-bold text-center mb-2 md:mb-3 text-white">
                 {card.title}
               </h3>
               <p className="text-sm md:text-base text-blue-100 text-center leading-relaxed">
