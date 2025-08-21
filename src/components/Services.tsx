@@ -45,7 +45,7 @@ const Services: React.FC = () => {
       iconColor: 'text-yellow-600'
     }
   ];
-
+s
   return (
     <section id="services" className="py-12 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
       {/* Background Pattern */}
@@ -58,16 +58,15 @@ const Services: React.FC = () => {
       </div>
       
       <div className="container mx-auto px-4 md:px-6">
-  <div className="text-center mb-4 md:mb-7">
-    <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-blue-950 mb-4 md:mb-6 relative">
-      <span className="relative z-10 animate-fade-in">OUR SERVICES</span>
-      <div className="absolute -bottom-1 md:-bottom-2 left-1/2 transform -translate-x-1/2 w-0 md:w-0 h-0.5 md:h-1 bg-gradient-to-r from-blue-600 to-blue-800 rounded-full animate-underline"></div>
-    </h2>
-    <p className="text-sm md:text-lg lg:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed px-4 animate-fade-in delay-200">
-      Comprehensive disaster risk reduction and management services for the Pio Duran community
-    </p>
-  </div>
-
+        <div className="text-center mb-8 md:mb-16">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-blue-950 mb-4 md:mb-6 relative">
+            <span className="relative z-10">OUR SERVICES</span>
+            <div className="absolute -bottom-1 md:-bottom-2 left-1/2 transform -translate-x-1/2 w-20 md:w-32 h-0.5 md:h-1 bg-gradient-to-r from-blue-600 to-blue-800 rounded-full"></div>
+          </h2>
+          <p className="text-sm md:text-lg lg:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed px-4">
+            Comprehensive disaster risk reduction and management services for the Pio Duran community
+          </p>
+        </div>
 
         {/* Dynamic Services from Admin */}
         {activeServices.length > 0 && (
