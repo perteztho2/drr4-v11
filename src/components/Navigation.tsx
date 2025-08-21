@@ -1,19 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Contact, Camera, Phone, Search, FileText, ChevronDown, ChevronRight, Play, Bell, Zap, AlertTriangle, Cloud, Database, Globe, Heart, Lock, Mail, Monitor, Navigation as NavigationIcon, Palette, Radio, Share2, Star, Target, Tool, Truck, Video, Wifi, Activity, Archive, Award, Bookmark, Building, CheckCircle, Clock, Code, Compass, CreditCard, Edit, Eye, Filter, Flag, Gift, Grid, HelpCircle, Image, Key, Layers, List, MessageCircle, Mic, Move, Package, PieChart, Plus, Power, Printer, Refresh, Save, Send, Server, Sliders, Smartphone, Tag, Terminal, Trash2, TrendingUp, Upload, Volume2 } from 'lucide-react';
-import { useDatabase } from '../contexts/DatabaseContext';
-import { usePages } from '../contexts/PagesContext';
-import { supabase } from '../lib/supabase';
-import SearchModal from './SearchModal';
-
-interface NavigationProps {
-  variant?: 'public' | 'admin';
-}
-
-const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [dynamicNavItems, setDynamicNavItems] = useState<any[]>([]);
+import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Contact, Camera, Phone, Search, FileText, ChevronDown, ChevronRight, Play, Bell, Zap, AlertTriangle, Cloud, Database, Globe, Heart, Lock, Mail, Monitor, Navigation as NavigationIcon, Palette, Radio, Share2, Star, Target, PenTool as Tool, Truck, Video, Wifi, Activity, Archive, Award, Bookmark, Building, CheckCircle, Clock, Code, Compass, CreditCard, Edit, Eye, Filter, Flag, Gift, Grid, HelpCircle, Image, Key, Layers, List, MessageCircle, Mic, Move, Package, PieChart, Plus, Power, Printer, RefreshCw as Refresh, Save, Send, Server, Sliders, Smartphone, Tag, Terminal, Trash2, TrendingUp, Upload, Volume2 } from 'lucide-react'ate<any[]>([]);
   const [openSubmenus, setOpenSubmenus] = useState<Set<string>>(new Set());
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
@@ -116,7 +103,13 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
 
   function getIconComponent(iconName: string) {
     const icons: Record<string, any> = {
-      Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, FileText, Shield, Play, Bell, Zap
+      Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, FileText, Shield, Play, Bell, Zap,
+      AlertTriangle, Cloud, Database, Globe, Heart, Lock, Mail, Monitor, Navigation, Palette,
+      Radio, Search, Share2, Star, Target, Tool, Truck, Video, Wifi, Activity, Archive,
+      Award, Bookmark, Building, CheckCircle, Clock, Code, Compass, CreditCard, Edit, Eye,
+      Filter, Flag, Gift, Grid, HelpCircle, Image, Key, Layers, Link, List, MessageCircle,
+      Mic, Move, Package, PieChart, Plus, Power, Printer, Refresh, Save, Send, Server,
+      Sliders, Smartphone, Tag, Terminal, Trash2, TrendingUp, Upload, Volume2
     };
     return icons[iconName] || Home;
   }
