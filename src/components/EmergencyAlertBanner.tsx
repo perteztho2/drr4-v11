@@ -63,7 +63,7 @@ const EmergencyAlertBanner: React.FC = () => {
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case 'critical':
-        return 'bg-red-900 border-4 border-yellow-500';
+        return 'bg-red-700 border-3 border-yellow-500';
       case 'high':
         return 'bg-orange-600 border-4 border-blue-600';
       case 'medium':
