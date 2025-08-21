@@ -235,13 +235,13 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-1">
+            <div className="hidden lg:flex items-center space-x-2">
               {navigationTree.map((item) => renderNavigationItem(item, false))}
               
               {/* Search Button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="flex items-center px-4 py-3 rounded-xl text-sm font-medium text-white/90 hover:bg-white/10 hover:text-white transition-all duration-300 hover:transform hover:scale-105 backdrop-blur-sm group"
+                className="flex items-center px-2 py-3 rounded-xl text-sm font-medium text-white/90 hover:bg-white/10 hover:text-white transition-all duration-300 hover:transform hover:scale-105 backdrop-blur-sm group"
               >
                 <Search size={18} className="mr-3 group-hover:animate-pulse" />
                 <span className="hidden xl:inline">Search</span>
