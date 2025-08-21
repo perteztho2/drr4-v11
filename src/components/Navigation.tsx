@@ -258,7 +258,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
             </div>
 
             {/* Mobile menu button */}
-            <div className="lg:hidden flex items-center space-x-3">
+            <div className="flex items-center space-x-3">
               {/* Mobile Emergency Button */}
               <Link
                 to="/contact"
