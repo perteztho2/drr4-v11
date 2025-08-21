@@ -1,58 +1,73 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Zap, Globe, Lock, Activity, TrendingUp, Users, Award } from 'lucide-react';
+import { Shield, Zap, Globe, Activity } from 'lucide-react';
+
+type Feature = {
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  title: string;
+  description: string;
+  color: string;
+  stats: Record<string, string>;
+};
 
 const ProductionFeatures: React.FC = () => {
-  const [activeFeature, setActiveFeature] = useState(0);
-const IconComponent = features[activeFeature].icon;
-
-
-  const features = [
+  // Define features first to avoid TDZ issues
+  const features: Feature[] = [
     {
       icon: Shield,
       title: 'Enterprise Security',
-      description: 'Bank-level security with end-to-end encryption, secure authentication, and data protection.',
+      description:
+        'Bank-level security with end-to-end encryption, secure authentication, and data protection.',
       color: 'from-blue-500 to-blue-600',
-      stats: { uptime: '99.9%', security: 'A+', compliance: 'SOC 2' }
+      stats: { uptime: '99.9%', security: 'A+', compliance: 'SOC 2' },
     },
     {
       icon: Zap,
       title: 'Lightning Performance',
-      description: 'Optimized for speed with CDN delivery, caching strategies, and performance monitoring.',
+      description:
+        'Optimized for speed with CDN delivery, caching strategies, and performance monitoring.',
       color: 'from-yellow-500 to-orange-500',
-      stats: { loadTime: '<2s', performance: '95+', optimization: 'A+' }
+      stats: { loadTime: '<2s', performance: '95+', optimization: 'A+' },
     },
     {
       icon: Globe,
       title: 'Global Accessibility',
-      description: 'WCAG 2.1 compliant with multi-language support and responsive design for all devices.',
+      description:
+        'WCAG 2.1 compliant with multi-language support and responsive design for all devices.',
       color: 'from-green-500 to-emerald-500',
-      stats: { accessibility: 'AAA', languages: '3+', devices: '100%' }
+      stats: { accessibility: 'AAA', languages: '3+', devices: '100%' },
     },
     {
       icon: Activity,
       title: 'Real-time Analytics',
-      description: 'Comprehensive analytics dashboard with real-time monitoring and detailed insights.',
+      description:
+        'Comprehensive analytics dashboard with real-time monitoring and detailed insights.',
       color: 'from-purple-500 to-indigo-500',
-      stats: { tracking: '24/7', insights: 'Real-time', reports: 'Custom' }
-    }
+      stats: { tracking: '24/7', insights: 'Real-time', reports: 'Custom' },
+    },
   ];
 
+  const [activeFeature, setActiveFeature] = useState<number>(0);
+
+  // Auto-rotate features (each 4 seconds)
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveFeature((prev) => (prev + 1) % features.length);
     }, 4000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [features.length]);
+
+  // Icon component for the currently active feature
+  const ActiveIcon = features[activeFeature].icon;
 
   return (
     <section className="py-20 bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 relative overflow-hidden">
       {/* Animated background */}
-      <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 opacity-20" aria-hidden="true">
         <div className="absolute top-10 left-10 w-48 h-48 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
         <div className="absolute bottom-10 right-10 w-48 h-48 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-float stagger-3"></div>
       </div>
-      
+
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 animate-text-glow">
@@ -86,7 +101,7 @@ const IconComponent = features[activeFeature].icon;
                     <p className="text-blue-200 leading-relaxed">{feature.description}</p>
                   </div>
                 </div>
-                
+
                 {activeFeature === index && (
                   <div className="mt-6 grid grid-cols-3 gap-4 animate-fade-in">
                     {Object.entries(feature.stats).map(([key, value]) => (
@@ -106,11 +121,10 @@ const IconComponent = features[activeFeature].icon;
             <div className="glass-modern rounded-3xl p-8 shadow-2xl border border-white/20">
               <div className="text-center">
                 <div
-  className={`w-24 h-24 bg-gradient-to-br ${features[activeFeature].color} rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-glow`}
->
-  <IconComponent className="text-white" size={48} />
-</div>
-
+                  className={`w-24 h-24 bg-gradient-to-br ${features[activeFeature].color} rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-glow`}
+                >
+                  <ActiveIcon className="text-white" size={48} />
+                </div>
 
                 <h3 className="text-2xl font-bold text-white mb-4">
                   {features[activeFeature].title}
@@ -118,7 +132,7 @@ const IconComponent = features[activeFeature].icon;
                 <p className="text-blue-200 text-lg leading-relaxed mb-8">
                   {features[activeFeature].description}
                 </p>
-                
+
                 <div className="grid grid-cols-3 gap-6">
                   {Object.entries(features[activeFeature].stats).map(([key, value]) => (
                     <div key={key} className="text-center">
@@ -143,6 +157,7 @@ const IconComponent = features[activeFeature].icon;
                   ? 'bg-yellow-500 scale-125'
                   : 'bg-white/30 hover:bg-white/50'
               }`}
+              aria-label={`Go to feature ${index + 1}`}
             />
           ))}
         </div>
