@@ -235,7 +235,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-2">
+            <div className="hidden lg:flex items-center space-x-1">
               {navigationTree.map((item) => renderNavigationItem(item, false))}
               
               {/* Search Button */}
