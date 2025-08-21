@@ -3,6 +3,8 @@ import { Shield, Zap, Globe, Lock, Activity, TrendingUp, Users, Award } from 'lu
 
 const ProductionFeatures: React.FC = () => {
   const [activeFeature, setActiveFeature] = useState(0);
+const IconComponent = features[activeFeature].icon;
+
 
   const features = [
     {
@@ -103,9 +105,13 @@ const ProductionFeatures: React.FC = () => {
           <div className="relative">
             <div className="glass-modern rounded-3xl p-8 shadow-2xl border border-white/20">
               <div className="text-center">
-                <div className={`w-24 h-24 bg-gradient-to-br ${features[activeFeature].color} rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-glow`}>
-                  <features[activeFeature].icon className="text-white" size={48} />
-                </div>
+                <div
+  className={`w-24 h-24 bg-gradient-to-br ${features[activeFeature].color} rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-glow`}
+>
+  <IconComponent className="text-white" size={48} />
+</div>
+
+
                 <h3 className="text-2xl font-bold text-white mb-4">
                   {features[activeFeature].title}
                 </h3>
