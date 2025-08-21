@@ -390,7 +390,7 @@ const EmergencyManagement: React.FC = () => {
                       onClick={() => setNewAlert({ ...newAlert, severity: severity.id as any })}
                       className={`p-3 rounded-lg border-2 transition-all ${
                         newAlert.severity === severity.id
-                          ? 'border-red-500 bg-red-50'
+                          ? 'border-red-800 bg-red-50'
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
                     >
