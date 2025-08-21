@@ -1,11 +1,16 @@
 import React from 'react';
-import { Shield, Heart, Truck, Home, FolderOpen } from 'lucide-react';
+import { Shield, Heart, Truck, Home, FolderOpen, AlertTriangle } from 'lucide-react';
 import { useData } from '../contexts/DataContext';
 import { Link } from 'react-router-dom';
 
 const Services: React.FC = () => {
   const { services } = useData();
+  const [isVisible, setIsVisible] = React.useState(false);
   const activeServices = services.filter(service => service.status === 'active');
+
+  React.useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   const defaultServices = [
     {
