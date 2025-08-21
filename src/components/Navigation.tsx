@@ -158,7 +158,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
                   key={child.id || child.path}
                   to={child.path}
                   onClick={() => isMobile && setIsOpen(false)}
-                  className={`flex items-center px-2 py-3 text-sm font-medium transition-all duration-300 hover:transform hover:scale-105 ${
+                  className={`flex items-center px-2 py-3 text-sm font-medium bg-white/95 transition-all duration-300 hover:transform hover:scale-105 ${
                     isMobile ? 'rounded-xl' : 'rounded-xl mx-2'
                   } ${
                     isActive(child.path)
