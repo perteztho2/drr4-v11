@@ -205,8 +205,8 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
     <>
       <nav className={`sticky top-0 z-50 transition-all duration-500 ${
         scrolled 
-          ? 'bg-blue-950 backdrop-blur-xl shadow-2xl border-b-4 border-yellow-500' 
-          : 'bg-blue-900 backdrop-blur-sm border-b-4 border-yellow-500'
+          ? 'bg-blue-900 backdrop-blur-xl shadow-2xl border-b-4 border-yellow-500' 
+          : 'bg-blue-950 backdrop-blur-sm border-b-4 border-yellow-500'
       }`}>
         <div className="container mx-auto px-2">
           <div className="flex items-center justify-between h-20">
