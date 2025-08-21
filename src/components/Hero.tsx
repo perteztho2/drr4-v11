@@ -13,6 +13,7 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
   const rainContainerRef = useRef<HTMLDivElement>(null);
   const [isScrolling, setIsScrolling] = useState(false);
+  const lightningTimeoutsRef = useRef<NodeJS.Timeout[]>([]);
 
   useEffect(() => {
     // Create rain effect
@@ -52,12 +53,18 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
       lightningFlash.style.transition = 'opacity 0.1s';
       lightningFlash.style.opacity = '0.4';
       
-      setTimeout(() => {
+      const timeout1 = setTimeout(() => {
         lightningFlash.style.opacity = '0';
-        setTimeout(() => {
-          document.body.removeChild(lightningFlash);
+        const timeout2 = setTimeout(() => {
+          if (document.body.contains(lightningFlash)) {
+            document.body.removeChild(lightningFlash);
+          }
+          // Remove timeouts from tracking array
+          lightningTimeoutsRef.current = lightningTimeoutsRef.current.filter(t => t !== timeout1 && t !== timeout2);
         }, 300);
+        lightningTimeoutsRef.current.push(timeout2);
       }, 150);
+      lightningTimeoutsRef.current.push(timeout1);
     };
     createRain();
     
@@ -70,6 +77,16 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
 
     return () => {
       clearInterval(lightningInterval);
+      // Clear all lightning timeouts
+      lightningTimeoutsRef.current.forEach(timeout => clearTimeout(timeout));
+      lightningTimeoutsRef.current = [];
+      // Remove any remaining lightning flash elements
+      const lightningElements = document.querySelectorAll('.fixed.inset-0.bg-white.pointer-events-none.z-20');
+      lightningElements.forEach(element => {
+        if (document.body.contains(element)) {
+          document.body.removeChild(element);
+        }
+      });
     };
   }, []);
 
