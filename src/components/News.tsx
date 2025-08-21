@@ -100,7 +100,7 @@ const News: React.FC = () => {
 
                 {/* Secondary News */}
                 {publishedNews.length > 1 && (
-                  <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+                  <div className="grid md:grid-cols-4 gap-4 md:gap-6">
                     {publishedNews.slice(1).map((item) => (
                       <div
                         key={item.id}
