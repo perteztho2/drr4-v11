@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Camera, Phone, Search, FileText, ChevronDown, ChevronRight, Play, Bell, Zap } from 'lucide-react';
+import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Contact, Camera, Phone, Search, FileText, ChevronDown, ChevronRight, Play, Bell, Zap } from 'lucide-react';
 import { useDatabase } from '../contexts/DatabaseContext';
 import { usePages } from '../contexts/PagesContext';
 import { supabase } from '../lib/supabase';
