@@ -252,8 +252,8 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
                 to="/contact"
                 className="flex items-center px-2 py-1 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:scale-105 group"
               >
-                <Bell size={18} className="mr-1 group-hover:animate-bounce" />
-                <span className="hidden xl:inline">Contact</span>
+                <Contact size={18} className="mr-1 group-hover:animate-bounce" />
+                <span className="hidden xl:inline">Emergency</span>
               </Link>
             </div>
 
