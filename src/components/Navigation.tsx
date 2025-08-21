@@ -224,7 +224,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
               </div>
               <div className="hidden sm:block">
                 <h1 className="font-bold text-yellow-500 text-xl tracking-wide">MDRRMO</h1>
-                <p className="text-yellow-400 text-sm font-medium">PIO DURAN, ALBAY</p>
+                <p className="text-yellow-400 text-sm font-medium">PIO DURAN</p>
                 {!isConnected && (
                   <p className="text-red-400 text-xs font-medium flex items-center">
                     <span className="w-2 h-2 bg-red-400 rounded-full mr-1 animate-pulse"></span>
