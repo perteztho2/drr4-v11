@@ -222,7 +222,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
                 )}
               </div>
-              <div className="sm:block">
+              <div className="hidden sm:block">
                 <h1 className="font-bold text-yellow-500 text-xl tracking-wide">MDRRMO</h1>
                 <p className="text-yellow-400 text-sm font-medium">PIO DURAN</p>
                 {!isConnected && (
