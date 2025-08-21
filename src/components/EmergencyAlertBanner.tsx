@@ -97,7 +97,7 @@ const EmergencyAlertBanner: React.FC = () => {
   const currentAlert = alerts[currentAlertIndex];
 
   return (
-    <div className={`${getSeverityColor(currentAlert.severity)} text-white py-1 px-2 relative z-40`}>
+    <div className={`${getSeverityColor(currentAlert.severity)} text-white py-1 px-1 relative z-40`}>
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-3 flex-1">
           <div className="flex items-center space-x-2">
