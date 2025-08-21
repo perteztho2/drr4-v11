@@ -92,7 +92,7 @@ const About: React.FC = () => {
                   <card.icon size={24} className="text-blue-950 md:w-15 md:h-15" />
                 </div>
               </div>
-              <h3 className="text-lg md:text-1xl font-bold text-center mb-2 md:mb-3 text-white">
+              <h3 className="text-lg md:text-xl font-bold text-center mb-2 md:mb-3 text-white">
                 {card.title}
               </h3>
               <p className="text-sm md:text-base text-blue-100 text-center leading-relaxed">
@@ -105,7 +105,7 @@ const About: React.FC = () => {
         <div className="text-center">
           <Link 
             to="/about"
-            className="group relative inline-flex items-center justify-center px-6 md:px-10 py-3 md:py-4 overflow-hidden font-bold text-blue-950 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 shadow-xl md:shadow-2xl hover:shadow-2xl md:hover:shadow-3xl"
+            className="group relative inline-flex items-center justify-center px-3 md:px-5 py-2 md:py-2 overflow-hidden font-bold text-blue-950 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-300 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 shadow-xl md:shadow-2xl hover:shadow-2xl md:hover:shadow-3xl"
           >
             <Users className="mr-2 md:mr-3" size={18} />
             <span className="text-sm md:text-lg lg:text-xl tracking-wide">Meet the DRRM Team</span>
