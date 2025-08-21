@@ -222,7 +222,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
                 )}
               </div>
-              <div className="">
+              <div className="hidden sm:block">
                 <h1 className="font-bold text-yellow-500 text-xl tracking-wide">MDRRMO</h1>
                 <p className="text-yellow-400 text-sm font-medium">PIO DURAN</p>
                 {!isConnected && (
@@ -241,7 +241,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
               {/* Search Button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="flex items-center px-2 py-3 rounded-xl text-sm font-small text-yellow-500 hover:bg-white/10 hover:text-yellow-500 transition-all duration-300 hover:transform hover:scale-105 backdrop-blur-sm group"
+                className="flex items-center px-2 py-3 rounded-xl text-sm font-medium text-yellow-500 hover:bg-white/10 hover:text-yellow-500 transition-all duration-300 hover:transform hover:scale-105 backdrop-blur-sm group"
               >
                 <Search size={18} className="mr-1 group-hover:animate-pulse" />
                 <span className="hidden xl:inline">Search</span>
