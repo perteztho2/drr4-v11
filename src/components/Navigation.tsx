@@ -220,12 +220,12 @@ const [data, setData] = useState<any[]>([]);
         {item.featured && (
           <span className="ml-2 w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
         )}
-      </Link>
+      </div>
     );
   }
 
   return (
-    <>
+    <Link>
       <nav className={`sticky top-0 z-50 transition-all duration-500 ${
         scrolled 
           ? 'bg-blue-950 backdrop-blur-xl shadow-2xl border-b-4 border-yellow-500' 
