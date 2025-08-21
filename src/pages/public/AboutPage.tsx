@@ -143,7 +143,7 @@ const AboutPage: React.FC = () => {
             <div className="w-24 h-1 bg-yellow-500 mx-auto mb-8"></div>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+         
             <div>
               <h2 className="text-2xl font-bold mb-4">Municipal Disaster Risk Reduction and Management Office</h2>
               <p className="text-gray-300 mb-6 leading-relaxed">
@@ -153,6 +153,7 @@ const AboutPage: React.FC = () => {
                 Located in the heart of Pio Duran, our office serves as the central hub for all disaster risk reduction and management activities, ensuring coordinated responses and sustainable preparedness measures.
               </p>
             </div>
+             <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="text-center">
               <div className="bg-gray-800 rounded-lg p-8 inline-block">
                 <Shield className="h-24 w-24 text-yellow-500 mb-4 mx-auto" />
