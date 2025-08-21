@@ -86,7 +86,7 @@ const Services: React.FC = () => {
               {activeServices.slice(0, 4).map((service) => (
                 <div
                   key={service.id}
-                  className="flex bg-white p-4 md:p-8 rounded-xl md:rounded-2xl shadow-lg md:shadow-xl hover:shadow-xl md:hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 md:hover:-translate-y-3 border border-gray-200 hover:border-blue-300 group"
+                  className="flex bg-white p-4 md:p-6 rounded-xl md:rounded-2xl shadow-lg md:shadow-xl hover:shadow-xl md:hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 md:hover:-translate-y-3 border border-blue-600 hover:border-yellow-500 group"
                 >
                   <div className="mr-3 md:mr-5 self-start">
                     <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-3 md:p-4 rounded-xl md:rounded-2xl group-hover:scale-110 transition-transform duration-300">
