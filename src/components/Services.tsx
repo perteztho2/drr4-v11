@@ -90,7 +90,7 @@ const Services: React.FC = () => {
                 >
                   <div className="mr-3 md:mr-5 self-start">
                     <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-3 md:p-4 rounded-xl md:rounded-2xl group-hover:scale-110 transition-transform duration-300">
-                      <Shield className="text-white" size={20} />
+                      <service.icon className="text-white" size={20} />
                     </div>
                   </div>
                   <div>
