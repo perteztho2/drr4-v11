@@ -222,7 +222,7 @@ const [data, setData] = useState<any[]>([]);
         )}
       </Link>
     );
-  };
+  }
 
   return (
     <>
