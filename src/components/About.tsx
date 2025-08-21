@@ -81,7 +81,7 @@ const About: React.FC = () => {
           </p>
         </div>
 
-        <div className={`grid grid-cols-1 ${displayCards.length === 3 ? 'md:grid-cols-4' : 'md:grid-cols-2 lg:grid-cols-4'} gap-2 md:gap-8 mb-4 md:mb-8`}>
+        <div className={`grid grid-cols-1 ${displayCards.length === 4 ? 'md:grid-cols-4' : 'md:grid-cols-2 lg:grid-cols-4'} gap-2 md:gap-8 mb-4 md:mb-8`}>
           {displayCards.map((card, index) => (
             <div
               key={index}
