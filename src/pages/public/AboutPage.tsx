@@ -144,7 +144,7 @@ const AboutPage: React.FC = () => {
           </div>
           
          
-            <div>
+            <div className="text-center mb-12">
               <h2 className="text-2xl font-bold mb-4">Municipal Disaster Risk Reduction and Management Office</h2>
               <p className="text-gray-300 mb-6 leading-relaxed">
                 Established to strengthen the municipality's capacity to manage disaster risks, the MDRRMO Pio Duran plays a crucial role in protecting lives and properties. Since its inception, the office has been instrumental in developing comprehensive disaster management strategies and building community resilience against various hazards.
