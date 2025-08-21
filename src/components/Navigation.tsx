@@ -278,7 +278,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
 
           {/* Mobile Navigation */}
           {isOpen && (
-            <div className="lg:hidden py-2 border-t border-blue-800/50 backdrop-blur-xl">
+            <div className="lg:hidden py-2 border-t border-blue-800 backdrop-blur-xl">
               <div className="space-y-1">
                 {navigationTree.map((item) => renderNavigationItem(item, true))}
                 
