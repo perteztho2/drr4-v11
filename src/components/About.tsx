@@ -85,7 +85,7 @@ const About: React.FC = () => {
           {displayCards.map((card, index) => (
             <div
               key={index}
-              className="bg-white backdrop-blur-sm p-4 md:p-8 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-2xl md:hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-1 md:hover:-translate-y-3 border border-white/20 hover:border-yellow-500/50 group"
+              className="bg-white/10 backdrop-blur-sm p-2 md:p-2 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-2xl md:hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-1 md:hover:-translate-y-3 border border-white/20 hover:border-yellow-500/50 group"
             >
               <div className="text-center mb-6">
                 <div className="w-12 h-12 md:w-15 md:h-15 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-1 md:mb-1 group-hover:scale-110 transition-transform duration-300">
