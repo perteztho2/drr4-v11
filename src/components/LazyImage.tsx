@@ -20,7 +20,7 @@ const LazyImage: React.FC<LazyImageProps> = ({
   width,
   height,
   quality = 80,
-  placeholder = 'https://images.pexels.com/photos/6146970/pexels-photo-6146970.jpeghttps://res.cloudinary.com/dedcmctqk/image/upload/v1749911290/DISAST_1_h9t8bl.jpg,
+  placeholder = 'https://res.cloudinary.com/dedcmctqk/image/upload/v1749911290/DISAST_1_h9t8bl.jpg',
   onLoad,
   onError
 }) => {
