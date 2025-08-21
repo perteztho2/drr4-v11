@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Contact, Camera, Phone, Search, FileText, ChevronDown, ChevronRight, Play, Bell, Zap } from 'lucide-react';
+import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, square-pen, Camera, Phone, Search, FileText, ChevronDown, ChevronRight, Play, Bell, Zap } from 'lucide-react';
 import { useDatabase } from '../contexts/DatabaseContext';
 import { usePages } from '../contexts/PagesContext';
 import { supabase } from '../lib/supabase';
@@ -252,19 +252,19 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
                 to="/contact"
                 className="flex items-center px-2 py-1 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:scale-105 group"
               >
-                <Contact size={18} className="mr-1 group-hover:animate-bounce" />
+                <square-pen size={18} className="mr-1 group-hover:animate-bounce" />
                 <span className="hidden xl:inline">Contact</span>
               </Link>
             </div>
 
             {/* Mobile menu button */}
-            <div className="flex items-center space-x-3">
+            <div className="lg:hidden flex items-center space-x-3">
               {/* Mobile Emergency Button */}
               <Link
                 to="/contact"
                 className="flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 font-bold shadow-lg"
               >
-                <Bell size={16} />
+                <square-pen size={16} />
               </Link>
               
               <button
