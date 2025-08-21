@@ -157,30 +157,28 @@ const AboutPage: React.FC = () => {
             <div className="text-center">
               <div className="bg-gray-800 rounded-lg p-8 inline-block">
                 <Target className="h-24 w-24 text-yellow-500 mb-4 mx-auto" />
-                <h3 className="text-xl font-bold mb-2">Our Commitment</h3>
-                <p className="text-gray-300">Protecting our community through proactive disaster management</p>
+                <h3 className="text-xl text-yellow-500 font-bold mb-2">Our Vision</h3>
+                <p className="text-gray-300">To build a disaster-resilient community where every citizen of Pio Duran is safe, informed, and empowered. We aspire to be a leading example of effective disaster communication in the province of Albay.</p>
               </div>
             </div>
           <div className="text-center">
               <div className="bg-gray-800 rounded-lg p-8 inline-block">
                 <Eye className="h-24 w-24 text-yellow-500 mb-4 mx-auto" />
-                <h3 className="text-xl font-bold mb-2">Our Commitment</h3>
-                <p className="text-gray-300">Protecting our community through proactive disaster management</p>
+                <h3 className="text-xl text-yellow-500 font-bold mb-2">Our Mission</h3>
+                <p className="text-gray-300">To safeguard lives and property by delivering timely, accurate, and clear disaster information through all available channels. We are dedicated to educating the public and ensuring warnings are understood and acted upon.</p>
               </div>
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 mt-16">
             <div className="bg-gray-800 rounded-lg p-8">
-              <h3 className="text-xl font-bold mb-4 text-yellow-500">Mission Statement</h3>
-              <p className="text-gray-300 leading-relaxed">
-                To reduce disaster risks and enhance community resilience through effective preparedness, response, recovery, and mitigation strategies, ensuring the safety and well-being of all residents in Pio Duran.
+              <h3 className="text-xl font-bold mb-4 text-yellow-500">Our Goal</h3>
+              <p className="text-gray-300 leading-relaxed">The primary goal is to achieve zero casualties and minimize damage from disasters through proactive public communication. We will ensure everyone in our community receives critical information to make life-saving decisions.
               </p>
             </div>
             <div className="bg-gray-800 rounded-lg p-8">
-              <h3 className="text-xl font-bold mb-4 text-yellow-500">Vision Statement</h3>
-              <p className="text-gray-300 leading-relaxed">
-                A disaster-resilient community of Pio Duran where every individual is empowered, prepared, and protected against all forms of disasters through collaborative efforts and sustainable development.
+              <h3 className="text-xl font-bold mb-4 text-yellow-500">Our Objectives</h3>
+              <p className="text-gray-300 leading-relaxed">Our key objectives are to establish a robust multi-channel warning system that reaches every barangay instantly. We will also focus on continuous public education and building a network of trained community information officers.
               </p>
             </div>
           </div>
