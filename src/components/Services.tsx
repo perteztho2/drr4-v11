@@ -67,7 +67,7 @@ const Services: React.FC = () => {
       Comprehensive disaster risk reduction and management services for the Pio Duran community
     </p>
   </div>
-</div>
+
 
         {/* Dynamic Services from Admin */}
         {activeServices.length > 0 && (
