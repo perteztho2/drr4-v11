@@ -221,8 +221,7 @@ const [data, setData] = useState<any[]>([]);
           <span className="ml-2 w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
         )}
       </Link>
-    );
-  }
+   
 
   return (
     <>
