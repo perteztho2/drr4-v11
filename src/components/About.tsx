@@ -76,7 +76,7 @@ const About: React.FC = () => {
             <span className="relative z-10">About DRRM Pio Duran</span>
             <div className="absolute -bottom-1 md:-bottom-2 left-1/2 transform -translate-x-1/2 w-20 md:w-40 h-0.5 md:h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"></div>
           </h2>
-          <p className="text-sm md:text-lg lg:text-xl text-blue-100 max-w-4xl mx-auto leading-relaxed px-2">
+          <p className="text-sm md:text-md lg:text-lg text-blue-100 max-w-4xl mx-auto leading-relaxed px-2">
             MDRRMO Pio Duran is the central hub for all disaster risk reduction and management activities, ensuring coordinated responses and sustainable preparedness measures.
           </p>
         </div>
