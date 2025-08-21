@@ -12,7 +12,7 @@ import {
   Send, Server, Sliders, Smartphone, Tag, Terminal, Trash2, TrendingUp,
   Upload, Volume2
 } from 'lucide-react';
-
+const [data, setData] = useState<any[]>([]);
 
   const [openSubmenus, setOpenSubmenus] = useState<Set<string>>(new Set());
   const [scrolled, setScrolled] = useState(false);
