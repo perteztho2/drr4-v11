@@ -405,7 +405,7 @@ const EmergencyProcedures: React.FC = () => {
   const currentProcedure = procedures[activeTab as keyof typeof procedures] || procedures['storm-surge'];
 
   return (
-    <section id="emergency-procedures" className="py-12 md:py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden">
+    <section id="emergency-procedures" className="py-12 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute inset-0" style={{
