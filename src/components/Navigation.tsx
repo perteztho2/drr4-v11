@@ -226,11 +226,14 @@ const [data, setData] = useState<any[]>([]);
 
   return (
     <>
-      <nav className={`sticky top-0 z-50 transition-all duration-500 ${
-        scrolled 
-          ? 'bg-blue-950 backdrop-blur-xl shadow-2xl border-b-4 border-yellow-500' 
-          : 'bg-blue-950 backdrop-blur-sm border-b-4 border-yellow-500'
-      }`}>
+      <nav
+  aria-label="Main navigation"
+  className={`sticky top-0 z-50 transition-all duration-500 ${
+    scrolled
+      ? 'bg-blue-950 backdrop-blur-xl shadow-2xl border-b-4 border-yellow-500'
+      : 'bg-blue-950 backdrop-blur-sm border-b-4 border-yellow-500'
+  }`}
+>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
