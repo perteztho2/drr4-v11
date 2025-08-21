@@ -10,14 +10,14 @@ const News: React.FC = () => {
   const publishedNews = news.filter(article => article.status === 'published').slice(0, 3);
 
   return (
-    <section className="py-12 md:py-20 bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(234, 179, 8, 0.3) 0%, transparent 50%),
-                           radial-gradient(circle at 80% 20%, rgba(234, 179, 8, 0.2) 0%, transparent 50%),
-                           radial-gradient(circle at 40% 80%, rgba(234, 179, 8, 0.1) 0%, transparent 50%)`
-        }}></div>
+        <section className="py-12 md:py-24 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-10 left-5 w-48 md:w-96 h-48 md:h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+          <div className="absolute top-20 right-5 w-48 md:w-96 h-48 md:h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute -bottom-4 left-10 w-48 md:w-96 h-48 md:h-96 bg-yellow-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+        </div>
       </div>
       
       <div className="container mx-auto px-4 md:px-6">
