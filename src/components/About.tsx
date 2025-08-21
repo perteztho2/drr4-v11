@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Eye, Target, Users } from 'lucide-react';
+import { Shield, Eye, ShieldMinus, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
@@ -33,7 +33,7 @@ const About: React.FC = () => {
 
   const cards = [
     {
-      icon: Target,
+      icon: ShieldMinus,
       title: 'Mission',
       description: 'To ensure the safety and resilience of Pio Duran through effective disaster risk reduction and management.',
       color: 'text-blue-600'
@@ -45,7 +45,7 @@ const About: React.FC = () => {
       color: 'text-green-600'
     },
     {
-      icon: Target,
+      icon: ShieldMinus,
       title: 'Goal',
       description: 'To reduce vulnerability and enhance capacity of communities to prepare for, respond to, and recover from disasters.',
       color: 'text-purple-600'
@@ -55,7 +55,7 @@ const About: React.FC = () => {
   // Use dynamic sections if available, otherwise use default cards
   const displayCards = aboutSections.length > 0 
     ? aboutSections.map(section => ({
-        icon: Target, // Default icon, could be made dynamic
+        icon: ShieldMinus, // Default icon, could be made dynamic
         title: section.title,
         description: section.content,
         color: 'text-blue-600'
