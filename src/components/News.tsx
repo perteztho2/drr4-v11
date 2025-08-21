@@ -181,7 +181,7 @@ const News: React.FC = () => {
                   <h3 className="text-lg md:text-xl font-bold text-blue-950 mb-2">Stay Connected</h3>
                   <p className="text-blue-900 text-xs md:text-sm">Follow our latest updates</p>
                 </div>
-                <div className="p-4 md:p-6">
+                <div className="p-4 md:p-1">
                   <SocialMediaFeed maxPosts={4} showEngagement={true} />
                 </div>
               </div>
