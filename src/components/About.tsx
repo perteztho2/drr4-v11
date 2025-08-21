@@ -92,7 +92,7 @@ const About: React.FC = () => {
                   <card.icon size={24} className="text-blue-950 md:w-15 md:h-15" />
                 </div>
               </div>
-              <h3 className="text-lg md:text-2xl font-bold text-center mb-2 md:mb-3 text-white">
+              <h3 className="text-lg md:text-1xl font-bold text-center mb-2 md:mb-3 text-white">
                 {card.title}
               </h3>
               <p className="text-sm md:text-base text-blue-100 text-center leading-relaxed">
