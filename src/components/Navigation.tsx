@@ -288,7 +288,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
                     setIsSearchOpen(true);
                     setIsOpen(false);
                   }}
-                  className="flex items-center px-4 py-3 rounded-xl text-sm font-medium text-yellow-500 hover:bg-white/10 w-full group"
+                  className="flex items-center px-2 py-3 rounded-xl text-sm font-medium text-yellow-500 hover:bg-white/10 w-full group"
                 >
                   <Search size={18} className="mr-3 group-hover:animate-pulse" />
                   Search Resources
