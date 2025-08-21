@@ -102,7 +102,7 @@ const EmergencyManagement: React.FC = () => {
     { id: 'low', name: 'Advisory', color: 'bg-green-500' },
     { id: 'medium', name: 'Watch', color: 'bg-yellow-500' },
     { id: 'high', name: 'Warning', color: 'bg-orange-500' },
-    { id: 'low', name: 'Advisory', color: 'bg-green-500 border border-yello-500' }
+    { id: 'critical', name: 'Emergency', color: 'bg-red-600 border border-yello-500' }
   ];
 
   const handleCreateAlert = () => {
