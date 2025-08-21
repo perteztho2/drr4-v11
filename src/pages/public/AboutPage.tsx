@@ -190,7 +190,7 @@ const AboutPage: React.FC = () => {
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">Core Values</h2>
-            <div className="w-24 h-1 bg-red-500 mx-auto mb-6"></div>
+            <div className="w-24 h-1 bg-blue-700 mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               The fundamental principles that guide our operations and decision-making processes
             </p>
