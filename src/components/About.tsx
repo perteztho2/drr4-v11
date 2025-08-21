@@ -89,7 +89,7 @@ const About: React.FC = () => {
             >
               <div className="text-center mb-6">
                 <div className="w-12 h-12 md:w-20 md:h-20 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-1 md:mb-1 group-hover:scale-110 transition-transform duration-300">
-                  <card.icon size={24} className="text-blue-950 md:w-5 md:h-5" />
+                  <card.icon size={24} className="text-blue-950 md:w-15 md:h-15" />
                 </div>
               </div>
               <h3 className="text-lg md:text-2xl font-bold text-center mb-3 md:mb-4 text-white">
