@@ -153,8 +153,15 @@ const AboutPage: React.FC = () => {
                 Located in the heart of Pio Duran, our office serves as the central hub for all disaster risk reduction and management activities, ensuring coordinated responses and sustainable preparedness measures.
               </p>
             </div>
-             <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="text-center">
+              <div className="bg-gray-800 rounded-lg p-8 inline-block">
+                <Shield className="h-24 w-24 text-yellow-500 mb-4 mx-auto" />
+                <h3 className="text-xl font-bold mb-2">Our Commitment</h3>
+                <p className="text-gray-300">Protecting our community through proactive disaster management</p>
+              </div>
+            </div>
+          <div className="text-center">
               <div className="bg-gray-800 rounded-lg p-8 inline-block">
                 <Shield className="h-24 w-24 text-yellow-500 mb-4 mx-auto" />
                 <h3 className="text-xl font-bold mb-2">Our Commitment</h3>
