@@ -51,13 +51,20 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
   };
 
   const toggleSubmenu = (itemId: string) => {
-    const newOpenSubmenus = new Set(openSubmenus);
-    if (newOpenSubmenus.has(itemId)) {
-      newOpenSubmenus.delete(itemId);
-    } else {
-      newOpenSubmenus.add(itemId);
-    }
-    setOpenSubmenus(newOpenSubmenus);
+    setOpenSubmenus(prev => {
+      const newOpenSubmenus = new Set(prev);
+      
+      if (newOpenSubmenus.has(itemId)) {
+        // If clicking on already open submenu, close it
+        newOpenSubmenus.delete(itemId);
+      } else {
+        // Close all other submenus and open the clicked one
+        newOpenSubmenus.clear();
+        newOpenSubmenus.add(itemId);
+      }
+      
+      return newOpenSubmenus;
+    });
   };
 
   const buildNavigationTree = (items: any[]) => {
@@ -151,13 +158,18 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
           </button>
           
           {/* Submenu */}
-          {isSubmenuOpen && (
+          {isSubmenuOpen && hasChildren && (
             <div className={`${isMobile ? 'ml-4 mt-2 space-y-1' : 'absolute top-full left-0 mt-2 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl py-3 z-50 border border-white/20'}`}>
               {item.children.map((child: any) => (
                 <Link
                   key={child.id || child.path}
                   to={child.path}
-                  onClick={() => isMobile && setIsOpen(false)}
+                  onClick={() => {
+                    if (isMobile) {
+                      setIsOpen(false);
+                      setOpenSubmenus(new Set());
+                    }
+                  }}
                   className={`flex items-center px-2 py-3 text-sm font-medium transition-all duration-300 hover:transform hover:scale-105 ${
                     isMobile ? 'rounded-xl' : 'rounded-xl mx-2'
                   } ${
@@ -185,7 +197,12 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
       <Link
         key={item.id || item.path}
         to={item.path}
-        onClick={() => isMobile && setIsOpen(false)}
+        onClick={() => {
+          if (isMobile) {
+            setIsOpen(false);
+            setOpenSubmenus(new Set());
+          }
+        }}
         className={`flex items-center px-2 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:transform hover:scale-105 group ${
           itemIsActive
             ? 'bg-gradient-to-r from-yellow-500 to-yellow-500 text-blue-700 shadow-lg'
@@ -286,7 +303,10 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
                 <button
                   onClick={() => {
                     setIsSearchOpen(true);
-                    setIsOpen(false);
+                    if (isMobile) {
+                      setIsOpen(false);
+                      setOpenSubmenus(new Set());
+                    }
                   }}
                   className="flex items-center px-2 py-3 rounded-xl text-sm font-medium text-yellow-500 hover:bg-white/10 w-full group"
                 >
