@@ -36,7 +36,7 @@ import NavigationManagement from './pages/admin/NavigationManagement';
 import UsersManagement from './pages/admin/UsersManagement';
 import IncidentReports from './pages/admin/IncidentReports';
 import Settings from './pages/admin/Settings';
-import WeatherManagement from './pages/admin/WeatherManagement';
+// import WeatherManagement from './pages/admin/WeatherManagement';
 import VideoGallery from './pages/public/VideoGallery';
 import VideoManagement from './pages/admin/VideoManagement';
 
