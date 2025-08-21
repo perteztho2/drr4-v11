@@ -73,9 +73,9 @@ const Services: React.FC = () => {
         </div>
 
 
-        {/* Dynamic Services from Admin */}
+  {/* Dynamic Services from Admin */}
         {activeServices.length > 0 && (
-          <div className="mb-18">
+          <div className="mb-16">
             <h3 className="text-xl md:text-3xl font-bold text-center text-blue-950 mb-6 md:mb-12">Current Services</h3>
             <div className="grid md:grid-cols-2 gap-6 md:gap-10 mb-8 md:mb-12">
               {activeServices.slice(0, 4).map((service) => (
