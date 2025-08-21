@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Contact, Camera, Phone, Search, FileText, ChevronDown, ChevronRight, Play, Bell, Zap, AlertTriangle, Cloud, Database, Globe, Heart, Lock, Mail, Monitor, Navigation as NavigationIcon, Palette, Radio, Share2, Star, Target, PenTool as Tool, Truck, Video, Wifi, Activity, Archive, Award, Bookmark, Building, CheckCircle, Clock, Code, Compass, CreditCard, Edit, Eye, Filter, Flag, Gift, Grid, HelpCircle, Image, Key, Layers, List, MessageCircle, Mic, Move, Package, PieChart, Plus, Power, Printer, RefreshCw as Refresh, Save, Send, Server, Sliders, Smartphone, Tag, Terminal, Trash2, TrendingUp, Upload, Volume2 } from 'lucide-react'ate<any[]>([]);
+import {
+  Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Contact,
+  Camera, Phone, Search, FileText, ChevronDown, ChevronRight, Play, Bell, Zap,
+  AlertTriangle, Cloud, Database, Globe, Heart, Lock, Mail, Monitor,
+  Navigation as NavigationIcon, Palette, Radio, Share2, Star, Target,
+  PenTool as Tool, Truck, Video, Wifi, Activity, Archive, Award, Bookmark,
+  Building, CheckCircle, Clock, Code, Compass, CreditCard, Edit, Eye, Filter,
+  Flag, Gift, Grid, HelpCircle, Image, Key, Layers, List, MessageCircle, Mic,
+  Move, Package, PieChart, Plus, Power, Printer, RefreshCw as Refresh, Save,
+  Send, Server, Sliders, Smartphone, Tag, Terminal, Trash2, TrendingUp,
+  Upload, Volume2
+} from 'lucide-react';
+const [data, setData] = useState<any[]>([]);
+
   const [openSubmenus, setOpenSubmenus] = useState<Set<string>>(new Set());
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
