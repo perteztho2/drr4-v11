@@ -82,7 +82,7 @@ const Services: React.FC = () => {
         {activeServices.length > 0 && (
           <div className="mb-16">
 
-            <div className="grid md:grid-cols-2 gap-6 md:gap-10 mb-4 md:mb-6">
+            <div className="grid md:grid-cols-2 gap-6 md:gap-5 mb-4 md:mb-6">
               {activeServices.slice(0, 4).map((service) => (
                 <div
                   key={service.id}
