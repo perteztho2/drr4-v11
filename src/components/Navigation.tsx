@@ -158,7 +158,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
                   key={child.id || child.path}
                   to={child.path}
                   onClick={() => isMobile && setIsOpen(false)}
-                  className={`flex items-center px-4 py-3 text-sm font-medium transition-all duration-300 hover:transform hover:scale-105 ${
+                  className={`flex items-center px-2 py-3 text-sm font-medium transition-all duration-300 hover:transform hover:scale-105 ${
                     isMobile ? 'rounded-xl' : 'rounded-xl mx-2'
                   } ${
                     isActive(child.path)
@@ -186,7 +186,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
         key={item.id || item.path}
         to={item.path}
         onClick={() => isMobile && setIsOpen(false)}
-        className={`flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:transform hover:scale-105 group ${
+        className={`flex items-center px-2 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:transform hover:scale-105 group ${
           itemIsActive
             ? 'bg-gradient-to-r from-yellow-500 to-yellow-500 text-blue-700 shadow-lg'
             : 'text-white/90 hover:bg-white/10 hover:text-white backdrop-blur-sm'
