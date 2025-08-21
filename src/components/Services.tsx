@@ -57,16 +57,20 @@ const Services: React.FC = () => {
         }}></div>
       </div>
       
-<div className="container mx-auto px-4 md:px-6">
-  <div className="text-center mb-4 md:mb-7">
-    <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-blue-950 mb-4 md:mb-6 relative">
-      <span className="relative z-10 animate-fade-in">OUR SERVICES</span>
-      <div className="absolute -bottom-1 md:-bottom-2 left-1/2 transform -translate-x-1/2 w-0 md:w-0 h-0.5 md:h-1 bg-gradient-to-r from-blue-600 to-blue-800 rounded-full animate-underline"></div>
-    </h2>
-    <p className="text-sm md:text-lg lg:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed px-4 animate-fade-in delay-200">
-      Comprehensive disaster risk reduction and management services for the Pio Duran community
-    </p>
-  </div>
+<div className="container mx-auto px-4 md:px-6 relative z-10">
+        {/* Header Section */}
+        <div className={`text-center mb-8 md:mb-16 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`}>
+          <div className="inline-flex items-center justify-center w-12 h-12 md:w-20 md:h-20 bg-gradient-to-br from-red-500 to-orange-600 rounded-2xl md:rounded-3xl mb-4 md:mb-8 shadow-lg md:shadow-2xl">
+            <AlertTriangle className="text-white" size={24} />
+          </div>
+          <h2 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent mb-4 md:mb-6">
+            Emergency Procedures
+          </h2>
+          <div className="w-20 md:w-32 h-1 md:h-1.5 bg-gradient-to-r from-red-500 to-orange-500 mx-auto rounded-full mb-4 md:mb-8"></div>
+          <p className="text-sm md:text-lg lg:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed px-4">
+            Comprehensive step-by-step procedures for before, during, and after emergency situations
+          </p>
+        </div>
 
 
         {/* Dynamic Services from Admin */}
