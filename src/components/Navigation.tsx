@@ -132,7 +132,7 @@ const Navigation: React.FC<NavigationProps> = ({ variant = 'public' }) => {
             onClick={() => toggleSubmenu(item.id)}
             className={`flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:transform hover:scale-105 ${
               itemIsActive
-                ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg'
+                ? 'bg-gradient-to-r from-yellow-500 to-yellow-500 text-blue-900 shadow-lg'
                 : 'text-white/90 hover:bg-white/10 hover:text-white backdrop-blur-sm'
             }`}
           >
