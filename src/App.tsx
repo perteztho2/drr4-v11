@@ -81,7 +81,7 @@ function App() {
                 }>
                   <Route index element={<Dashboard />} />
                   <Route path="emergency" element={<EmergencyManagement />} />
-                  <Route path="weather" element={<WeatherManagement />} />
+                {/*  <Route path="weather" element={<WeatherManagement />} /> */}
                   <Route path="hotlines" element={<EmergencyHotlineManagement />} />
                   <Route path="news" element={<NewsManagement />} />
                   <Route path="services" element={<ServicesManagement />} />
