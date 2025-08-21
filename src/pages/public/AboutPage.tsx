@@ -130,6 +130,12 @@ const AboutPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white py-20">
+        {/* Background Elements */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-3 left-3 w-20 md:w-30 h-32 md:h-30 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+        <div className="absolute top-5 right-5 w-20 md:w-30 h-32 md:h-30 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
+        <div className="absolute -bottom-4 left-10 w-25 md:w-40 h-25 md:h-30 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4000"></div>
+      </div>
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">About DRRM Pio Duran</h1>
