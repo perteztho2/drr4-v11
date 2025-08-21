@@ -65,9 +65,9 @@ const About: React.FC = () => {
     <section id="about" className="relative py-7 md:py-7 bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-5 left-5 w-32 md:w-72 h-32 md:h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-        <div className="absolute top-5 right-5 w-32 md:w-72 h-32 md:h-50 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
-        <div className="absolute -bottom-4 left-10 w-32 md:w-72 h-32 md:h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4000"></div>
+        <div className="absolute top-5 left-5 w-32 md:w-50 h-32 md:h-50 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+        <div className="absolute top-5 right-5 w-32 md:w-50 h-32 md:h-50 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
+        <div className="absolute -bottom-4 left-10 w-32 md:w-72 h-32 md:h-50 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4000"></div>
       </div>
       
       <div className="container mx-auto px-4 md:px-6">
