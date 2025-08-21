@@ -225,20 +225,20 @@ const [data, setData] = useState<any[]>([]);
   }
 
   return (
-    <div>
+    <>
       <nav className={`sticky top-0 z-50 transition-all duration-500 ${
         scrolled 
           ? 'bg-blue-950 backdrop-blur-xl shadow-2xl border-b-4 border-yellow-500' 
           : 'bg-blue-950 backdrop-blur-sm border-b-4 border-yellow-500'
       }`}>
-        <div className="container mx-auto px-2">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2 group">
               <div className="relative">
-                <img 
-                  src="https://res.cloudinary.com/dedcmctqk/image/upload/v1750079276/logome_h9snnx.webp" 
-                  alt="MDRRMO" 
+                <img src="https://res.cloudinary.com/dedcmctqk/image/upload/v1750079276/logome_h9snnx.webp" 
+                  alt="MDRRMO Logo - Pio Duran Disaster Response"
+ 
                   className="h-12 w-auto transition-transform duration-300 group-hover:scale-110"
                 />
                 {!isConnected && (
