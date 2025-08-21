@@ -94,8 +94,7 @@ const Resources: React.FC = () => {
   ];
 
   return (
-    <section id="resources" className="py-12 md:py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden">
-      {/* Background Pattern */}
+    <section id="resources" className="py-12 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute inset-0" style={{
