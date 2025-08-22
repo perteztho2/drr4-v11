@@ -472,7 +472,7 @@ const EmergencyProcedures: React.FC = () => {
           </div>
 
           {/* Procedure Cards Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-4 mb-4 md:mb-8">
             {renderProcedureCard(
               'Before',
               currentProcedure.before,
