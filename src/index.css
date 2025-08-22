@@ -1125,7 +1125,7 @@ html {
   
   .weather-forecast-card {
     padding: 0.5rem;
-    min-height: 120px;
+    min-height: 90px;
   }
   
   .weather-forecast-text {
