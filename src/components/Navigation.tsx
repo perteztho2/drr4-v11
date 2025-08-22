@@ -114,33 +114,9 @@ const Navigation = () => {
 
   // Toggle submenu
   const toggleSubmenu = (id: string) => {
-    // Clear any existing timeout for this submenu
-    const existingTimeout = submenuTimeouts.get(id);
-    if (existingTimeout) {
-      clearTimeout(existingTimeout);
-      submenuTimeouts.delete(id);
-    }
-
     setOpenSubmenus(prev => {
       const newSet = new Set(prev);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.clear();
-        newSet.add(id);
-        
-        // Auto-hide after 3 seconds
-        const timeout = setTimeout(() => {
-          setOpenSubmenus(current => {
-            const updated = new Set(current);
-            updated.delete(id);
-            return updated;
-          });
-          submenuTimeouts.delete(id);
-        }, 3000);
-        
-        setSubmenuTimeouts(prev => new Map(prev).set(id, timeout));
-      }
+      newSet.has(id) ? newSet.delete(id) : (newSet.clear(), newSet.add(id));
       return newSet;
     });
   };
@@ -165,6 +141,33 @@ const Navigation = () => {
         <div key={item.id} className="relative group">
           <button
             onClick={() => toggleSubmenu(item.id)}
+            onMouseEnter={() => {
+              if (!mobile) {
+                const timeout = submenuTimeouts.get(item.id);
+                if (timeout) {
+                  clearTimeout(timeout);
+                  submenuTimeouts.delete(item.id);
+                }
+                setOpenSubmenus(prev => {
+                  const newSet = new Set();
+                  newSet.add(item.id);
+                  return newSet;
+                });
+              }
+            }}
+            onMouseLeave={() => {
+              if (!mobile) {
+                const timeout = setTimeout(() => {
+                  setOpenSubmenus(current => {
+                    const updated = new Set(current);
+                    updated.delete(item.id);
+                    return updated;
+                  });
+                  submenuTimeouts.delete(item.id);
+                }, 300);
+                setSubmenuTimeouts(prev => new Map(prev).set(item.id, timeout));
+              }
+            }}
             className={`${baseClasses} justify-between w-full ${activeClasses}`}
           >
             <span className="flex items-center">

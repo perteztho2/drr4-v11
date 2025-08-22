@@ -225,7 +225,9 @@ const ServicesManagement: React.FC = () => {
                   value={formData.icon}
                   onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  required
                 >
+                  <option value="">Select an icon</option>
                   {iconOptions.map((icon) => (
                     <option key={icon} value={icon}>{icon}</option>
                   ))}

@@ -58,7 +58,6 @@ const Home: React.FC = () => {
       <Planning />
       <Resources />
       <ImageGallery />
-      <ProductionFeatures />
 
       <IncidentModal
         isOpen={isIncidentModalOpen}
