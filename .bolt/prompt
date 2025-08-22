@@ -1,3 +1,29 @@
-For all designs I ask you to make, have them be beautiful, I ask you to make, have. Make webpages that are fully featured and worthy for production.
+You are a senior web developer with expertise in front-end, back-end, and Node.js module integration. Your task is to architect and implement a fully featured, production-ready resource management system for a community portal. The system must be modular, responsive, and seamlessly connected across all components and the database.
 
-By default, this template supports JSX syntax with Tailwind CSS classes, React hooks, and Lucide React for icons. install other packages for UI themes, icons, etc.
+🔗 Integration Requirements
+• 	Ensure tight coupling between the following modules:
+• 	 model and schema
+• 	 component
+• 	 (individual resource view)
+• 	 dashboard (admin interface)
+• 	All components must interact with the central database for:
+• 	Resource metadata (title, category, file URL, description)
+• 	Download tracking and analytics
+• 	CRUD operations via secure API endpoints
+
+🛠️ Functional Enhancements
+• 	Download Button Fix:
+• 	Ensure all download buttons trigger a direct file download
+• 	Include fallback logic for broken links or offline mode
+• 	Add visual feedback (e.g., loading spinner or success toast)
+• 	Page Management Component:
+• 	Refactor using the template provided in the  folder
+• 	Maintain consistent styling, layout, and form validation
+• 	Ensure compatibility with existing routing and state management
+
+🎯 Production-Ready Expectations
+• 	Implement error handling, form validation, and access control for admin features
+• 	Optimize for performance, security, and scalability
+• 	Ensure responsive design across all devices
+• 	Use modular architecture for maintainability and future expansion
+• 	Follow best practices for code cleanliness, naming conventions, and documentation
