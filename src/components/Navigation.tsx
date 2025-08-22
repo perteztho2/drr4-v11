@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useDatabase } from "../contexts/DatabaseContext";
+import { usePages } from "../contexts/PagesContext";
+import { supabase } from "../lib/supabase";
+import SearchModal from "./SearchModal";
 import {
   Menu, X, Shield, Home, Info, Wrench, Newspaper, FolderOpen, Calendar, Contact,
   Camera, Phone, Search, FileText, ChevronDown, ChevronRight, Play, Bell, Zap,
