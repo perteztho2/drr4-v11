@@ -116,7 +116,26 @@ const Services: React.FC = () => {
             </div>
           </div>
         )}
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {filteredServices.map((service) => {
+    // Get the right icon component from the map, defaulting to Shield
+    const IconComponent = IconComponents[service.icon] || Shield;
 
+    return (
+      <div key={service.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex items-center space-x-3">
+            <div className="bg-blue-100 p-2 rounded-lg">
+              {/* Render the dynamic icon component */}
+              <IconComponent className="text-blue-600" size={24} />
+            </div>
+            {/* ... rest of the card ... */}
+          </div>
+        </div>
+      </div>
+    );
+  })}
+</div>
         <div className="grid md:grid-cols-2 gap-6 md:gap-10 mb-8 md:mb-16">
           {defaultServices.map((service, index) => (
             <div
