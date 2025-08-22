@@ -30,7 +30,7 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
         
         const left = Math.random() * 100;
         const height = 30 + Math.random() * 40;
-        const duration = 0.8 + Math.random() * 2.5;
+        const duration = 2.8 + Math.random() * 2.5;
         const delay = Math.random() * 2;
 
         drop.style.left = `${left}%`;
