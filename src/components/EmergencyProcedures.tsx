@@ -306,7 +306,7 @@ const EmergencyProcedures: React.FC = () => {
     // Add footer
     const footer = document.createElement('div');
     footer.innerHTML = `
-      <hr style="margin-top: 20px; border: 1px solid #e2e8f0;">
+      <hr style="margin-top: 5px; border: 1px solid #e2e8f0;">
       <p style="text-align: center; font-size: 12px; color: #666; margin-top: 10px;">
         MDRRMO Pio Duran - Emergency Procedures Guide - Generated on ${new Date().toLocaleDateString()}
       </p>
