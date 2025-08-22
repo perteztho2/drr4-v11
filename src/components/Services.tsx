@@ -120,7 +120,10 @@ const Services: React.FC = () => {
   {filteredServices.map((service) => {
     // Get the right icon component from the map, defaulting to Shield
     const IconComponent = IconComponents[service.icon] || Shield;
-
+  const filteredServices = services.filter(service =>
+    service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    service.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
     return (
       <div key={service.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <div className="flex items-start justify-between mb-4">
