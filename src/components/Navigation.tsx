@@ -337,6 +337,6 @@ const Navigation = () => {
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
-};]
+};
 
 export default Navigation;
