@@ -155,7 +155,7 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
             </button>
             <button
               onClick={onIncidentClick}
-              className="inline-flex items-center px-6 md:px-12 py-4 md:py-6 bg-gradient-to-r from-yellow-500 to-yellow-600 text-blue-950 font-bold rounded-full shadow-xl md:shadow-2xl hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl md:hover:shadow-3xl active:scale-95 text-sm md:text-xl animate-pulse-glow"
+              className="inline-flex items-center px-3 md:px-6 py-2 md:py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-blue-950 font-bold rounded-full shadow-xl md:shadow-2xl hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl md:hover:shadow-3xl active:scale-95 text-sm md:text-xl animate-pulse-glow"
             >
               <AlertTriangle className="mr-2 md:mr-4 animate-bounce" size={20} />
               Report Incident
