@@ -1,3 +1,6 @@
+You are a senior web developer with expertise in front-end, back-end, and Node.js module integration. Your task is to architect and implement a fully featured, production-ready resource management system for a community portal. The system must be modular, responsive, and seamlessly connected across all components and the database.
+
+redesign this component:
 import React, { useState, useEffect } from 'react';
 import { Calendar, Sun, Cloud, CloudRain, AlertTriangle, Thermometer, Droplets, Wind, RefreshCw, ExternalLink } from 'lucide-react';
 import { supabase } from '../lib/supabase';
