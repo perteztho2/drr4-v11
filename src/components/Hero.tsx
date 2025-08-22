@@ -179,7 +179,7 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
       </div>
       
       {/* Weather Ticker Widget */}
-      <div className="relative z-40">
+      <div className="relative border-3 border-black z-40">
         <WeatherTickerWidget />
         <WeatherForecastWidget />
       </div>
