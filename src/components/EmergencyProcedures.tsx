@@ -461,7 +461,7 @@ const EmergencyProcedures: React.FC = () => {
         {/* Procedure Content */}
         <div className={`${isVisible ? 'animate-fadeIn' : 'opacity-0'} mobile-compact`} style={{ animationDelay: '400ms' }}>
           {/* Current Procedure Header */}
-          <div className="text-center mb-6 md:mb-12">
+          <div className="text-center mb-4 md:mb-7">
             <div className="flex items-center justify-center mb-6">
 
             </div>
