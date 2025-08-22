@@ -497,14 +497,7 @@ const EmergencyProcedures: React.FC = () => {
               2
             )}
           </div>
-        </div>
-
-        {/* Emergency Contact Section */}
-        
-            
-        
-           
-        
+  
       </div>
     </section>
   );
