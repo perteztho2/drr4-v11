@@ -422,7 +422,7 @@ const EmergencyProcedures: React.FC = () => {
             <AlertTriangle className="text-white" size={24} />
           </div>
           <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent mb-4 md:mb-6">
-            Emergency Procedures
+            EMERGENCY PROCEDURES
           </h2>
           <div className="w-20 md:w-32 h-1 md:h-1.5 bg-gradient-to-r from-red-500 to-orange-500 mx-auto rounded-full mb-4 md:mb-8"></div>
           <p className="text-sm md:text-lg lg:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed px-4">
