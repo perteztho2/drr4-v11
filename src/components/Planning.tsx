@@ -234,7 +234,7 @@ const Planning: React.FC = () => {
         </div>
 
         {/* Interactive Map Section */}
-        <div className={`mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '800ms' }}>
+        <div className={`mb-8 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '800ms' }}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h3 className="text-4xl font-bold text-white mb-6">
