@@ -151,7 +151,7 @@ const WeatherTickerWidget: React.FC = () => {
         <div className="flex items-center justify-between">
           {/* Weather Info - Scrolling Ticker */}
           <div className="flex-1 overflow-hidden">
-            <div className="flex items-center space-x-8 animate-marquee whitespace-nowrap">
+            <div className="flex border-b-3 border-blue-950 items-center space-x-8 animate-marquee whitespace-nowrap">
               <div className="flex items-center space-x-3">
                 {getWeatherIcon(weatherData.condition)}
                 <span className={`font-bold text-lg ${getTemperatureTextColor(weatherData.temperature)}`}>
