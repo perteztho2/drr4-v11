@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FolderOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import ResourceManager from '../../components/ResourceManager';
+import ResourceManager from '../components/ResourceManager';
 import { usePages } from '../../contexts/PagesContext';
 
 const ResourcesPage: React.FC = () => {
