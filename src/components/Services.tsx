@@ -117,7 +117,7 @@ const Services: React.FC = () => {
           </div>
         )}
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  {activeServices.map((service, index) => {
+  {filteredServices.map((service, index) => {
     // Get the right icon component from the map, defaulting to Shield
     const IconComponent = IconComponents[service.icon] || Shield;
 
