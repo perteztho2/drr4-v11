@@ -10,7 +10,9 @@ import {
   MessageCircle,
   Share2,
   Calendar,
-  Loader
+  Loader,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 
 interface SocialPost {
@@ -46,9 +48,11 @@ const SocialMediaFeed: React.FC<SocialMediaFeedProps> = ({
   const [posts, setPosts] = useState<SocialPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedPlatform, setSelectedPlatform] = useState<string>('all');
+  const [expandedPosts, setExpandedPosts] = useState<Set<string>>(new Set()); // <-- Fixed
 
   useEffect(() => {
     fetchSocialPosts();
+    // eslint-disable-next-line
   }, []);
 
   const fetchSocialPosts = async () => {
@@ -146,7 +150,6 @@ const SocialMediaFeed: React.FC<SocialMediaFeedProps> = ({
     }
   ];
 
-
   const platformConfig = {
     facebook: { icon: Facebook, color: 'text-blue-600', bg: 'bg-blue-50' },
     twitter: { icon: Twitter, color: 'text-sky-500', bg: 'bg-sky-50' },
@@ -175,6 +178,24 @@ const SocialMediaFeed: React.FC<SocialMediaFeedProps> = ({
       return (num / 1000).toFixed(1) + 'K';
     }
     return num.toString();
+  };
+
+  // Helper for truncating text
+  const truncateText = (text: string, length = 150) => {
+    return text.length > length ? text.slice(0, length) + '...' : text;
+  };
+
+  // Toggle expanded state for a post
+  const toggleExpanded = (postId: string) => {
+    setExpandedPosts(prev => {
+      const next = new Set(prev);
+      if (next.has(postId)) {
+        next.delete(postId);
+      } else {
+        next.add(postId);
+      }
+      return next;
+    });
   };
 
   if (loading) {
