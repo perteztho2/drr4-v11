@@ -136,7 +136,7 @@ const Planning: React.FC = () => {
 
         {/* Planning Process Timeline */}
         <div className={`mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '300ms' }}>
-          <div className="text-center mb-4">
+          <div className="text-center mb-5">
             <h3 className="text-3xl font-bold text-white mb-4">Our Planning Process</h3>
             <p className="text-blue-200 max-w-2xl mx-auto">
               A systematic approach to building disaster resilience
@@ -255,7 +255,7 @@ const Planning: React.FC = () => {
                   <span>Interactive evacuation routes</span>
                 </div>
                 <div className="flex items-center text-blue-100">
-                  <CheckCircle className="text-green-400 mr-3" size={} />
+                  <CheckCircle className="text-green-400 mr-3" size={20} />
                   <span>Community vulnerability assessments</span>
                 </div>
                 <div className="flex items-center text-blue-100">
