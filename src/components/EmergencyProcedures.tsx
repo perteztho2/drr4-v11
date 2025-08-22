@@ -388,7 +388,7 @@ const EmergencyProcedures: React.FC = () => {
               
               {/* Connector Line */}
               {stepIndex < items.length - 1 && (
-                <div className={`absolute left-3 md:left-4 top-6 md:top-8 w-px h-4 md:h-6 bg-gradient-to-b ${currentProcedure.color} opacity-30`}></div>
+                <div className={`absolute left-3 md:left-4 top-2 md:top-4 w-px h-4 md:h-6 bg-gradient-to-b ${currentProcedure.color} opacity-30`}></div>
               )}
             </div>
           ))}
