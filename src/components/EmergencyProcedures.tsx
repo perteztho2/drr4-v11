@@ -358,7 +358,7 @@ const EmergencyProcedures: React.FC = () => {
         </button>
         
         {/* Phase Header */}
-        <div className="flex items-center space-x-3 md:space-x-4 mb-2 md:mb-4">
+        <div className="flex items-center space-x-3 md:space-x-2 mb-1 md:mb-2">
           <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl bg-gradient-to-br ${currentProcedure.color} shadow-lg`}>
             {icon}
           </div>
@@ -405,7 +405,7 @@ const EmergencyProcedures: React.FC = () => {
   const currentProcedure = procedures[activeTab as keyof typeof procedures] || procedures['storm-surge'];
 
   return (
-    <section id="emergency-procedures" className="py-9 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
+    <section id="emergency-procedures" className="py-12 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute inset-0" style={{
