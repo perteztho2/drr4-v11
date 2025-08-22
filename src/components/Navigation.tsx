@@ -198,7 +198,7 @@ const Navigation = () => {
             : "bg-blue-950 backdrop-blur-sm border-b-4 border-yellow-500"
         }`}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-2 sm:px-6 lg:px-2">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2 group">
