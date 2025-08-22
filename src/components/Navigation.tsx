@@ -52,17 +52,6 @@ const isActivePath = (pathname: string, path: string) =>
   path === "/" ? pathname === "/" : pathname.startsWith(path);
 
 // -------------------- DEFAULT NAV ITEMS --------------------
-const DEFAULT_NAV = [
-  { path: "/", label: "Home", icon: Home, featured: true },
-  { path: "/about", label: "About", icon: Info },
-  { path: "/services-detail", label: "Services", icon: Wrench, featured: true },
-  { path: "/news-portal", label: "News", icon: Newspaper, featured: true },
-  { path: "/resources", label: "Resources", icon: FolderOpen, featured: true },
-  { path: "/disaster-planning", label: "Planning", icon: Calendar },
-  { path: "/gallery", label: "Gallery", icon: Camera },
-  { path: "/video-gallery", label: "Videos", icon: Play },
-  { path: "/contact", label: "Contact", icon: Phone, featured: true },
-];
 
 // -------------------- MAIN COMPONENT --------------------
 const Navigation = () => {
