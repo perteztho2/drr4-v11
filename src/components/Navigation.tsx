@@ -144,7 +144,7 @@ const Navigation = () => {
             className={`${baseClasses} justify-between w-full ${activeClasses}`}
           >
             <span className="flex items-center">
-              <Icon size={18} className="mr-1" />
+              <Icon size={18} className="mr-0" />
               {item.label}
               {item.featured && <span className="ml-2 w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>}
             </span>
@@ -198,10 +198,10 @@ const Navigation = () => {
             : "bg-blue-950 backdrop-blur-sm border-b-4 border-yellow-500"
         }`}
       >
-        <div className="container mx-auto px-2 sm:px-6 lg:px-2">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-1 group">
+            <Link to="/" className="flex items-center space-x-2 group">
               <div className="relative">
                 <img
                   src="https://res.cloudinary.com/dedcmctqk/image/upload/v1750079276/logome_h9snnx.webp"
