@@ -298,43 +298,7 @@ const Planning: React.FC = () => {
         </div>
 
         {/* Call to Action */}
-        <div className={`text-center ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '900ms' }}>
-          <div className="bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 rounded-3xl p-12 shadow-2xl relative overflow-hidden">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-20">
-              <div className="absolute inset-0" style={{
-                backgroundImage: `radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
-                                 radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.2) 0%, transparent 50%)`
-              }}></div>
-            </div>
-            
-            <div className="relative z-10">
-              <h3 className="text-3xl font-bold text-white mb-6">Ready to Build Community Resilience?</h3>
-              <p className="text-white/90 mb-8 max-w-3xl mx-auto text-lg">
-                Join us in creating comprehensive disaster resilience for our community through expert guidance, 
-                proven strategies, and collaborative planning.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Link 
-                  to="/resources"
-                  className="group inline-flex items-center px-8 py-4 bg-white text-orange-600 rounded-2xl hover:bg-gray-100 transition-all duration-300 font-bold shadow-xl hover:shadow-2xl transform hover:scale-105"
-                >
-                  <Download className="mr-3 group-hover:animate-bounce" size={24} />
-                  Download Planning Guide
-                </Link>
-                <Link 
-                  to="/contact"
-                  className="group inline-flex items-center px-8 py-4 bg-white/20 backdrop-blur-sm text-white rounded-2xl hover:bg-white/30 transition-all duration-300 font-bold border border-white/30 hover:border-white/50 transform hover:scale-105"
-                >
-                  <Users className="mr-3 group-hover:animate-bounce" size={24} />
-                  Contact Our Experts
-                  <ArrowRight className="ml-3 group-hover:translate-x-1 transition-transform" size={20} />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </section>
   );
