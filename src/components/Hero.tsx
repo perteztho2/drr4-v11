@@ -124,7 +124,7 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
         <div 
           className="absolute inset-0 bg-cover bg-center opacity-70"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1527482797697-8795b05a13fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80')"
+            backgroundImage: "url('https://res.cloudinary.com/dedcmctqk/image/upload/v1752394779/bg_ixkluh.jpg')"
           }}
         ></div>
 
