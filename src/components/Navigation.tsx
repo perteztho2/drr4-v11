@@ -201,7 +201,7 @@ const Navigation = () => {
         <div className="container mx-auto px-2 sm:px-6 lg:px-2">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-2 group">
+            <Link to="/" className="flex items-center space-x-1 group">
               <div className="relative">
                 <img
                   src="https://res.cloudinary.com/dedcmctqk/image/upload/v1750079276/logome_h9snnx.webp"
