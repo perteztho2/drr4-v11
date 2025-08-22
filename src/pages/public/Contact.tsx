@@ -247,7 +247,7 @@ const Contact: React.FC = () => {
                 {/* Social Media */}
                 <div className="glass-modern rounded-3xl p-10 border border-white/30 shadow-modern-xl">
                   <h3 className="text-2xl font-bold text-white mb-8 flex items-center">
-                    <Share2 className="mr-4 text-yellow-500" size={28} />
+                    <MapPin className="mr-4 text-yellow-500" size={28} />
                     Follow Us
                   </h3>
                   <div className="flex gap-6">
