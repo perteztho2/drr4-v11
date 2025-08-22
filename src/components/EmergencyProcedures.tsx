@@ -418,9 +418,7 @@ const EmergencyProcedures: React.FC = () => {
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Header Section */}
         <div className={`text-center mb-1 md:mb-4 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`}>
-          <div className="inline-flex items-center justify-center w-12 h-12 md:w-20 md:h-20 bg-gradient-to-br from-red-500 to-orange-600 rounded-2xl md:rounded-3xl mb-4 md:mb-4 shadow-lg md:shadow-2xl">
-            <AlertTriangle className="text-white" size={24} />
-          </div>
+
           <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent mb-2 md:mb-3">
             EMERGENCY PROCEDURES
           </h2>
