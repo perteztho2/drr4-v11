@@ -290,15 +290,12 @@ const Planning: React.FC = () => {
                   />
                   
                   {/* Overlay for better integration */}
-                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/10 via-transparent to-black/10 rounded-2xl"></div>
+                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/10 via-transparent to-black/10 rounded-2xl">                    </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Call to Action */}
-        
       </div>
     </section>
   );
