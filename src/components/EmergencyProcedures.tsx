@@ -421,7 +421,7 @@ const EmergencyProcedures: React.FC = () => {
           <div className="inline-flex items-center justify-center w-12 h-12 md:w-20 md:h-20 bg-gradient-to-br from-red-500 to-orange-600 rounded-2xl md:rounded-3xl mb-4 md:mb-8 shadow-lg md:shadow-2xl">
             <AlertTriangle className="text-white" size={24} />
           </div>
-          <h2 className="text-xl md:text-2xl lg:text-5xl xl:text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent mb-4 md:mb-6">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent mb-4 md:mb-6">
             Emergency Procedures
           </h2>
           <div className="w-20 md:w-32 h-1 md:h-1.5 bg-gradient-to-r from-red-500 to-orange-500 mx-auto rounded-full mb-4 md:mb-8"></div>
