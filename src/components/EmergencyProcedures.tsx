@@ -395,7 +395,7 @@ const EmergencyProcedures: React.FC = () => {
         </div>
 
         {/* Phase Indicator */}
-        <div className="absolute -left-1 md:-left-2 top-6 md:top-8">
+        <div className="absolute -left-1 md:-left-2 top-2 md:top-4">
           <div className={`w-2 md:w-4 h-12 md:h-16 rounded-r-full bg-gradient-to-b ${currentProcedure.color} shadow-lg`}></div>
         </div>
       </div>
