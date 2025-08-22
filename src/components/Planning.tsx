@@ -275,7 +275,7 @@ const Planning: React.FC = () => {
             </div>
             
             <div className="relative">
-              <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 shadow-2xl">
+              <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-3 border border-white/20 shadow-2xl">
                 <div className="aspect-video rounded-2xl overflow-hidden relative">
                   <iframe 
                     src="https://www.google.com/maps/d/embed?mid=12eKHRMUMYnO5lZOiaJQOA9cJD-xjXU8&hl=en&ehbc=2E312F" 
