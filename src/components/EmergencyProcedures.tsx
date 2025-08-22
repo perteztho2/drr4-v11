@@ -358,7 +358,7 @@ const EmergencyProcedures: React.FC = () => {
         </button>
         
         {/* Phase Header */}
-        <div className="flex items-center space-x-3 md:space-x-4 mb-4 md:mb-8">
+        <div className="flex items-center space-x-3 md:space-x-4 mb-2 md:mb-4">
           <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl bg-gradient-to-br ${currentProcedure.color} shadow-lg`}>
             {icon}
           </div>
