@@ -52,7 +52,7 @@ const AccessibilityMenu: React.FC = () => {
       {/* Accessibility Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed left-4 top-1/9 transform -translate-y-1/2 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors z-40"
+        className="fixed left-4 top-1/8 transform -translate-y-1/2 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors z-40"
         title="Accessibility Options"
         aria-label="Open accessibility menu"
       >
