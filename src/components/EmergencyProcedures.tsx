@@ -465,7 +465,7 @@ const EmergencyProcedures: React.FC = () => {
             <div className="flex items-center justify-center mb-6">
 
             </div>
-            <h3 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">{currentProcedure.name} Emergency Procedures</h3>
+            <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 md:mb-2">{currentProcedure.name} Emergency Procedures</h3>
             <p className="text-sm md:text-md lg:text-lg text-gray-700 max-w-4xl mx-auto leading-relaxed px-4">
               Follow these comprehensive procedures to stay safe during {currentProcedure.name.toLowerCase()} emergencies
             </p>
