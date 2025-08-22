@@ -269,7 +269,7 @@ const SocialMediaFeed: React.FC<SocialMediaFeedProps> = ({
                   ) : (
                     <p>{truncateText(post.content)}</p>
                   )}
-                  {post.content.length > 150 && (
+                  {post.content.length > 100 && (
                     <button
                       onClick={() => toggleExpanded(post.id)}
                       className="text-blue-600 hover:text-blue-800 text-sm font-medium mt-2 flex items-center"
