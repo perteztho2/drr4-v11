@@ -255,7 +255,7 @@ const Planning: React.FC = () => {
                   <span>Interactive evacuation routes</span>
                 </div>
                 <div className="flex items-center text-blue-100">
-                  <CheckCircle className="text-green-400 mr-3" size={12} />
+                  <CheckCircle className="text-green-400 mr-3" size={} />
                   <span>Community vulnerability assessments</span>
                 </div>
                 <div className="flex items-center text-blue-100">
