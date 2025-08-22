@@ -306,7 +306,7 @@ const EmergencyProcedures: React.FC = () => {
     // Add footer
     const footer = document.createElement('div');
     footer.innerHTML = `
-      <hr style="margin-top: 5px; border: 1px solid #e2e8f0;">
+      <hr style="margin-top: 20px; border: 1px solid #e2e8f0;">
       <p style="text-align: center; font-size: 12px; color: #666; margin-top: 10px;">
         MDRRMO Pio Duran - Emergency Procedures Guide - Generated on ${new Date().toLocaleDateString()}
       </p>
@@ -417,7 +417,7 @@ const EmergencyProcedures: React.FC = () => {
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Header Section */}
-        <div className={`text-center mb-1 md:mb-8 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`}>
+        <div className={`text-center mb-1 md:mb-4 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`}>
           <div className="inline-flex items-center justify-center w-12 h-12 md:w-20 md:h-20 bg-gradient-to-br from-red-500 to-orange-600 rounded-2xl md:rounded-3xl mb-4 md:mb-4 shadow-lg md:shadow-2xl">
             <AlertTriangle className="text-white" size={24} />
           </div>
