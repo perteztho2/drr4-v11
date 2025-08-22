@@ -233,30 +233,6 @@ const Planning: React.FC = () => {
           </div>
         </div>
 
-        {/* Achievements Section */}
-        <div className={`mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '700ms' }}>
-          <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-12 border border-white/20">
-            <div className="text-center mb-12">
-              <h3 className="text-3xl font-bold text-white mb-4">Our Impact</h3>
-              <p className="text-blue-200 max-w-2xl mx-auto">
-                Measurable results from our disaster risk reduction efforts
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              {achievements.map((achievement, index) => (
-                <div key={index} className="text-center group">
-                  <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-3xl font-bold text-white">{achievement.value}</span>
-                  </div>
-                  <h4 className="text-xl font-bold text-white mb-2">{achievement.label}</h4>
-                  <p className="text-blue-200 text-sm">{achievement.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
         {/* Interactive Map Section */}
         <div className={`mb-20 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '800ms' }}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
