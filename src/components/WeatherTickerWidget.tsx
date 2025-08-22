@@ -147,7 +147,7 @@ const WeatherTickerWidget: React.FC = () => {
 
   return (
     <div className={`bg-gradient-to-r ${getTemperatureColor(weatherData.temperature)} text-white py-3 px-4 shadow-lg border-b-3 border-blue-950`}>
-      <div className="container mx-auto">
+      <div className="container border-b-3 border-blue-950 mx-auto">
         <div className="flex items-center justify-between">
           {/* Weather Info - Scrolling Ticker */}
           <div className="flex-1 overflow-hidden">
