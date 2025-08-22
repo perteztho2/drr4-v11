@@ -497,6 +497,7 @@ const EmergencyProcedures: React.FC = () => {
               2
             )}
           </div>
+        </div>
       </div>
     </section>
   );
