@@ -163,7 +163,7 @@ const Navigation = () => {
               className={
                 mobile
                   ? "ml-4 mt-2 space-y-1"
-                  : "absolute top-full left-0 mt-2 text-black w-56 bg-blue-900 backdrop-blur-xl rounded-2xl shadow-2xl py-3 z-50 border border-yellow-500/80"
+                  : "absolute top-full left-0 mt-2 text-black w-56 bg-blue-900 backdrop-blur-xl rounded-2xl shadow-2xl py-3 z-50 border border-yellow-500/50"
               }
             >
               {item.children.map((child: any) => renderItem(child, mobile))}
