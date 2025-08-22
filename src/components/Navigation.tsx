@@ -114,9 +114,33 @@ const Navigation = () => {
 
   // Toggle submenu
   const toggleSubmenu = (id: string) => {
+    // Clear any existing timeout for this submenu
+    const existingTimeout = submenuTimeouts.get(id);
+    if (existingTimeout) {
+      clearTimeout(existingTimeout);
+      submenuTimeouts.delete(id);
+    }
+
     setOpenSubmenus(prev => {
       const newSet = new Set(prev);
-      newSet.has(id) ? newSet.delete(id) : (newSet.clear(), newSet.add(id));
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.clear();
+        newSet.add(id);
+        
+        // Auto-hide after 3 seconds
+        const timeout = setTimeout(() => {
+          setOpenSubmenus(current => {
+            const updated = new Set(current);
+            updated.delete(id);
+            return updated;
+          });
+          submenuTimeouts.delete(id);
+        }, 3000);
+        
+        setSubmenuTimeouts(prev => new Map(prev).set(id, timeout));
+      }
       return newSet;
     });
   };

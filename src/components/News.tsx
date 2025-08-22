@@ -99,9 +99,9 @@ const News: React.FC = () => {
                 )}
 
                 {/* Secondary News */}
-                {publishedNews.length > 1 && (
+                {(publishedNews.length > 0 ? publishedNews : sampleNews).length > 1 && (
                   <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-                    {publishedNews.slice(1, 5).map((item) => (
+                    {(publishedNews.length > 0 ? publishedNews : sampleNews).slice(1, 5).map((item) => (
                       <div
                         key={item.id}
                         className="bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl shadow-md md:shadow-lg overflow-hidden border border-white/20 hover:border-yellow-500/50 transition-all duration-300 transform hover:-translate-y-1 md:hover:-translate-y-2 group"

@@ -242,7 +242,31 @@ const SocialMediaFeed: React.FC<SocialMediaFeedProps> = ({
 
               {/* Post Content */}
               <div className="mb-4">
-                <p className="text-gray-700 mb-3">{post.content}</p>
+                <div className="text-gray-700 mb-3">
+                  {expandedPosts.has(post.id) ? (
+                    <p>{post.content}</p>
+                  ) : (
+                    <p>{truncateText(post.content)}</p>
+                  )}
+                  {post.content.length > 150 && (
+                    <button
+                      onClick={() => toggleExpanded(post.id)}
+                      className="text-blue-600 hover:text-blue-800 text-sm font-medium mt-2 flex items-center"
+                    >
+                      {expandedPosts.has(post.id) ? (
+                        <>
+                          <ChevronUp size={14} className="mr-1" />
+                          Show less
+                        </>
+                      ) : (
+                        <>
+                          <ChevronDown size={14} className="mr-1" />
+                          Show more
+                        </>
+                      )}
+                    </button>
+                  )}
+                </div>
                 
                 {/* Media */}
                 {post.image && (
