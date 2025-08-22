@@ -463,9 +463,7 @@ const EmergencyProcedures: React.FC = () => {
           {/* Current Procedure Header */}
           <div className="text-center mb-6 md:mb-12">
             <div className="flex items-center justify-center mb-6">
-              <div className={`p-4 md:p-6 rounded-2xl md:rounded-3xl bg-gradient-to-br ${currentProcedure.color} shadow-lg md:shadow-2xl`}>
-                <currentProcedure.icon className="text-white" size={32} />
-              </div>
+
             </div>
             <h3 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">{currentProcedure.name} Emergency Procedures</h3>
             <p className="text-sm md:text-base lg:text-lg text-gray-600 max-w-3xl mx-auto px-4">
