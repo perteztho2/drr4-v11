@@ -11,38 +11,27 @@ type GalleryItem = Database['public']['Tables']['gallery']['Row'];
 type VideoItem = Database['public']['Tables']['videos']['Row'];
 
 interface DataContextType {
-  // News
   news: NewsItem[];
   addNews: (news: Omit<NewsItem, 'id' | 'created_at' | 'updated_at'>) => Promise<void>;
   updateNews: (id: string, news: Partial<NewsItem>) => Promise<void>;
   deleteNews: (id: string) => Promise<void>;
-  
-  // Services
   services: Service[];
   addService: (service: Omit<Service, 'id' | 'created_at' | 'updated_at'>) => Promise<void>;
   updateService: (id: string, service: Partial<Service>) => Promise<void>;
   deleteService: (id: string) => Promise<void>;
-  
-  // Incident Reports
   incidents: IncidentReport[];
   addIncident: (incident: Omit<IncidentReport, 'id' | 'date_reported' | 'updated_at' | 'reference_number'>) => Promise<void>;
   updateIncident: (id: string, incident: Partial<IncidentReport>) => Promise<void>;
   deleteIncident: (id: string) => Promise<void>;
-
-  // Gallery
   gallery: GalleryItem[];
   addGalleryItem: (item: Omit<GalleryItem, 'id' | 'created_at' | 'updated_at'>) => Promise<void>;
   updateGalleryItem: (id: string, item: Partial<GalleryItem>) => Promise<void>;
   deleteGalleryItem: (id: string) => Promise<void>;
-
-  // Videos
   videos: VideoItem[];
   addVideo: (video: Omit<VideoItem, 'id' | 'created_at' | 'updated_at' | 'view_count'>) => Promise<void>;
   updateVideo: (id: string, video: Partial<VideoItem>) => Promise<void>;
   deleteVideo: (id: string) => Promise<void>;
   incrementVideoView: (id: string) => Promise<void>;
-
-  // Loading states
   loading: boolean;
   error: string | null;
 }
@@ -66,24 +55,22 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch all data on mount
   useEffect(() => {
     fetchAllData();
-    
-    // Set up real-time subscriptions
+    // Real-time subscriptions
     const newsSubscription = supabase
       .channel('news_changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'news' }, 
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'news' },
         (payload) => {
           console.log('News change detected:', payload);
-          fetchAllData(); // Refresh all data
+          fetchAllData();
         }
       )
       .subscribe();
 
     const servicesSubscription = supabase
       .channel('services_changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'services' }, 
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'services' },
         (payload) => {
           console.log('Services change detected:', payload);
           fetchAllData();
@@ -93,7 +80,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const incidentsSubscription = supabase
       .channel('incidents_changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'incident_reports' }, 
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'incident_reports' },
         (payload) => {
           console.log('Incidents change detected:', payload);
           fetchAllData();
@@ -103,7 +90,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const gallerySubscription = supabase
       .channel('gallery_changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'gallery' }, 
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'gallery' },
         (payload) => {
           console.log('Gallery change detected:', payload);
           fetchAllData();
@@ -113,7 +100,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const videosSubscription = supabase
       .channel('videos_changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'videos' }, 
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'videos' },
         (payload) => {
           console.log('Videos change detected:', payload);
           fetchAllData();
@@ -130,12 +117,19 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, []);
 
+  // Enhanced error handling for fetch failures
   const fetchAllData = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      // Use database manager for all operations
+      // Optional: show offline message if not connected
+      if (typeof navigator !== "undefined" && !navigator.onLine) {
+        setError("You are currently offline. Please check your internet connection.");
+        setLoading(false);
+        return;
+      }
+
       const [newsData, servicesData, incidentsData, galleryData, videosData] = await Promise.all([
         databaseManager.getNews(),
         databaseManager.getServices(),
@@ -143,21 +137,27 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         databaseManager.getGallery(),
         fetchVideos()
       ]);
-
       setNews(newsData);
       setServices(servicesData);
       setIncidents(incidentsData);
       setGallery(galleryData);
       setVideos(videosData);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-      console.error('Error fetching data:', err);
+    } catch (err: any) {
+      // Specific handling for fetch errors
+      if (err instanceof TypeError && err.message === "Failed to fetch") {
+        setError("Network error: Unable to connect to the backend service. Please check your network, CORS settings, and Supabase configuration.");
+        console.error('Error fetching data: Network/CORS/Supabase endpoint issue:', err);
+      } else {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+        console.error('Error fetching data:', err);
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  // News functions
+  // ...rest of the CRUD methods (unchanged, but you may want to add similar error handling for fetch failures if needed)...
+
   const addNews = async (newsItem: Omit<NewsItem, 'id' | 'created_at' | 'updated_at'>) => {
     return handleAsyncError(async () => {
       const data = await databaseManager.createNews(newsItem);
@@ -179,7 +179,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, 'Failed to delete news article');
   };
 
-  // Services functions
   const addService = async (service: Omit<Service, 'id' | 'created_at' | 'updated_at'>) => {
     try {
       const data = await databaseManager.createService(service);
@@ -210,21 +209,18 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Incidents functions
   const addIncident = async (incident: Omit<IncidentReport, 'id' | 'date_reported' | 'updated_at' | 'reference_number'>) => {
     try {
-      // Generate reference number if not provided
-      const referenceNumber = (incident as any).reference_number || 
+      const referenceNumber = (incident as any).reference_number ||
         `RD-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0')}`;
-      
-      // Handle image upload if provided
+
       let imageUrl = null;
       if ((incident as any).imageFile) {
         try {
           const file = (incident as any).imageFile;
           const fileExt = file.name.split('.').pop();
           const fileName = `incident_${referenceNumber}_${Date.now()}.${fileExt}`;
-          
+
           const { data: uploadData, error: uploadError } = await supabase.storage
             .from('incidents')
             .upload(fileName, file);
@@ -257,10 +253,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .single();
 
       if (error) throw error;
-      
       setIncidents(prev => [data, ...prev]);
       return data.reference_number;
     } catch (err) {
+      if (err instanceof TypeError && err.message === "Failed to fetch") {
+        setError("Network error: Unable to submit incident report. Please check your network, CORS settings, and Supabase configuration.");
+      }
       console.error('Error adding incident:', err);
       throw err;
     }
@@ -278,6 +276,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (error) throw error;
       setIncidents(prev => prev.map(item => item.id === id ? data : item));
     } catch (err) {
+      if (err instanceof TypeError && err.message === "Failed to fetch") {
+        setError("Network error: Unable to update incident. Please check your network, CORS settings, and Supabase configuration.");
+      }
       console.error('Error updating incident:', err);
       throw err;
     }
@@ -293,6 +294,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (error) throw error;
       setIncidents(prev => prev.filter(item => item.id !== id));
     } catch (err) {
+      if (err instanceof TypeError && err.message === "Failed to fetch") {
+        setError("Network error: Unable to delete incident. Please check your network, CORS settings, and Supabase configuration.");
+      }
       console.error('Error deleting incident:', err);
       throw err;
     }
@@ -308,15 +312,16 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (error && !error.message.includes('relation "videos" does not exist')) {
         throw error;
       }
-      
       return data || [];
-    } catch (error) {
+    } catch (error: any) {
+      if (error instanceof TypeError && error.message === "Failed to fetch") {
+        setError("Network error: Unable to fetch videos. Please check your network, CORS settings, and Supabase configuration.");
+      }
       console.error('Error fetching videos:', error);
       return [];
     }
   };
 
-  // Gallery functions
   const addGalleryItem = async (item: Omit<GalleryItem, 'id' | 'created_at' | 'updated_at'>) => {
     try {
       const data = await databaseManager.createGalleryItem(item);
@@ -347,7 +352,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Videos functions
   const addVideo = async (video: Omit<VideoItem, 'id' | 'created_at' | 'updated_at' | 'view_count'>) => {
     try {
       const { data, error } = await supabase
@@ -359,6 +363,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (error) throw error;
       setVideos(prev => [data, ...prev]);
     } catch (err) {
+      if (err instanceof TypeError && err.message === "Failed to fetch") {
+        setError("Network error: Unable to add video. Please check your network, CORS settings, and Supabase configuration.");
+      }
       console.error('Error adding video:', err);
       throw err;
     }
@@ -376,6 +383,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (error) throw error;
       setVideos(prev => prev.map(video => video.id === id ? data : video));
     } catch (err) {
+      if (err instanceof TypeError && err.message === "Failed to fetch") {
+        setError("Network error: Unable to update video. Please check your network, CORS settings, and Supabase configuration.");
+      }
       console.error('Error updating video:', err);
       throw err;
     }
@@ -391,6 +401,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (error) throw error;
       setVideos(prev => prev.filter(video => video.id !== id));
     } catch (err) {
+      if (err instanceof TypeError && err.message === "Failed to fetch") {
+        setError("Network error: Unable to delete video. Please check your network, CORS settings, and Supabase configuration.");
+      }
       console.error('Error deleting video:', err);
       throw err;
     }
@@ -404,14 +417,16 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .eq('id', id);
 
       if (error) throw error;
-      
-      // Update local state
-      setVideos(prev => prev.map(video => 
-        video.id === id 
+
+      setVideos(prev => prev.map(video =>
+        video.id === id
           ? { ...video, view_count: video.view_count + 1 }
           : video
       ));
     } catch (err) {
+      if (err instanceof TypeError && err.message === "Failed to fetch") {
+        setError("Network error: Unable to increment video view count. Please check your network, CORS settings, and Supabase configuration.");
+      }
       console.error('Error incrementing video view:', err);
     }
   };
