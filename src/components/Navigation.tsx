@@ -133,8 +133,8 @@ const Navigation = () => {
     const activeClasses = active
       ? "bg-gradient-to-r from-yellow-500 to-yellow-500 text-blue-900 shadow-lg"
       : mobile
-      ? "text-blue-950 hover:bg-white/10 hover:text-white"
-      : "text-blue-950 hover:bg-white/10 hover:text-white backdrop-blur-sm";
+      ? "text-white/90 hover:bg-white/10 hover:text-white"
+      : "text-white/90 hover:bg-white/10 hover:text-white backdrop-blur-sm";
 
     if (hasChildren) {
       return (
@@ -144,7 +144,7 @@ const Navigation = () => {
             className={`${baseClasses} justify-between w-full ${activeClasses}`}
           >
             <span className="flex items-center">
-              <Icon size={18} className="mr-3" />
+              <Icon size={18} className="mr-1" />
               {item.label}
               {item.featured && <span className="ml-2 w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>}
             </span>
