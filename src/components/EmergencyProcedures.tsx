@@ -431,7 +431,7 @@ const EmergencyProcedures: React.FC = () => {
         </div>
 
         {/* Modern Tab Navigation */}
-        <div className={`bg-white/80 backdrop-blur-xl rounded-2xl md:rounded-3xl shadow-lg md:shadow-2xl border border-white/20 mb-4 md:mb-8 overflow-hidden ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '200ms' }}>
+        <div className={`bg-white/80 backdrop-blur-xl rounded-2xl md:rounded-3xl shadow-lg md:shadow-2xl border border-white/20 mb-4 md:mb-3 overflow-hidden ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '200ms' }}>
           <div className="p-3 md:p-3">
             <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2 md:gap-3">
               {tabs.map((tab, index) => (
