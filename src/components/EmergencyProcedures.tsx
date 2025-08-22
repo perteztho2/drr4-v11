@@ -345,7 +345,7 @@ const EmergencyProcedures: React.FC = () => {
     const currentProcedure = procedures[activeTab as keyof typeof procedures];
     
     return (
-      <div className={`group relative bg-white/95 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-8 shadow-lg md:shadow-xl border border-white/20 hover:shadow-xl md:hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 md:hover:-translate-y-2 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} 
+      <div className={`group relative bg-white/95 backdrop-blur-sm rounded-xl md:rounded-2xl p-2 md:p-4 shadow-lg md:shadow-xl border border-white/20 hover:shadow-xl md:hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 md:hover:-translate-y-2 ${isVisible ? 'animate-fadeIn' : 'opacity-0'}`} 
            style={{ animationDelay: `${index * 150}ms` }}>
         
         {/* Download Button */}
