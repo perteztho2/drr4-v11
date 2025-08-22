@@ -29,8 +29,8 @@ const Hero: React.FC<HeroProps> = ({ onEmergencyClick, onIncidentClick }) => {
         drop.className = 'absolute w-px bg-gradient-to-b from-white/40 to-transparent';
         
         const left = Math.random() * 100;
-        const height = 30 + Math.random() * 60;
-        const duration = 0.8 + Math.random() * 1.5;
+        const height = 20 + Math.random() * 90;
+        const duration = 0.5 + Math.random() * 1.2;
         const delay = Math.random() * 2;
 
         drop.style.left = `${left}%`;
