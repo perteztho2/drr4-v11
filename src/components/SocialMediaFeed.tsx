@@ -181,7 +181,7 @@ const SocialMediaFeed: React.FC<SocialMediaFeedProps> = ({
   };
 
   // Helper for truncating text
-  const truncateText = (text: string, length = 150) => {
+  const truncateText = (text: string, length = 50) => {
     return text.length > length ? text.slice(0, length) + '...' : text;
   };
 
@@ -269,7 +269,7 @@ const SocialMediaFeed: React.FC<SocialMediaFeedProps> = ({
                   ) : (
                     <p>{truncateText(post.content)}</p>
                   )}
-                  {post.content.length > 100 && (
+                  {post.content.length > 50 && (
                     <button
                       onClick={() => toggleExpanded(post.id)}
                       className="text-blue-600 hover:text-blue-800 text-sm font-medium mt-2 flex items-center"
