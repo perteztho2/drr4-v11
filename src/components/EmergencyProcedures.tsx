@@ -500,15 +500,7 @@ const EmergencyProcedures: React.FC = () => {
         </div>
 
         {/* Emergency Contact Section */}
-        <div className={`${isVisible ? 'animate-fadeIn' : 'opacity-0'} mobile-compact`} style={{ animationDelay: '600ms' }}>
-          <div className="bg-gradient-to-r from-red-600 via-red-700 to-red-800 rounded-2xl md:rounded-3xl p-6 md:p-12 shadow-lg md:shadow-2xl border border-red-500/20 relative overflow-hidden">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute inset-0" style={{
-                backgroundImage: `radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
-                                 radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.2) 0%, transparent 50%)`
-              }}></div>
-            </div>
+        
             
             <div className="relative z-10 text-center">
               <div className="inline-flex items-center justify-center w-12 h-12 md:w-20 md:h-20 bg-white/20 backdrop-blur-sm rounded-full mb-4 md:mb-6">
