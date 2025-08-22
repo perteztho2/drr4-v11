@@ -425,7 +425,7 @@ const EmergencyProcedures: React.FC = () => {
             EMERGENCY PROCEDURES
           </h2>
           <div className="w-20 md:w-32 h-1 md:h-1.5 bg-gradient-to-r from-red-500 to-orange-500 mx-auto rounded-full mb-2 md:mb-2"></div>
-          <p className="text-sm md:text-lg lg:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed px-4">
+          <p className="text-sm md:text-md lg:text-lg text-gray-700 max-w-4xl mx-auto leading-relaxed px-4">
             Comprehensive step-by-step procedures for before, during, and after emergency situations
           </p>
         </div>
