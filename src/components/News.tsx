@@ -5,12 +5,31 @@ import { Link } from 'react-router-dom';
 import SocialShareButtons from './SocialShareButtons';
 import SocialMediaFeed from './SocialMediaFeed';
 
+const sampleNews = [
+  // Add your sample news objects here if needed
+];
+
 const News: React.FC = () => {
   const { news } = useData();
-  const publishedNews = news.filter(article => article.status === 'published').slice(0, 3);
+  const publishedNews = news.filter(article => article.status === 'published');
+
+  // Prepare secondary news to always display 4 items
+  const sourceNews = publishedNews.length > 0 ? publishedNews : sampleNews;
+  const secondaryNews = sourceNews.slice(1, 5);
+  // If fewer than 4 news, fill with placeholders
+  while (secondaryNews.length < 4) {
+    secondaryNews.push({
+      id: `placeholder-${secondaryNews.length}`,
+      title: "No News Available",
+      excerpt: "",
+      image: "",
+      date: "",
+      created_at: "",
+    });
+  }
 
   return (
-        <section className="py-12 md:py-24 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+    <section className="py-12 md:py-24 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 opacity-20">
@@ -34,17 +53,17 @@ const News: React.FC = () => {
         <div className="grid lg:grid-cols-3 gap-6 md:gap-12 mb-8 md:mb-16">
           {/* Main News Content */}
           <div className="lg:col-span-2">
-            {publishedNews.length > 0 ? (
+            {sourceNews.length > 0 ? (
               <div className="space-y-8">
                 {/* Featured News */}
-                {publishedNews[0] && (
+                {sourceNews[0] && (
                   <div className="bg-white/10 backdrop-blur-sm rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl overflow-hidden border border-white/20 hover:border-yellow-500/50 transition-all duration-500 group">
                     <div className="relative">
-                      {publishedNews[0].image && (
+                      {sourceNews[0].image && (
                         <div className="h-48 md:h-80 overflow-hidden">
                           <img
-                            src={publishedNews[0].image}
-                            alt={publishedNews[0].title}
+                            src={sourceNews[0].image}
+                            alt={sourceNews[0].title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
@@ -62,25 +81,25 @@ const News: React.FC = () => {
                     <div className="p-4 md:p-8">
                       <div className="flex items-center text-yellow-400 font-semibold mb-3 md:mb-4">
                         <Calendar size={16} className="mr-2 md:mr-3" />
-                        {new Date(publishedNews[0].date || publishedNews[0].created_at).toLocaleDateString('en-US', {
+                        {new Date(sourceNews[0].date || sourceNews[0].created_at).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'long',
                           day: 'numeric'
                         })}
                       </div>
                       <h3 className="text-lg md:text-2xl lg:text-3xl font-bold text-white mb-3 md:mb-4 leading-tight">
-                        {publishedNews[0].title}
+                        {sourceNews[0].title}
                       </h3>
                       <p className="text-sm md:text-base lg:text-lg text-blue-100 mb-4 md:mb-6 leading-relaxed">
-                        {publishedNews[0].excerpt || 'No excerpt available'}
+                        {sourceNews[0].excerpt || 'No excerpt available'}
                       </p>
                       
                       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 md:gap-4">
                         <SocialShareButtons
                           url={`${window.location.origin}/news-portal`}
-                          title={publishedNews[0].title}
-                          description={publishedNews[0].excerpt || publishedNews[0].title}
-                          image={publishedNews[0].image}
+                          title={sourceNews[0].title}
+                          description={sourceNews[0].excerpt || sourceNews[0].title}
+                          image={sourceNews[0].image}
                           size="sm"
                           showLabels={false}
                           hashtags={['MDRRMO', 'PioDuran', 'News']}
@@ -98,63 +117,65 @@ const News: React.FC = () => {
                   </div>
                 )}
 
-                {/* Secondary News */}
-                {(publishedNews.length > 0 ? publishedNews : sampleNews).length > 1 && (
-                  <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-                    {(publishedNews.length > 0 ? publishedNews : sampleNews).slice(1, 5).map((item) => (
-                      <div
-                        key={item.id}
-                        className="bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl shadow-md md:shadow-lg overflow-hidden border border-white/20 hover:border-yellow-500/50 transition-all duration-300 transform hover:-translate-y-1 md:hover:-translate-y-2 group"
-                      >
-                        {item.image && (
-                          <div className="h-32 md:h-48 overflow-hidden">
-                            <img
-                              src={item.image}
-                              alt={item.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.src = 'https://images.pexels.com/photos/6146970/pexels-photo-6146970.jpeg';
-                              }}
-                            />
-                          </div>
-                        )}
-                        <div className="p-4 md:p-6">
-                          <div className="flex items-center text-yellow-400 font-medium mb-2 md:mb-3 text-xs md:text-sm">
-                            <Calendar size={12} className="mr-1 md:mr-2" />
-                            {new Date(item.date || item.created_at).toLocaleDateString()}
-                          </div>
-                          <h3 className="text-sm md:text-lg font-bold text-white mb-2 md:mb-3 line-clamp-2 leading-tight">
-                            {item.title}
-                          </h3>
-                          <p className="text-blue-100 mb-3 md:mb-4 line-clamp-2 text-xs md:text-sm">
-                            {item.excerpt || 'No excerpt available'}
-                          </p>
+                {/* Secondary News - Always show 4 cards */}
+                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+                  {secondaryNews.map((item, idx) => (
+                    <div
+                      key={item.id || idx}
+                      className="bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl shadow-md md:shadow-lg overflow-hidden border border-white/20 hover:border-yellow-500/50 transition-all duration-300 transform hover:-translate-y-1 md:hover:-translate-y-2 group"
+                    >
+                      {item.image ? (
+                        <div className="h-32 md:h-48 overflow-hidden">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = 'https://images.pexels.com/photos/6146970/pexels-photo-6146970.jpeg';
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="h-32 md:h-48 bg-slate-800 flex items-center justify-center text-blue-300 text-xs md:text-sm">
+                          No Image Available
+                        </div>
+                      )}
+                      <div className="p-4 md:p-6">
+                        <div className="flex items-center text-yellow-400 font-medium mb-2 md:mb-3 text-xs md:text-sm">
+                          <Calendar size={12} className="mr-1 md:mr-2" />
+                          {item.date || item.created_at ? new Date(item.date || item.created_at).toLocaleDateString() : 'No date'}
+                        </div>
+                        <h3 className="text-sm md:text-lg font-bold text-white mb-2 md:mb-3 line-clamp-2 leading-tight">
+                          {item.title}
+                        </h3>
+                        <p className="text-blue-100 mb-3 md:mb-4 line-clamp-2 text-xs md:text-sm">
+                          {item.excerpt || 'No excerpt available'}
+                        </p>
+                        
+                        <div className="flex items-center justify-between">
+                          <SocialShareButtons
+                            url={`${window.location.origin}/news-portal`}
+                            title={item.title}
+                            description={item.excerpt || item.title}
+                            image={item.image}
+                            size="sm"
+                            showLabels={false}
+                            hashtags={['MDRRMO', 'PioDuran', 'News']}
+                          />
                           
-                          <div className="flex items-center justify-between">
-                            <SocialShareButtons
-                              url={`${window.location.origin}/news-portal`}
-                              title={item.title}
-                              description={item.excerpt || item.title}
-                              image={item.image}
-                              size="sm"
-                              showLabels={false}
-                              hashtags={['MDRRMO', 'PioDuran', 'News']}
-                            />
-                            
-                            <Link 
-                              to="/news-portal"
-                              className="text-yellow-400 font-semibold hover:text-yellow-300 flex items-center transition-colors text-xs md:text-sm"
-                            >
-                              Read More
-                              <ArrowRight size={12} className="ml-1" />
-                            </Link>
-                          </div>
+                          <Link 
+                            to="/news-portal"
+                            className="text-yellow-400 font-semibold hover:text-yellow-300 flex items-center transition-colors text-xs md:text-sm"
+                          >
+                            Read More
+                            <ArrowRight size={12} className="ml-1" />
+                          </Link>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                )}
+                    </div>
+                  ))}
+                </div>
               </div>
             ) : (
               <div className="bg-white/10 backdrop-blur-sm rounded-xl md:rounded-2xl shadow-lg p-6 md:p-12 text-center border border-white/20">
