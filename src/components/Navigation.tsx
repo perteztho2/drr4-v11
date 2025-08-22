@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDatabase } from "../contexts/DatabaseContext";
 import { usePages } from "../contexts/PagesContext";
@@ -72,6 +72,7 @@ const Navigation = () => {
 
   const [dynamicNavItems, setDynamicNavItems] = useState<any[]>([]);
   const [openSubmenus, setOpenSubmenus] = useState<Set<string>>(new Set());
+  const submenuTimeouts = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -112,7 +113,7 @@ const Navigation = () => {
     return DEFAULT_NAV.map(item => ({ ...item, children: [], id: item.path }));
   }, [dynamicNavItems]);
 
-  // Toggle submenu
+  // Toggle submenu (for mobile)
   const toggleSubmenu = (id: string) => {
     setOpenSubmenus(prev => {
       const newSet = new Set(prev);
@@ -136,38 +137,72 @@ const Navigation = () => {
       ? "text-white/90 hover:bg-white/10 hover:text-yellow-500"
       : "text-white/90 hover:bg-white/10 hover:text-yellow-500 backdrop-blur-sm";
 
+    // Desktop submenu handlers
+    const handleParentEnter = () => {
+      if (!mobile) {
+        // Cancel closing if mouse re-enters parent
+        const timeout = submenuTimeouts.current.get(item.id);
+        if (timeout) {
+          clearTimeout(timeout);
+          submenuTimeouts.current.delete(item.id);
+        }
+        setOpenSubmenus(prev => new Set([item.id]));
+      }
+    };
+
+    const handleParentLeave = () => {
+      if (!mobile) {
+        // Start delayed close if mouse leaves parent
+        const timeout = setTimeout(() => {
+          setOpenSubmenus(prev => {
+            const updated = new Set(prev);
+            updated.delete(item.id);
+            return updated;
+          });
+          submenuTimeouts.current.delete(item.id);
+        }, 200);
+        submenuTimeouts.current.set(item.id, timeout);
+      }
+    };
+
+    const handleSubmenuEnter = () => {
+      if (!mobile) {
+        // Cancel closing if mouse enters submenu
+        const timeout = submenuTimeouts.current.get(item.id);
+        if (timeout) {
+          clearTimeout(timeout);
+          submenuTimeouts.current.delete(item.id);
+        }
+        setOpenSubmenus(prev => new Set([item.id]));
+      }
+    };
+
+    const handleSubmenuLeave = () => {
+      if (!mobile) {
+        // Close submenu if mouse leaves submenu panel
+        const timeout = setTimeout(() => {
+          setOpenSubmenus(prev => {
+            const updated = new Set(prev);
+            updated.delete(item.id);
+            return updated;
+          });
+          submenuTimeouts.current.delete(item.id);
+        }, 200);
+        submenuTimeouts.current.set(item.id, timeout);
+      }
+    };
+
     if (hasChildren) {
+      // Desktop: show submenu on hover, keep open when hovering submenu
       return (
-        <div key={item.id} className="relative group">
+        <div
+          key={item.id}
+          className="relative group"
+          onMouseEnter={handleParentEnter}
+          onMouseLeave={handleParentLeave}
+        >
           <button
-            onClick={() => toggleSubmenu(item.id)}
-            onMouseEnter={() => {
-              if (!mobile) {
-                const timeout = submenuTimeouts.get(item.id);
-                if (timeout) {
-                  clearTimeout(timeout);
-                  submenuTimeouts.delete(item.id);
-                }
-                setOpenSubmenus(prev => {
-                  const newSet = new Set();
-                  newSet.add(item.id);
-                  return newSet;
-                });
-              }
-            }}
-            onMouseLeave={() => {
-              if (!mobile) {
-                const timeout = setTimeout(() => {
-                  setOpenSubmenus(current => {
-                    const updated = new Set(current);
-                    updated.delete(item.id);
-                    return updated;
-                  });
-                  submenuTimeouts.delete(item.id);
-                }, 300);
-                setSubmenuTimeouts(prev => new Map(prev).set(item.id, timeout));
-              }
-            }}
+            onClick={() => mobile && toggleSubmenu(item.id)}
             className={`${baseClasses} justify-between w-full ${activeClasses}`}
           >
             <span className="flex items-center">
@@ -187,6 +222,8 @@ const Navigation = () => {
 
           {open && (
             <div
+              onMouseEnter={handleSubmenuEnter}
+              onMouseLeave={handleSubmenuLeave}
               className={
                 mobile
                   ? "ml-4 mt-2 space-y-1"
