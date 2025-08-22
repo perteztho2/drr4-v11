@@ -500,38 +500,11 @@ const EmergencyProcedures: React.FC = () => {
         </div>
 
         {/* Emergency Contact Section */}
-        <div className={`${isVisible ? 'animate-fadeIn' : 'opacity-0'} mobile-compact`} style={{ animationDelay: '600ms' }}>
-          <div className="bg-gradient-to-r from-red-600 via-red-700 to-red-800 rounded-2xl md:rounded-3xl p-6 md:p-12 shadow-lg md:shadow-2xl border border-red-500/20 relative overflow-hidden">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute inset-0" style={{
-                backgroundImage: `radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
-                                 radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.2) 0%, transparent 50%)`
-              }}></div>
-            </div>
+        
             
-            <div className="relative z-10 text-center">
-              <div className="inline-flex items-center justify-center w-12 h-12 md:w-20 md:h-20 bg-white/20 backdrop-blur-sm rounded-full mb-4 md:mb-6">
-                <AlertTriangle className="text-white animate-pulse" size={24} />
-              </div>
-              <h3 className="text-xl md:text-3xl font-bold text-white mb-3 md:mb-4">Emergency Contact</h3>
-              <p className="text-sm md:text-base lg:text-lg text-red-100 mb-6 md:mb-8 max-w-2xl mx-auto px-4">
-                For immediate emergency assistance, call our 24/7 hotline. Help is always available.
-              </p>
-              <div className="inline-flex items-center bg-white text-red-600 font-bold py-4 md:py-6 px-8 md:px-12 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl md:hover:shadow-3xl transition-all duration-300 transform hover:scale-105 text-xl md:text-3xl">
-                <div className="flex items-center space-x-4">
-                  <div className="w-8 h-8 md:w-12 md:h-12 bg-red-100 rounded-full flex items-center justify-center">
-                    <AlertTriangle size={16} />
-                  </div>
-                  <span>911</span>
-                </div>
-              </div>
-              <p className="text-red-200 mt-4 md:mt-6 text-xs md:text-sm">
-                Available 24/7 • Multilingual Support • Immediate Response
-              </p>
-            </div>
-          </div>
-        </div>
+        
+           
+        
       </div>
     </section>
   );
