@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, Send, Facebook, Twitter, Linkedin, Share2, Instagram, Check } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, AlertTriangle, Send, Facebook, Twitter, Linkedin, Share2, Instagram, Check } from 'lucide-react';
 import SEOHead from '../../components/SEOHead';
 
 const Contact: React.FC = () => {
