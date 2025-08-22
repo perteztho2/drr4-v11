@@ -133,8 +133,8 @@ const Navigation = () => {
     const activeClasses = active
       ? "bg-gradient-to-r from-yellow-500 to-yellow-500 text-blue-900 shadow-lg"
       : mobile
-      ? "text-blue/90 hover:bg-white/10 hover:text-white"
-      : "text-blue/90 hover:bg-white/10 hover:text-white backdrop-blur-sm";
+      ? "text-white/90 hover:bg-white/10 hover:text-white"
+      : "text-white/90 hover:bg-white/10 hover:text-white backdrop-blur-sm";
 
     if (hasChildren) {
       return (
@@ -163,7 +163,7 @@ const Navigation = () => {
               className={
                 mobile
                   ? "ml-4 mt-2 space-y-1"
-                  : "absolute top-full left-0 mt-2 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl py-3 z-50 border border-white/20"
+                  : "absolute top-full left-0 mt-2 w-56 bg-blue/95 backdrop-blur-xl rounded-2xl shadow-2xl py-3 z-50 border border-white/20"
               }
             >
               {item.children.map((child: any) => renderItem(child, mobile))}
