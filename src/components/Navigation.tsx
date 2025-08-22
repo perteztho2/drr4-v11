@@ -133,8 +133,8 @@ const Navigation = () => {
     const activeClasses = active
       ? "bg-gradient-to-r from-yellow-500 to-yellow-500 text-blue-900 shadow-lg"
       : mobile
-      ? "text-white/90 hover:bg-white/10 hover:text-white"
-      : "text-white/90 hover:bg-white/10 hover:text-white backdrop-blur-sm";
+      ? "text-blue-950 hover:bg-white/10 hover:text-white"
+      : "text-blue-950 hover:bg-white/10 hover:text-white backdrop-blur-sm";
 
     if (hasChildren) {
       return (
