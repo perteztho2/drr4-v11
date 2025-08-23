@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, AlertTriangle, Send, Facebook, Twitter, Linkedin, Share2, Instagram, Check } from 'lucide-react';
-import SEOHead from '../../components/SEOHead';
 
-const Contact: React.FC = () => {
+const Contact = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -13,12 +12,12 @@ const Contact: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -77,45 +76,32 @@ const Contact: React.FC = () => {
 
   return (
     <>
-      <SEOHead
-        title="Contact MDRRMO Pio Duran"
-        description="Get in touch with the Municipal Disaster Risk Reduction and Management Office of Pio Duran, Albay. Emergency hotlines, office hours, and contact information."
-        keywords="MDRRMO contact, Pio Duran emergency, disaster management contact, Albay emergency services"
-      />
-      
-      <div className="bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 min-h-screen pt-20 relative overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-10 left-10 w-48 h-48 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
-          <div className="absolute top-20 right-10 w-48 h-48 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-float stagger-2"></div>
-          <div className="absolute bottom-10 left-1/2 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl animate-float stagger-4"></div>
-        </div>
-        
+      <div className="bg-white min-h-screen pt-20">
         <div className="container mx-auto px-4 py-12">
-          <div className="max-w-6xl mx-auto relative z-10">
+          <div className="max-w-6xl mx-auto">
             {/* Header Section */}
-            <div className="text-center mb-20">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-yellow-500 rounded-full mb-8 animate-pulse-glow">
-                <Mail className="text-blue-950" size={40} />
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-500 rounded-full mb-6">
+                <Mail className="text-blue-950" size={32} />
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold text-white mb-8 animate-text-glow">Get In Touch</h1>
-              <div className="w-32 h-1.5 bg-gradient-to-r from-yellow-400 to-yellow-600 mx-auto rounded-full mb-8"></div>
-              <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-950 mb-6">Get In Touch</h1>
+              <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 mx-auto rounded-full mb-6"></div>
+              <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
                 We'd love to hear from you. Send us a message and we'll respond as soon as possible.
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-16">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
               {/* Contact Form */}
-              <div className="glass-modern rounded-3xl p-10 border border-white/30 shadow-modern-xl hover:shadow-modern-2xl transition-all duration-500">
-                <h2 className="text-3xl font-bold text-white mb-10 flex items-center">
-                  <Send className="mr-4 text-yellow-500" size={32} />
+              <div className="bg-gray-50 rounded-2xl p-6 md:p-8 shadow-lg border border-gray-200">
+                <h2 className="text-2xl md:text-3xl font-bold text-blue-950 mb-8 flex items-center">
+                  <Send className="mr-3 text-yellow-500" size={28} />
                   Send Message
                 </h2>
-                <form onSubmit={handleSubmit} className="space-y-8">
-                  <div className="grid md:grid-cols-2 gap-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-blue-100 font-medium mb-3">
+                      <label className="block text-gray-700 font-medium mb-2">
                         First Name
                       </label>
                       <input
@@ -124,12 +110,12 @@ const Contact: React.FC = () => {
                         value={formData.firstName}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-4 glass-modern border border-white/30 rounded-2xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 focus:transform focus:-translate-y-1 focus:shadow-lg"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
                         placeholder="Juan"
                       />
                     </div>
                     <div>
-                      <label className="block text-blue-100 font-medium mb-3">
+                      <label className="block text-gray-700 font-medium mb-2">
                         Last Name
                       </label>
                       <input
@@ -138,14 +124,14 @@ const Contact: React.FC = () => {
                         value={formData.lastName}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-4 glass-modern border border-white/30 rounded-2xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 focus:transform focus:-translate-y-1 focus:shadow-lg"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
                         placeholder="Dela Cruz"
                       />
                     </div>
                   </div>
                   
                   <div>
-                    <label className="block text-blue-100 font-medium mb-3">
+                    <label className="block text-gray-700 font-medium mb-2">
                       Email Address
                     </label>
                     <input
@@ -154,13 +140,13 @@ const Contact: React.FC = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-4 glass-modern border border-white/30 rounded-2xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 focus:transform focus:-translate-y-1 focus:shadow-lg"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
                       placeholder="juandelacruz@gmail.com"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-blue-100 font-medium mb-3">
+                    <label className="block text-gray-700 font-medium mb-2">
                       Subject
                     </label>
                     <input
@@ -169,13 +155,13 @@ const Contact: React.FC = () => {
                       value={formData.subject}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-4 glass-modern border border-white/30 rounded-2xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 focus:transform focus:-translate-y-1 focus:shadow-lg"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
                       placeholder="How can we help?"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-blue-100 font-medium mb-3">
+                    <label className="block text-gray-700 font-medium mb-2">
                       Message
                     </label>
                     <textarea
@@ -184,7 +170,7 @@ const Contact: React.FC = () => {
                       onChange={handleInputChange}
                       required
                       rows={5}
-                      className="w-full px-4 py-4 glass-modern border border-white/30 rounded-2xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent resize-none transition-all duration-300 focus:transform focus:-translate-y-1 focus:shadow-lg"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent resize-none transition-all duration-300"
                       placeholder="Tell us more about your inquiry..."
                     />
                   </div>
@@ -192,26 +178,26 @@ const Contact: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`w-full font-bold py-5 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center justify-center gap-3 text-lg ${
+                    className={`w-full font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 text-base ${
                       isSubmitted 
-                        ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white shadow-xl' 
-                        : 'bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-blue-950 shadow-xl'
+                        ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white shadow-lg' 
+                        : 'bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-blue-950 shadow-lg'
                     } disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
                     {isSubmitting ? (
                       <>
-                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-950"></div>
-                        Sending...
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-950"></div>
+                        <span>Sending...</span>
                       </>
                     ) : isSubmitted ? (
                       <>
-                        <Check size={24} className="animate-bounce" />
-                        Message Sent!
+                        <Check size={20} />
+                        <span>Message Sent!</span>
                       </>
                     ) : (
                       <>
-                        <Send size={24} className="hover:animate-pulse" />
-                        Send Message
+                        <Send size={20} />
+                        <span>Send Message</span>
                       </>
                     )}
                   </button>
@@ -219,25 +205,25 @@ const Contact: React.FC = () => {
               </div>
 
               {/* Contact Information */}
-              <div className="space-y-8">
-                <div className="glass-modern rounded-3xl p-10 border border-white/30 shadow-modern-xl">
-                  <h2 className="text-3xl font-bold text-white mb-10 flex items-center">
-                    <MapPin className="mr-4 text-yellow-500" size={32} />
+              <div className="space-y-6">
+                <div className="bg-gray-50 rounded-2xl p-6 md:p-8 shadow-lg border border-gray-200">
+                  <h2 className="text-2xl md:text-3xl font-bold text-blue-950 mb-8 flex items-center">
+                    <MapPin className="mr-3 text-yellow-500" size={28} />
                     Contact Information
                   </h2>
                   
-                  <div className="space-y-8">
+                  <div className="space-y-6">
                     {contactInfo.map((info, index) => (
                       <div
                         key={index}
-                        className={`flex items-start gap-6 p-6 rounded-2xl hover:bg-white/10 cursor-pointer transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-lg stagger-${index + 1}`}
+                        className="flex items-start gap-4 p-4 rounded-lg hover:bg-white transition-all duration-300 border border-transparent hover:border-gray-200"
                       >
-                        <div className={`${info.color} p-4 rounded-2xl shadow-lg hover:scale-110 transition-transform duration-300`}>
-                          <info.icon className="w-7 h-7 text-blue-950" />
+                        <div className={`${info.color} p-3 rounded-lg shadow-md`}>
+                          <info.icon className="w-5 h-5 text-blue-950" />
                         </div>
                         <div>
-                          <h3 className="text-white font-bold text-xl mb-2 hover:text-yellow-300 transition-colors">{info.title}</h3>
-                          <p className="text-blue-100 whitespace-pre-line text-lg leading-relaxed">{info.content}</p>
+                          <h3 className="text-blue-950 font-bold text-lg mb-1">{info.title}</h3>
+                          <p className="text-gray-600 whitespace-pre-line text-base leading-relaxed">{info.content}</p>
                         </div>
                       </div>
                     ))}
@@ -245,38 +231,38 @@ const Contact: React.FC = () => {
                 </div>
 
                 {/* Social Media */}
-                <div className="glass-modern rounded-3xl p-10 border border-white/30 shadow-modern-xl">
-                  <h3 className="text-2xl font-bold text-white mb-8 flex items-center">
-                    <MapPin className="mr-4 text-yellow-500" size={28} />
+                <div className="bg-gray-50 rounded-2xl p-6 md:p-8 shadow-lg border border-gray-200">
+                  <h3 className="text-xl md:text-2xl font-bold text-blue-950 mb-6 flex items-center">
+                    <Share2 className="mr-3 text-yellow-500" size={24} />
                     Follow Us
                   </h3>
-                  <div className="flex gap-6">
+                  <div className="flex gap-4">
                     {socialLinks.map((social, index) => (
                       <a
                         key={index}
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`glass-modern hover:bg-yellow-500 p-4 rounded-2xl transition-all duration-300 group hover:scale-110 hover:shadow-xl stagger-${index + 1}`}
+                        className="bg-white hover:bg-yellow-500 p-3 rounded-lg transition-all duration-300 group shadow-md hover:scale-110"
                         title={social.label}
                       >
-                        <social.icon className="w-7 h-7 text-yellow-500 group-hover:text-blue-950 group-hover:animate-bounce" />
+                        <social.icon className="w-5 h-5 text-blue-950 group-hover:text-blue-950" />
                       </a>
                     ))}
                   </div>
                 </div>
 
                 {/* Emergency Notice */}
-                <div className="glass-modern bg-red-500/20 rounded-3xl p-10 border border-red-500/40 shadow-modern-xl animate-pulse-glow">
-                  <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
-                    <AlertTriangle className="mr-4 text-yellow-500 animate-pulse" size={32} />
+                <div className="bg-red-50 rounded-2xl p-6 md:p-8 shadow-lg border border-red-200">
+                  <h3 className="text-xl md:text-2xl font-bold text-blue-950 mb-4 flex items-center">
+                    <AlertTriangle className="mr-3 text-yellow-500" size={24} />
                     Emergency Contact
                   </h3>
-                  <p className="text-red-100 mb-8 text-lg leading-relaxed">
+                  <p className="text-red-700 mb-6 text-base leading-relaxed">
                     For immediate emergency assistance, please call our 24/7 hotline:
                   </p>
-                  <div className="bg-gradient-to-r from-red-600 to-red-700 text-white font-bold py-6 px-12 rounded-2xl shadow-2xl flex items-center text-3xl justify-center hover:scale-105 transition-transform duration-300 hover:shadow-3xl">
-                    <Phone className="mr-4 animate-bounce" size={36} />
+                  <div className="bg-gradient-to-r from-red-600 to-red-700 text-white font-bold py-4 px-8 rounded-lg shadow-lg flex items-center justify-center text-xl hover:scale-105 transition-transform duration-300">
+                    <Phone className="mr-3" size={24} />
                     <span>911</span>
                   </div>
                 </div>
